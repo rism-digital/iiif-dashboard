@@ -196,6 +196,13 @@
       "imageInfoUrl": "https://noah.nrw/i3f/v20/6150264/info.json"
     },
     {
+      "id": "nul-dc",
+      "name": "Northwestern University Library Digital Collections",
+      "homepage": "https://dc.library.northwestern.edu/",
+      "manifestUrl": "https://api.dc.library.northwestern.edu/api/v2/works/efae8a12-a1f6-4433-ae34-966aa8a972a8?as=iiif",
+      "imageInfoUrl": "https://iiif.dc.library.northwestern.edu/iiif/3/222c4481-cde7-4787-9268-42f97d50b9f6/info.json"
+    },
+    {
       "id": "polona-pl",
       "name": "polona.pl",
       "homepage": "https://polona.pl/",
