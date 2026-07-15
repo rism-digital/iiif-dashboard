@@ -54,7 +54,8 @@
       "id": "digital-library-villanova-edu",
       "name": "Digital Library @ Villanova University",
       "homepage": "https://digital.library.villanova.edu/",
-      "manifestUrl": "https://digital.library.villanova.edu/Item/vudl:428064/Manifest"
+      "manifestUrl": "https://digital.library.villanova.edu/Item/vudl:807694/Manifest",
+      "imageInfoUrl": "https://iiif.library.villanova.edu/iiif/2/vudl%3A807702/info.json"
     },
     {
       "id": "digital-obvsg-at",
