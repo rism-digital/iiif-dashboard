@@ -52,6 +52,25 @@ func TestExpectedDocumentIdentifier(t *testing.T) {
 	}
 }
 
+func TestCheckerSetsExplicitUserAgent(t *testing.T) {
+	received := make(chan string, 1)
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		received <- r.UserAgent()
+		w.WriteHeader(http.StatusNoContent)
+	}))
+	defer server.Close()
+
+	response, err := newChecker("https://dashboard.example").request(context.Background(), http.MethodOptions, server.URL, "", true, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	response.Body.Close()
+
+	if got := <-received; got != checkerUserAgent {
+		t.Fatalf("User-Agent = %q, want %q", got, checkerUserAgent)
+	}
+}
+
 func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 	var server *httptest.Server
 	server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

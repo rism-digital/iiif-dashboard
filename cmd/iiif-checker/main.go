@@ -16,7 +16,10 @@ import (
 	"time"
 )
 
-const defaultOrigin = "https://iiif-dashboard.example"
+const (
+	defaultOrigin    = "https://rism-digital.github.io"
+	checkerUserAgent = "IIIF-Checker-Bot/1.0 (https://rism-digital.github.io/iiif-dashboard) go-http-client/1.1"
+)
 
 var accepts = map[string]map[string]string{
 	"presentation": {
@@ -102,6 +105,7 @@ func (c *Checker) request(ctx context.Context, method, address, accept string, p
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set("User-Agent", checkerUserAgent)
 	req.Header.Set("Origin", c.origin)
 	if accept != "" {
 		req.Header.Set("Accept", accept)
