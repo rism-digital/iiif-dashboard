@@ -129,7 +129,7 @@
     },
     {
       "id": "iiif-hab-de",
-      "name": "Herzog August Bibliothek - The Polonsky Foundation Oxford-Wolfenbüttel German Manuscripts Digitization Project (2018-20…",
+      "name": "Herzog August Bibliothek",
       "homepage": "https://iiif.hab.de/",
       "manifestUrl": "https://iiif.hab.de/object/varia_karten_k-16-3/manifest.json",
       "imageInfoUrl": "https://iiif.hab.de/object/varia_karten_k-16-3/image/image_k-16-3/info.json"
