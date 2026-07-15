@@ -169,7 +169,7 @@ Useful options include:
 
 Interactive terminal runs display pending, active, and finished projects in a bounded in-place progress view. Redirected output and CI use stable log lines. A slow service occupies only its own worker and does not block unrelated projects.
 
-Every checker request is unauthenticated. Remember that `results.json` is public: the default-response header blocks may include cookies, CDN identifiers, and other metadata returned to anonymous clients.
+Every checker request is unauthenticated and identifies itself with `IIIF-Checker-Bot/1.0 (https://rism-digital.github.io/iiif-dashboard) go-http-client/1.1`. Remember that `results.json` is public: the default-response header blocks may include cookies, CDN identifiers, and other metadata returned to anonymous clients.
 
 ## Registry maintenance tools
 
@@ -229,6 +229,8 @@ https://iiif.example.org
 ```
 
 Use only the scheme and host, without a path or trailing slash. This ensures CORS is evaluated against the same origin from which users load the dashboard. In the repository’s Pages settings, select **GitHub Actions** as the publishing source and configure the custom domain there.
+
+For the standard project site at `https://rism-digital.github.io/iiif-dashboard/`, the browser origin—and the checker's built-in default—is `https://rism-digital.github.io`. The `/iiif-dashboard/` path is not part of an HTTP origin.
 
 ## Scope and limitations
 
