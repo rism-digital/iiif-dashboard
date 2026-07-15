@@ -1,4 +1,4 @@
-module Domain exposing (CheckResult, Project, ProjectResults, Registry, ResultsFile, Status(..), checkResultDecoder, registryDecoder, resultsDecoder, statusLabel, statusRank)
+module Domain exposing (CheckResult, Project, ProjectResults, RedirectHop, Registry, ResultsFile, Status(..), checkResultDecoder, registryDecoder, resultsDecoder, statusLabel, statusRank)
 
 import Dict exposing (Dict)
 import Json.Decode as Decode exposing (Decoder)
@@ -21,6 +21,7 @@ type alias Project =
 
 type Status
     = Pass
+    | Advisory
     | Warning
     | Fail
     | Unknown
@@ -35,6 +36,15 @@ type alias CheckResult =
     , corsHeaders : List String
     , location : Maybe String
     , requestAccept : Maybe String
+    , responseHeaders : List String
+    , redirectChain : List RedirectHop
+    }
+
+
+type alias RedirectHop =
+    { url : String
+    , httpStatus : Int
+    , location : Maybe String
     , responseHeaders : List String
     }
 
@@ -90,17 +100,29 @@ projectResultsDecoder =
 
 checkResultDecoder : Decoder CheckResult
 checkResultDecoder =
-    Decode.map2 (\build responseHeaders -> build responseHeaders)
-        (Decode.map8 CheckResult
-            (Decode.field "status" statusDecoder)
-            (Decode.field "summary" Decode.string)
-            (Decode.maybe (Decode.field "httpStatus" Decode.int))
-            (Decode.maybe (Decode.field "detected" Decode.string))
-            (Decode.maybe (Decode.field "contentType" Decode.string))
-            (Decode.oneOf [ Decode.field "corsHeaders" (Decode.list Decode.string), Decode.succeed [] ])
-            (Decode.maybe (Decode.field "location" Decode.string))
-            (Decode.maybe (Decode.field "requestAccept" Decode.string))
+    Decode.map2 (\build redirectChain -> build redirectChain)
+        (Decode.map2 (\build responseHeaders -> build responseHeaders)
+            (Decode.map8 CheckResult
+                (Decode.field "status" statusDecoder)
+                (Decode.field "summary" Decode.string)
+                (Decode.maybe (Decode.field "httpStatus" Decode.int))
+                (Decode.maybe (Decode.field "detected" Decode.string))
+                (Decode.maybe (Decode.field "contentType" Decode.string))
+                (Decode.oneOf [ Decode.field "corsHeaders" (Decode.list Decode.string), Decode.succeed [] ])
+                (Decode.maybe (Decode.field "location" Decode.string))
+                (Decode.maybe (Decode.field "requestAccept" Decode.string))
+            )
+            (Decode.oneOf [ Decode.field "responseHeaders" (Decode.list Decode.string), Decode.succeed [] ])
         )
+        (Decode.oneOf [ Decode.field "redirectChain" (Decode.list redirectHopDecoder), Decode.succeed [] ])
+
+
+redirectHopDecoder : Decoder RedirectHop
+redirectHopDecoder =
+    Decode.map4 RedirectHop
+        (Decode.field "url" Decode.string)
+        (Decode.field "httpStatus" Decode.int)
+        (Decode.maybe (Decode.field "location" Decode.string))
         (Decode.oneOf [ Decode.field "responseHeaders" (Decode.list Decode.string), Decode.succeed [] ])
 
 
@@ -112,6 +134,9 @@ statusDecoder =
                 case value of
                     "pass" ->
                         Decode.succeed Pass
+
+                    "advisory" ->
+                        Decode.succeed Advisory
 
                     "warning" ->
                         Decode.succeed Warning
@@ -133,6 +158,9 @@ statusLabel status =
         Pass ->
             "Pass"
 
+        Advisory ->
+            "Advisory"
+
         Warning ->
             "Warning"
 
@@ -147,9 +175,12 @@ statusRank : Status -> Int
 statusRank status =
     case status of
         Fail ->
-            3
+            4
 
         Warning ->
+            3
+
+        Advisory ->
             2
 
         Pass ->

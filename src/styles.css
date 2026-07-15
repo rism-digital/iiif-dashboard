@@ -11,6 +11,8 @@
   --blue: #0c6e9e;
   --pass: #16815c;
   --pass-bg: #e5f5ee;
+  --advisory: #6941c6;
+  --advisory-bg: #f1ebff;
   --warning: #9a6700;
   --warning-bg: #fff3cd;
   --fail: #b42336;
@@ -70,6 +72,7 @@ h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.45rem); letter-spacing: -.035em
 .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 9px; font-size: .78rem; font-weight: 700; }
 .status-symbol { font-weight: 900; }
 .status-pass { color: white; background: var(--pass); }
+.status-advisory { color: white; background: var(--advisory); }
 .status-warning { color: #251900; background: #e3a008; }
 .status-fail { color: white; background: var(--fail); }
 .status-unknown { color: white; background: var(--unknown); }
@@ -77,9 +80,11 @@ h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.45rem); letter-spacing: -.035em
 .mini-status { color: var(--muted); font-size: .76rem; }
 .mini-dot { display: inline-block; width: 10px; height: 10px; margin-right: 5px; }
 .mini-pass .mini-dot, .status-bg-pass { background: var(--pass); }
+.mini-advisory .mini-dot, .status-bg-advisory { background: var(--advisory); }
 .mini-warning .mini-dot, .status-bg-warning { background: var(--warning); }
 .mini-fail .mini-dot, .status-bg-fail { background: var(--fail); }
 .mini-unknown .mini-dot, .status-bg-unknown { background: var(--unknown); }
+.mini-unavailable .mini-dot { border: 2px solid var(--unknown); background: transparent; }
 .actions-cell { display: flex; gap: 8px; justify-content: flex-end; }
 button { cursor: pointer; padding: 8px 11px; font-size: .8rem; font-weight: 650; }
 .details-button { color: #3c5264; background: white; border: 1px solid #bbc7cf; }
@@ -99,6 +104,7 @@ button { cursor: pointer; padding: 8px 11px; font-size: .8rem; font-weight: 650;
 .diagnostic-list { margin-top: 10px; }
 .diagnostic-item { margin: 7px 0; padding: 12px 12px 12px 14px; border-top: 0; border-left: 5px solid var(--unknown); background: var(--unknown-bg); }
 .diagnostic-item.diagnostic-pass { border-left-color: var(--pass); background: var(--pass-bg); }
+.diagnostic-item.diagnostic-advisory { border-left-color: var(--advisory); background: var(--advisory-bg); }
 .diagnostic-item.diagnostic-warning { border-left-color: #d39000; background: var(--warning-bg); }
 .diagnostic-item.diagnostic-fail { border-left-color: var(--fail); background: var(--fail-bg); }
 .diagnostic-item.diagnostic-unknown { border-left-color: var(--unknown); background: var(--unknown-bg); }
@@ -106,6 +112,10 @@ button { cursor: pointer; padding: 8px 11px; font-size: .8rem; font-weight: 650;
 .diagnostic-dot { width: 12px; height: 12px; flex: 0 0 auto; }
 .http-code { margin-left: auto; color: var(--muted); font-size: .7rem; font-weight: 600; }
 .diagnostic-item p { margin: 5px 0 0 15px; color: #506273; font-size: .8rem; line-height: 1.45; }
+.diagnostic-item .rule-references { margin: 11px 0 0 15px; padding-top: 8px; border-top: 1px solid rgba(80,98,115,.18); color: #6b7f8d; font-size: .7rem; line-height: 1.5; }
+.rule-references-label { display: block; margin-bottom: 2px; color: #627684; font-size: .65rem; font-weight: 750; letter-spacing: .045em; text-transform: uppercase; }
+.rule-references a { color: #476779; font-weight: 650; text-underline-offset: 2px; }
+.rule-references a:hover { color: var(--blue); }
 .diagnostic-item .metadata { color: #788692; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .68rem; overflow-wrap: anywhere; }
 .diagnostic-item .request-metadata { color: #405a6b; }
 .response-headers { margin: 9px 0 0 15px; border-top: 1px solid rgba(80,98,115,.22); padding-top: 8px; }

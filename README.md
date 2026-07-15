@@ -9,35 +9,38 @@ The dashboard is written in Elm. Network checks run separately in a Go command b
 For a Presentation API sample manifest, the checker makes:
 
 - a plain GET without an explicit `Accept` header;
+- a GET requesting gzip compression;
 - a GET requesting IIIF Presentation API 2;
 - a GET requesting IIIF Presentation API 3; and
 - an `OPTIONS` preflight for a GET with an `Accept` request header.
 
-It identifies the returned IIIF version, checks for a recognizable manifest structure, verifies that the Manifest `id` (v3) or `@id` (v2) exactly matches the final response URL after redirects, reports the response media type, evaluates CORS, and checks negotiated responses for `Vary: Accept`. A missing, empty, or non-string required identifier is a failure; a different non-empty identifier is a warning because the retrieved manifest is still recognizable and usable.
+It identifies the returned IIIF version, checks for a recognizable manifest structure, verifies that the Manifest `id` (v3) or `@id` (v2) exactly matches the final response URL after redirects, reports the response media type, tests gzip compression, evaluates CORS, and checks negotiated responses for `Vary: Accept`. A missing, empty, or non-string required identifier is a failure; a different non-empty identifier is a warning because the retrieved manifest is still recognizable and usable.
 
 For an Image API sample `info.json`, the checker makes:
 
 - plain, Image API 2, and Image API 3 `info.json` requests;
+- an `info.json` request asking for gzip compression;
 - an `OPTIONS` preflight for `info.json`;
 - a request to the image service base URI, checking for the recommended `303` redirect to `info.json`;
 - a representative image request derived from `info.json`; and
 - an `OPTIONS` preflight for that representative image.
 
-It reports the detected Image API version, verifies that the Image Service `id` (v3) or `@id` (v2) matches the final `info.json` response URL with `/info.json` and any trailing slash removed, reports the declared Level 0, 1, or 2 compliance profile and representative image media type, and checks CORS behavior for both JSON and image responses. As with manifests, a missing, empty, or non-string required identifier fails, while a different non-empty identifier warns.
+It reports the detected Image API version, verifies that the Image Service `id` (v3) or `@id` (v2) matches the final `info.json` response URL with `/info.json` and any trailing slash removed, tests gzip compression, reports the declared Level 0, 1, or 2 compliance profile and representative image media type, and checks CORS behavior for both JSON and image responses. As with manifests, a missing, empty, or non-string required identifier fails, while a different non-empty identifier warns.
 
 The CORS diagnostics show every returned `Access-Control-*` header. A preflight passes when it returns exactly one usable `Access-Control-Allow-Origin`, permits `GET`, and permits the `Accept` request header. The configured dashboard origin or `*` is accepted.
 
-The complete response-header set from each plain Presentation and Image API GET is also stored. It is available under the closed “Full response headers” disclosure in the diagnostic view.
+The complete response-header set from each plain Presentation and Image API GET is also stored. When a request follows redirects, every intermediate status, `Location`, and complete response-header set is retained as a redirect chain. These are available under closed disclosures in the diagnostic view.
 
 ## Status model
 
 - **Pass:** the request and its primary diagnostic succeeded.
+- **Advisory:** the response is usable, but a recommended enhancement or best practice is absent.
 - **Warning:** the representation was usable but exposed an interoperability, content-negotiation, CORS, or HTTP issue.
 - **Fail:** the request failed, returned an unusable representation, or did not have the expected IIIF structure. No response is a failure.
 - **Not checked:** the project was intentionally omitted from a limited checker run.
 - **Not tested:** the project has no sample for that API, no observation exists, or a prerequisite request failed.
 
-The health meter counts each stored check once. The expanded CORS section presents another view of those observations and does not add duplicate blocks to the meter.
+The main API badges and health meter summarize passes, warnings, and failures. Advisories do not downgrade those summaries; they appear as purple diagnostic blocks in the expanded details. The expanded CORS section presents another view of the stored observations and does not add duplicate blocks to the meter.
 
 ## Architecture
 
@@ -169,7 +172,7 @@ Useful options include:
 
 Interactive terminal runs display pending, active, and finished projects in a bounded in-place progress view. Redirected output and CI use stable log lines. A slow service occupies only its own worker and does not block unrelated projects.
 
-Every checker request is unauthenticated and identifies itself with `IIIF-Checker-Bot/1.0 (https://rism-digital.github.io/iiif-dashboard) go-http-client/1.1`. Remember that `results.json` is public: the default-response header blocks may include cookies, CDN identifiers, and other metadata returned to anonymous clients.
+Every checker request is unauthenticated and identifies itself with `IIIF-Checker-Bot/1.0 (https://rism-digital.github.io/iiif-dashboard) go-http-client/1.1`. Remember that `results.json` is public: the default and intermediate redirect response headers may include cookies, CDN identifiers, and other metadata returned to anonymous clients.
 
 ## Registry maintenance tools
 

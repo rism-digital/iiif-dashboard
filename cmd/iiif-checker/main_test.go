@@ -1,6 +1,7 @@
 package main
 
 import (
+	"compress/gzip"
 	"context"
 	"encoding/json"
 	"net/http"
@@ -85,6 +86,8 @@ func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/3/context.json","id":"https://wrong.example/manifest","type":"Manifest","items":[]}`))
 		case "/missing-id-manifest":
 			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/3/context.json","type":"Manifest","items":[]}`))
+		case "/not-acceptable":
+			w.WriteHeader(http.StatusNotAcceptable)
 		case "/image-redirect/info.json":
 			http.Redirect(w, r, server.URL+"/iiif/image/info.json", http.StatusFound)
 		case "/iiif/image/info.json":
@@ -111,7 +114,9 @@ func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 		{name: "manifest follows redirect", address: server.URL + "/manifest-redirect", kind: "presentation", wantStatus: "pass", wantSummary: "id matches the final response URL"},
 		{name: "manifest mismatch", address: server.URL + "/bad-manifest", kind: "presentation", requested: "v2", wantStatus: "warning", wantSummary: `Valid v3 manifest retrieved, but id is "https://wrong.example/manifest"; expected the final response URL`},
 		{name: "manifest missing identifier", address: server.URL + "/missing-id-manifest", kind: "presentation", wantStatus: "fail", wantSummary: "missing the required id string"},
-		{name: "identifier result remains visible with another warning", address: server.URL + "/manifest", kind: "presentation", requested: "v2", wantStatus: "warning", wantSummary: "id matches the final response URL"},
+		{name: "identifier result remains visible with an advisory", address: server.URL + "/manifest", kind: "presentation", requested: "v2", wantStatus: "advisory", wantSummary: "id matches the final response URL"},
+		{name: "unavailable representation is handled", address: server.URL + "/not-acceptable", kind: "presentation", requested: "v3", wantStatus: "pass", wantSummary: "correctly declined"},
+		{name: "default representation cannot be declined", address: server.URL + "/not-acceptable", kind: "presentation", wantStatus: "fail", wantSummary: "HTTP 406"},
 		{name: "image follows redirect", address: server.URL + "/image-redirect/info.json", kind: "image", wantStatus: "pass", wantSummary: "id matches the image service base URI"},
 		{name: "image mismatch", address: server.URL + "/iiif/bad/info.json", kind: "image", wantStatus: "warning", wantSummary: `Valid v2 image information retrieved, but @id is "` + server.URL + `/iiif/other"; expected the image service base URI "` + server.URL + `/iiif/bad"`},
 		{name: "image missing identifier", address: server.URL + "/iiif/missing-id/info.json", kind: "image", wantStatus: "fail", wantSummary: "missing the required @id string"},
@@ -125,6 +130,147 @@ func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 				t.Fatalf("summary = %q, want it to contain %q", result.Summary, test.wantSummary)
 			}
 		})
+	}
+}
+
+func TestCheckCompression(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("Accept-Encoding") != "gzip" {
+			http.Error(w, "gzip was not requested", http.StatusBadRequest)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		switch r.URL.Path {
+		case "/identity":
+			_, _ = w.Write([]byte(`{"ok":true}`))
+		case "/corrupt":
+			w.Header().Set("Content-Encoding", "gzip")
+			_, _ = w.Write([]byte("not gzip"))
+		case "/gzip", "/gzip-without-vary":
+			w.Header().Set("Content-Encoding", "gzip")
+			if r.URL.Path == "/gzip" {
+				w.Header().Set("Vary", "Accept-Encoding")
+			}
+			writer := gzip.NewWriter(w)
+			_, _ = writer.Write([]byte(`{"ok":true}`))
+			_ = writer.Close()
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer server.Close()
+
+	checker := newChecker("https://dashboard.example")
+	for _, test := range []struct {
+		name       string
+		path       string
+		wantStatus string
+	}{
+		{name: "gzip", path: "/gzip", wantStatus: "pass"},
+		{name: "identity", path: "/identity", wantStatus: "advisory"},
+		{name: "missing vary", path: "/gzip-without-vary", wantStatus: "warning"},
+		{name: "corrupt gzip", path: "/corrupt", wantStatus: "fail"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			result := checker.checkCompression(context.Background(), server.URL+test.path)
+			if result.Status != test.wantStatus {
+				t.Fatalf("status = %q, want %q; summary: %s", result.Status, test.wantStatus, result.Summary)
+			}
+		})
+	}
+}
+
+func TestCheckJSONRetainsRedirectResponseHeaders(t *testing.T) {
+	var server *httptest.Server
+	server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/start":
+			w.Header().Add("Set-Cookie", "first=1")
+			w.Header().Add("Set-Cookie", "second=2")
+			w.Header().Set("X-Redirect", "first")
+			w.Header().Set("Location", "/middle")
+			w.WriteHeader(http.StatusFound)
+		case "/middle":
+			w.Header().Set("Cache-Control", "max-age=60")
+			w.Header().Set("Location", "/final")
+			w.WriteHeader(http.StatusSeeOther)
+		case "/final":
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Content-Type", "application/ld+json")
+			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/3/context.json","id":"` + server.URL + `/final","type":"Manifest","items":[]}`))
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer server.Close()
+
+	result := newChecker("https://dashboard.example").checkJSON(context.Background(), server.URL+"/start", "presentation", "").Result
+	if result.Status != "pass" {
+		t.Fatalf("status = %q; summary: %s", result.Status, result.Summary)
+	}
+	if len(result.RedirectChain) != 2 {
+		t.Fatalf("RedirectChain = %#v", result.RedirectChain)
+	}
+	first, second := result.RedirectChain[0], result.RedirectChain[1]
+	if first.URL != server.URL+"/start" || first.HTTPStatus != http.StatusFound || first.Location != "/middle" {
+		t.Fatalf("first redirect = %#v", first)
+	}
+	if second.URL != server.URL+"/middle" || second.HTTPStatus != http.StatusSeeOther || second.Location != "/final" {
+		t.Fatalf("second redirect = %#v", second)
+	}
+	for _, want := range []string{"Set-Cookie: first=1", "Set-Cookie: second=2", "X-Redirect: first"} {
+		found := false
+		for _, header := range first.ResponseHeaders {
+			if header == want {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Fatalf("first redirect headers = %#v; missing %q", first.ResponseHeaders, want)
+		}
+	}
+}
+
+func TestBaseRedirectDirectResponseIsAdvisory(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("information"))
+	}))
+	defer server.Close()
+
+	result := newChecker("https://dashboard.example").checkBaseRedirect(context.Background(), server.URL+"/info.json", nil)
+	if result.Status != "advisory" {
+		t.Fatalf("status = %q, want advisory; summary: %s", result.Status, result.Summary)
+	}
+}
+
+func TestBaseRedirectAcceptsInformationURIFromDeclaredIdentifier(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Location", "/declared/info.json")
+		w.WriteHeader(http.StatusSeeOther)
+	}))
+	defer server.Close()
+
+	doc := map[string]any{
+		"@context": "http://iiif.io/api/image/3/context.json",
+		"id":       server.URL + "/declared",
+	}
+	result := newChecker("https://dashboard.example").checkBaseRedirect(context.Background(), server.URL+"/configured/info.json", doc)
+	if result.Status != "pass" {
+		t.Fatalf("status = %q, want pass; summary: %s", result.Status, result.Summary)
+	}
+}
+
+func TestBaseRedirectUnexpectedInformationURIIsWarning(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Location", "/other/info.json")
+		w.WriteHeader(http.StatusSeeOther)
+	}))
+	defer server.Close()
+
+	result := newChecker("https://dashboard.example").checkBaseRedirect(context.Background(), server.URL+"/configured/info.json", nil)
+	if result.Status != "warning" {
+		t.Fatalf("status = %q, want warning; summary: %s", result.Status, result.Summary)
 	}
 }
 
@@ -311,6 +457,9 @@ func TestCheckProjectSupportsImageOnlyProjects(t *testing.T) {
 	}
 	if result.Checks["image.response"].Status != "pass" {
 		t.Fatalf("image.response = %#v", result.Checks["image.response"])
+	}
+	if result.Checks["image.compression"].Status != "advisory" {
+		t.Fatalf("image.compression = %#v", result.Checks["image.compression"])
 	}
 	if len(result.Checks["image.default"].ResponseHeaders) == 0 {
 		t.Fatal("image.default did not retain its response headers")

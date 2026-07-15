@@ -12,7 +12,7 @@ all: build
 
 $(DIST_DIR)/results.json:
 	mkdir -p $(DIST_DIR)
-	printf '%s\n' '{"schemaVersion":1,"generatedAt":null,"projects":[]}' > $(DIST_DIR)/results.json
+	printf '%s\n' '{"schemaVersion":2,"generatedAt":null,"projects":[]}' > $(DIST_DIR)/results.json
 
 prepare-dist: $(DIST_DIR)/results.json
 	mkdir -p $(DIST_DIR)

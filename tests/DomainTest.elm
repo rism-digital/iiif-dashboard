@@ -27,6 +27,25 @@ tests =
                                 |> Maybe.map .status
                         )
                     |> Expect.equal (Ok (Just Pass))
+        , test "decodes advisory observations from schema version 2" <|
+            \_ ->
+                Decode.decodeString Domain.resultsDecoder advisoryResultsJson
+                    |> Result.map
+                        (.projects
+                            >> List.head
+                            >> Maybe.andThen (\project -> Dict.get "presentation.compression" project.checks)
+                            >> Maybe.map .status
+                        )
+                    |> Expect.equal (Ok (Just Advisory))
+        , test "ranks advisories between warnings and passes" <|
+            \_ ->
+                [ Unknown, Pass, Advisory, Warning, Fail ]
+                    |> List.map Domain.statusRank
+                    |> Expect.equal [ 0, 1, 2, 3, 4 ]
+        , test "labels advisory observations" <|
+            \_ ->
+                Domain.statusLabel Advisory
+                    |> Expect.equal "Advisory"
         , test "decodes CORS headers as raw strings" <|
             \_ ->
                 Decode.decodeString Domain.resultsDecoder resultsJson
@@ -49,6 +68,30 @@ tests =
                                 |> Maybe.map .responseHeaders
                         )
                     |> Expect.equal (Ok (Just [ "Content-Type: application/ld+json", "Vary: Accept" ]))
+        , test "decodes redirect response headers" <|
+            \_ ->
+                Decode.decodeString Domain.resultsDecoder resultsJson
+                    |> Result.map
+                        (.projects
+                            >> List.head
+                            >> Maybe.andThen (\project -> Dict.get "presentation.default" project.checks)
+                            >> Maybe.map
+                                (.redirectChain
+                                    >> List.head
+                                    >> Maybe.map (\hop -> ( hop.url, hop.httpStatus, ( hop.location, hop.responseHeaders ) ))
+                                )
+                        )
+                    |> Expect.equal
+                        (Ok
+                            (Just
+                                (Just
+                                    ( "https://example.org/start"
+                                    , 302
+                                    , ( Just "/manifest", [ "Location: /manifest", "Set-Cookie: redirect=1" ] )
+                                    )
+                                )
+                            )
+                        )
         , test "defaults response headers in older snapshots to an empty list" <|
             \_ ->
                 Decode.decodeString Domain.resultsDecoder oldResultsJson
@@ -57,6 +100,16 @@ tests =
                             >> List.head
                             >> Maybe.andThen (\project -> Dict.get "presentation.default" project.checks)
                             >> Maybe.map .responseHeaders
+                        )
+                    |> Expect.equal (Ok (Just []))
+        , test "defaults redirect chains in older snapshots to an empty list" <|
+            \_ ->
+                Decode.decodeString Domain.resultsDecoder oldResultsJson
+                    |> Result.map
+                        (.projects
+                            >> List.head
+                            >> Maybe.andThen (\project -> Dict.get "presentation.default" project.checks)
+                            >> Maybe.map .redirectChain
                         )
                     |> Expect.equal (Ok (Just []))
         , test "defaults older project results to checked" <|
@@ -93,12 +146,17 @@ registryJson =
 
 resultsJson : String
 resultsJson =
-    "{\"schemaVersion\":1,\"generatedAt\":\"2026-01-01T00:00:00Z\",\"projects\":[{\"id\":\"example-library\",\"name\":\"Example Library\",\"checkedAt\":\"2026-01-01T00:00:00Z\",\"checks\":{\"presentation.default\":{\"status\":\"pass\",\"summary\":\"Valid\",\"httpStatus\":200,\"detected\":\"v3\",\"contentType\":\"application/ld+json\",\"corsHeaders\":[\"access-control-allow-origin: *\",\"access-control-allow-origin: *\"],\"responseHeaders\":[\"Content-Type: application/ld+json\",\"Vary: Accept\"]}}}]}"
+    "{\"schemaVersion\":1,\"generatedAt\":\"2026-01-01T00:00:00Z\",\"projects\":[{\"id\":\"example-library\",\"name\":\"Example Library\",\"checkedAt\":\"2026-01-01T00:00:00Z\",\"checks\":{\"presentation.default\":{\"status\":\"pass\",\"summary\":\"Valid\",\"httpStatus\":200,\"detected\":\"v3\",\"contentType\":\"application/ld+json\",\"corsHeaders\":[\"access-control-allow-origin: *\",\"access-control-allow-origin: *\"],\"responseHeaders\":[\"Content-Type: application/ld+json\",\"Vary: Accept\"],\"redirectChain\":[{\"url\":\"https://example.org/start\",\"httpStatus\":302,\"location\":\"/manifest\",\"responseHeaders\":[\"Location: /manifest\",\"Set-Cookie: redirect=1\"]}]}}}]}"
 
 
 oldResultsJson : String
 oldResultsJson =
     "{\"schemaVersion\":1,\"generatedAt\":\"2026-01-01T00:00:00Z\",\"projects\":[{\"id\":\"example-library\",\"name\":\"Example Library\",\"checks\":{\"presentation.default\":{\"status\":\"pass\",\"summary\":\"Valid\",\"corsHeaders\":[]}}}]}"
+
+
+advisoryResultsJson : String
+advisoryResultsJson =
+    "{\"schemaVersion\":2,\"generatedAt\":\"2026-01-01T00:00:00Z\",\"projects\":[{\"id\":\"example-library\",\"name\":\"Example Library\",\"checks\":{\"presentation.compression\":{\"status\":\"advisory\",\"summary\":\"Use gzip\",\"corsHeaders\":[]}}}]}"
 
 
 manifestOnlyRegistryJson : String

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"compress/gzip"
 	"context"
 	"encoding/json"
 	"errors"
@@ -17,8 +18,9 @@ import (
 )
 
 const (
-	defaultOrigin    = "https://rism-digital.github.io"
-	checkerUserAgent = "IIIF-Checker-Bot/1.0 (https://rism-digital.github.io/iiif-dashboard) go-http-client/1.1"
+	defaultOrigin        = "https://rism-digital.github.io"
+	checkerUserAgent     = "IIIF-Checker-Bot/1.0 (https://rism-digital.github.io/iiif-dashboard) go-http-client/1.1"
+	resultsSchemaVersion = 2
 )
 
 var accepts = map[string]map[string]string{
@@ -44,15 +46,23 @@ type Project struct {
 }
 
 type CheckResult struct {
-	Status          string   `json:"status"`
-	Summary         string   `json:"summary"`
-	CorsHeaders     []string `json:"corsHeaders"`
-	HTTPStatus      int      `json:"httpStatus,omitempty"`
-	Detected        string   `json:"detected,omitempty"`
-	ContentType     string   `json:"contentType,omitempty"`
+	Status          string        `json:"status"`
+	Summary         string        `json:"summary"`
+	CorsHeaders     []string      `json:"corsHeaders"`
+	HTTPStatus      int           `json:"httpStatus,omitempty"`
+	Detected        string        `json:"detected,omitempty"`
+	ContentType     string        `json:"contentType,omitempty"`
+	Location        string        `json:"location,omitempty"`
+	RequestAccept   string        `json:"requestAccept,omitempty"`
+	ResponseHeaders []string      `json:"responseHeaders,omitempty"`
+	RedirectChain   []RedirectHop `json:"redirectChain,omitempty"`
+}
+
+type RedirectHop struct {
+	URL             string   `json:"url"`
+	HTTPStatus      int      `json:"httpStatus"`
 	Location        string   `json:"location,omitempty"`
-	RequestAccept   string   `json:"requestAccept,omitempty"`
-	ResponseHeaders []string `json:"responseHeaders,omitempty"`
+	ResponseHeaders []string `json:"responseHeaders"`
 }
 
 type ProjectResults struct {
@@ -101,6 +111,10 @@ func newChecker(origin string) *Checker {
 }
 
 func (c *Checker) request(ctx context.Context, method, address, accept string, preflight bool, follow bool) (*http.Response, error) {
+	return c.requestWithHeaders(ctx, method, address, accept, preflight, follow, nil)
+}
+
+func (c *Checker) requestWithHeaders(ctx context.Context, method, address, accept string, preflight bool, follow bool, headers http.Header) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(ctx, method, address, nil)
 	if err != nil {
 		return nil, err
@@ -113,6 +127,11 @@ func (c *Checker) request(ctx context.Context, method, address, accept string, p
 	if preflight {
 		req.Header.Set("Access-Control-Request-Method", "GET")
 		req.Header.Set("Access-Control-Request-Headers", "Accept")
+	}
+	for name, values := range headers {
+		for _, value := range values {
+			req.Header.Add(name, value)
+		}
 	}
 	if follow {
 		return c.client.Do(req)
@@ -130,6 +149,7 @@ func responseResult(status, summary string, resp *http.Response, detected string
 	r.HTTPStatus = resp.StatusCode
 	r.ContentType = resp.Header.Get("Content-Type")
 	r.Location = resp.Header.Get("Location")
+	r.RedirectChain = redirectChain(resp)
 	keys := make([]string, 0)
 	for key := range resp.Header {
 		if strings.HasPrefix(strings.ToLower(key), "access-control-") {
@@ -143,6 +163,31 @@ func responseResult(status, summary string, resp *http.Response, detected string
 		}
 	}
 	return r
+}
+
+func redirectChain(resp *http.Response) []RedirectHop {
+	if resp == nil || resp.Request == nil {
+		return nil
+	}
+	reversed := []RedirectHop{}
+	for request := resp.Request; request != nil && request.Response != nil; request = request.Response.Request {
+		redirect := request.Response
+		address := ""
+		if redirect.Request != nil && redirect.Request.URL != nil {
+			address = redirect.Request.URL.String()
+		}
+		reversed = append(reversed, RedirectHop{
+			URL:             address,
+			HTTPStatus:      redirect.StatusCode,
+			Location:        redirect.Header.Get("Location"),
+			ResponseHeaders: allResponseHeaders(redirect),
+		})
+	}
+	chain := make([]RedirectHop, len(reversed))
+	for index := range reversed {
+		chain[len(reversed)-1-index] = reversed[index]
+	}
+	return chain
 }
 
 func allResponseHeaders(resp *http.Response) []string {
@@ -303,8 +348,8 @@ func (c *Checker) checkJSON(ctx context.Context, address, kind, requested string
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		status, summary := "fail", fmt.Sprintf("The server returned HTTP %d.", resp.StatusCode)
-		if resp.StatusCode == http.StatusNotAcceptable {
-			status, summary = "warning", "The server explicitly declined this representation (406 Not Acceptable)."
+		if resp.StatusCode == http.StatusNotAcceptable && requested != "" {
+			status, summary = "pass", "The server correctly declined the unavailable representation (406 Not Acceptable)."
 		}
 		result := responseResult(status, summary, resp, "")
 		result.RequestAccept = accept
@@ -346,24 +391,71 @@ func (c *Checker) checkJSON(ctx context.Context, address, kind, requested string
 	} else if identifier != expectedIdentifier {
 		status = "warning"
 		summary = fmt.Sprintf("Valid %s %s retrieved, but %s is %q; expected the %s %q.", version, noun, identifierName, identifier, identifierTarget, expectedIdentifier)
-	} else if requested != "" && version != requested {
-		status, summary = "warning", fmt.Sprintf("Requested %s but received %s; content negotiation was ignored or unavailable.", requested, version)
 	} else if !c.corsPass(resp.Header) {
 		status, summary = "warning", "The representation is valid, but its CORS response is invalid: "+c.corsIssue(resp.Header)+"."
-	} else if requested != "" && !headerContains(resp.Header, "Vary", "Accept") {
-		status, summary = "warning", fmt.Sprintf("The requested %s representation was returned, but Vary: Accept is missing and shared caches may serve the wrong version.", requested)
 	} else if !strings.Contains(strings.ToLower(resp.Header.Get("Content-Type")), "json") {
 		status, summary = "warning", "The representation is valid, but Content-Type is not a JSON media type."
 	} else if kind == "image" && level == "" {
 		status, summary = "warning", "Image information is valid, but no recognized compliance level is declared."
+	} else if requested != "" && version != requested {
+		status, summary = "advisory", fmt.Sprintf("Requested %s but received %s; supporting the requested representation through content negotiation is recommended.", requested, version)
+	} else if requested != "" && !headerContains(resp.Header, "Vary", "Accept") {
+		status, summary = "warning", fmt.Sprintf("The requested %s representation was returned, but Vary: Accept is missing and shared caches may serve the wrong version.", requested)
 	}
-	if status == "warning" && hasIdentifier && identifier == expectedIdentifier {
+	if (status == "warning" || status == "advisory") && hasIdentifier && identifier == expectedIdentifier {
 		summary += fmt.Sprintf(" The %s matches the %s.", identifierName, identifierTarget)
 	}
 	result := responseResult(status, summary, resp, detected)
 	result.RequestAccept = accept
 	result = addDefaultResponseHeaders(result, resp, requested)
 	return jsonCheck{Result: result, Document: doc}
+}
+
+func (c *Checker) checkCompression(ctx context.Context, address string) CheckResult {
+	headers := http.Header{"Accept-Encoding": []string{"gzip"}}
+	resp, err := c.requestWithHeaders(ctx, http.MethodGet, address, "", false, true, headers)
+	if err != nil {
+		return responseResult("fail", "Gzip request failed: "+err.Error(), nil, "")
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return responseResult("fail", fmt.Sprintf("Gzip request returned HTTP %d.", resp.StatusCode), resp, "")
+	}
+
+	encoding := strings.TrimSpace(strings.ToLower(resp.Header.Get("Content-Encoding")))
+	if encoding == "" || encoding == "identity" {
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return responseResult("fail", "Could not read the identity response: "+err.Error(), resp, "")
+		}
+		if !json.Valid(body) {
+			return responseResult("fail", "The identity response was not valid JSON.", resp, "")
+		}
+		return responseResult("advisory", "A usable identity response was returned; gzip compression is recommended.", resp, "")
+	}
+	if encoding != "gzip" {
+		return responseResult("fail", fmt.Sprintf("The server returned unsupported Content-Encoding %q after gzip was requested.", encoding), resp, "")
+	}
+
+	reader, err := gzip.NewReader(resp.Body)
+	if err != nil {
+		return responseResult("fail", "The response declared gzip compression but could not be decompressed: "+err.Error(), resp, "")
+	}
+	body, readErr := io.ReadAll(reader)
+	closeErr := reader.Close()
+	if readErr != nil {
+		return responseResult("fail", "The gzip response could not be decompressed: "+readErr.Error(), resp, "")
+	}
+	if closeErr != nil {
+		return responseResult("fail", "The gzip response could not be closed cleanly: "+closeErr.Error(), resp, "")
+	}
+	if !json.Valid(body) {
+		return responseResult("fail", "The decompressed response was not valid JSON.", resp, "")
+	}
+	if !headerContains(resp.Header, "Vary", "Accept-Encoding") {
+		return responseResult("warning", "The response was gzip-compressed, but Vary: Accept-Encoding is missing and shared caches may serve the wrong encoding.", resp, "")
+	}
+	return responseResult("pass", "The response was gzip-compressed and decompressed successfully.", resp, "")
 }
 
 func (c *Checker) checkPreflight(ctx context.Context, address string) CheckResult {
@@ -432,7 +524,16 @@ func imageBaseURL(infoAddress string) string {
 	return strings.TrimSuffix(infoAddress, "/info.json") + "/"
 }
 
-func (c *Checker) checkBaseRedirect(ctx context.Context, infoAddress string) CheckResult {
+func declaredImageInfoURL(doc map[string]any) string {
+	version := detectVersion(doc)
+	identifier, ok := doc[identifierProperty(version)].(string)
+	if !ok || identifier == "" {
+		return ""
+	}
+	return strings.TrimSuffix(identifier, "/") + "/info.json"
+}
+
+func (c *Checker) checkBaseRedirect(ctx context.Context, infoAddress string, doc map[string]any) CheckResult {
 	base := imageBaseURL(infoAddress)
 	resp, err := c.request(ctx, http.MethodGet, base, "application/ld+json", false, false)
 	if err != nil {
@@ -446,17 +547,21 @@ func (c *Checker) checkBaseRedirect(ctx context.Context, infoAddress string) Che
 			resolved = parsedBase.ResolveReference(parsed).String()
 		}
 	}
-	if resp.StatusCode == 303 && resolved == infoAddress {
-		return responseResult("pass", "Base URI returned HTTP 303 to "+resolved+".", resp, "")
-	}
 	if resp.StatusCode == 303 {
-		return responseResult("fail", fmt.Sprintf("Base URI returned HTTP 303, but Location was %s; expected %s.", resolved, infoAddress), resp, "")
+		if resolved == "" {
+			return responseResult("fail", "Base URI returned HTTP 303 without a usable Location header.", resp, "")
+		}
+		declaredInfoAddress := declaredImageInfoURL(doc)
+		if resolved == infoAddress || (declaredInfoAddress != "" && resolved == declaredInfoAddress) {
+			return responseResult("pass", "Base URI returned HTTP 303 to "+resolved+".", resp, "")
+		}
+		return responseResult("warning", fmt.Sprintf("Base URI returned HTTP 303 to %s, which differs from both the checked and declared image information URIs.", resolved), resp, "")
 	}
 	if resp.StatusCode == 200 {
-		return responseResult("warning", "Base URI returned HTTP 200 directly instead of the recommended 303 redirect to info.json.", resp, "")
+		return responseResult("advisory", "Base URI returned HTTP 200 directly; IIIF recommends a 303 redirect to info.json.", resp, "")
 	}
 	if resp.StatusCode >= 300 && resp.StatusCode < 400 {
-		return responseResult("warning", fmt.Sprintf("Base URI redirected with HTTP %d to %s; IIIF recommends 303.", resp.StatusCode, resolved), resp, "")
+		return responseResult("advisory", fmt.Sprintf("Base URI redirected with HTTP %d to %s; IIIF recommends 303.", resp.StatusCode, resolved), resp, "")
 	}
 	return responseResult("fail", fmt.Sprintf("Base URI returned HTTP %d instead of a 303 redirect to info.json.", resp.StatusCode), resp, "")
 }
@@ -465,6 +570,7 @@ func (c *Checker) checkProject(ctx context.Context, project Project) ProjectResu
 	checks := map[string]CheckResult{}
 	if project.ManifestURL != "" {
 		checks["presentation.default"] = c.checkJSON(ctx, project.ManifestURL, "presentation", "").Result
+		checks["presentation.compression"] = c.checkCompression(ctx, project.ManifestURL)
 		checks["presentation.v2"] = c.checkJSON(ctx, project.ManifestURL, "presentation", "v2").Result
 		checks["presentation.v3"] = c.checkJSON(ctx, project.ManifestURL, "presentation", "v3").Result
 		checks["presentation.preflight"] = c.checkPreflight(ctx, project.ManifestURL)
@@ -472,10 +578,11 @@ func (c *Checker) checkProject(ctx context.Context, project Project) ProjectResu
 	if project.ImageInfoURL != "" {
 		info := c.checkJSON(ctx, project.ImageInfoURL, "image", "")
 		checks["image.default"] = info.Result
+		checks["image.compression"] = c.checkCompression(ctx, project.ImageInfoURL)
 		checks["image.v2"] = c.checkJSON(ctx, project.ImageInfoURL, "image", "v2").Result
 		checks["image.v3"] = c.checkJSON(ctx, project.ImageInfoURL, "image", "v3").Result
 		checks["image.info-preflight"] = c.checkPreflight(ctx, project.ImageInfoURL)
-		checks["image.base-redirect"] = c.checkBaseRedirect(ctx, project.ImageInfoURL)
+		checks["image.base-redirect"] = c.checkBaseRedirect(ctx, project.ImageInfoURL, info.Document)
 		if info.Document != nil {
 			imageURL := representativeImageURL(project.ImageInfoURL, info.Document)
 			checks["image.response"] = c.checkImage(ctx, imageURL)
@@ -532,7 +639,7 @@ func run() error {
 		return err
 	}
 	checker := newChecker(*origin)
-	output := ResultsFile{SchemaVersion: 1, Projects: []ProjectResults{}}
+	output := ResultsFile{SchemaVersion: resultsSchemaVersion, Projects: []ProjectResults{}}
 	if *projectID != "" {
 		if existing, err := loadResults(*resultsPath, registry.Projects); err == nil {
 			output = existing
@@ -601,6 +708,7 @@ func run() error {
 		}
 	}
 	output.GeneratedAt = time.Now().UTC().Format(time.RFC3339Nano)
+	output.SchemaVersion = resultsSchemaVersion
 	encoded, err := json.MarshalIndent(output, "", "  ")
 	if err != nil {
 		return err
