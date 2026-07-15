@@ -344,12 +344,8 @@ func (c *Checker) checkJSON(ctx context.Context, address, kind, requested string
 	} else if !hasIdentifier || identifier == "" {
 		status, summary = "fail", fmt.Sprintf("The IIIF %s is missing the required %s string.", noun, identifierName)
 	} else if identifier != expectedIdentifier {
-		status = "fail"
-		if kind == "image" {
-			summary = fmt.Sprintf("The image information %s is %q; expected the image service base URI %q, derived from the final response URL %q.", identifierName, identifier, expectedIdentifier, resp.Request.URL.String())
-		} else {
-			summary = fmt.Sprintf("The manifest %s is %q; expected the final response URL %q.", identifierName, identifier, expectedIdentifier)
-		}
+		status = "warning"
+		summary = fmt.Sprintf("Valid %s %s retrieved, but %s is %q; expected the %s %q.", version, noun, identifierName, identifier, identifierTarget, expectedIdentifier)
 	} else if requested != "" && version != requested {
 		status, summary = "warning", fmt.Sprintf("Requested %s but received %s; content negotiation was ignored or unavailable.", requested, version)
 	} else if !c.corsPass(resp.Header) {

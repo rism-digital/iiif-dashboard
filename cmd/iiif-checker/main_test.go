@@ -83,12 +83,16 @@ func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/3/context.json","id":"` + server.URL + `/manifest","type":"Manifest","items":[]}`))
 		case "/bad-manifest":
 			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/3/context.json","id":"https://wrong.example/manifest","type":"Manifest","items":[]}`))
+		case "/missing-id-manifest":
+			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/3/context.json","type":"Manifest","items":[]}`))
 		case "/image-redirect/info.json":
 			http.Redirect(w, r, server.URL+"/iiif/image/info.json", http.StatusFound)
 		case "/iiif/image/info.json":
 			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/image/3/context.json","id":"` + server.URL + `/iiif/image","type":"ImageService3","profile":"level2","width":640,"height":480}`))
 		case "/iiif/bad/info.json":
-			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/image/3/context.json","id":"` + server.URL + `/iiif/other","type":"ImageService3","profile":"level2","width":640,"height":480}`))
+			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/image/2/context.json","@id":"` + server.URL + `/iiif/other","profile":"http://iiif.io/api/image/2/level2.json","width":640,"height":480}`))
+		case "/iiif/missing-id/info.json":
+			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/image/2/context.json","profile":"http://iiif.io/api/image/2/level2.json","width":640,"height":480}`))
 		default:
 			http.NotFound(w, r)
 		}
@@ -105,10 +109,12 @@ func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 		wantSummary string
 	}{
 		{name: "manifest follows redirect", address: server.URL + "/manifest-redirect", kind: "presentation", wantStatus: "pass", wantSummary: "id matches the final response URL"},
-		{name: "manifest mismatch", address: server.URL + "/bad-manifest", kind: "presentation", wantStatus: "fail", wantSummary: "https://wrong.example/manifest"},
+		{name: "manifest mismatch", address: server.URL + "/bad-manifest", kind: "presentation", requested: "v2", wantStatus: "warning", wantSummary: `Valid v3 manifest retrieved, but id is "https://wrong.example/manifest"; expected the final response URL`},
+		{name: "manifest missing identifier", address: server.URL + "/missing-id-manifest", kind: "presentation", wantStatus: "fail", wantSummary: "missing the required id string"},
 		{name: "identifier result remains visible with another warning", address: server.URL + "/manifest", kind: "presentation", requested: "v2", wantStatus: "warning", wantSummary: "id matches the final response URL"},
 		{name: "image follows redirect", address: server.URL + "/image-redirect/info.json", kind: "image", wantStatus: "pass", wantSummary: "id matches the image service base URI"},
-		{name: "image mismatch", address: server.URL + "/iiif/bad/info.json", kind: "image", wantStatus: "fail", wantSummary: server.URL + "/iiif/bad"},
+		{name: "image mismatch", address: server.URL + "/iiif/bad/info.json", kind: "image", wantStatus: "warning", wantSummary: `Valid v2 image information retrieved, but @id is "` + server.URL + `/iiif/other"; expected the image service base URI "` + server.URL + `/iiif/bad"`},
+		{name: "image missing identifier", address: server.URL + "/iiif/missing-id/info.json", kind: "image", wantStatus: "fail", wantSummary: "missing the required @id string"},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			result := checker.checkJSON(context.Background(), test.address, test.kind, test.requested).Result

@@ -13,7 +13,7 @@ For a Presentation API sample manifest, the checker makes:
 - a GET requesting IIIF Presentation API 3; and
 - an `OPTIONS` preflight for a GET with an `Accept` request header.
 
-It identifies the returned IIIF version, checks for a recognizable manifest structure, verifies that the Manifest `id` (v3) or `@id` (v2) exactly matches the final response URL after redirects, reports the response media type, evaluates CORS, and checks negotiated responses for `Vary: Accept`.
+It identifies the returned IIIF version, checks for a recognizable manifest structure, verifies that the Manifest `id` (v3) or `@id` (v2) exactly matches the final response URL after redirects, reports the response media type, evaluates CORS, and checks negotiated responses for `Vary: Accept`. A missing, empty, or non-string required identifier is a failure; a different non-empty identifier is a warning because the retrieved manifest is still recognizable and usable.
 
 For an Image API sample `info.json`, the checker makes:
 
@@ -23,7 +23,7 @@ For an Image API sample `info.json`, the checker makes:
 - a representative image request derived from `info.json`; and
 - an `OPTIONS` preflight for that representative image.
 
-It reports the detected Image API version, verifies that the Image Service `id` (v3) or `@id` (v2) matches the final `info.json` response URL with `/info.json` and any trailing slash removed, reports the declared Level 0, 1, or 2 compliance profile and representative image media type, and checks CORS behavior for both JSON and image responses.
+It reports the detected Image API version, verifies that the Image Service `id` (v3) or `@id` (v2) matches the final `info.json` response URL with `/info.json` and any trailing slash removed, reports the declared Level 0, 1, or 2 compliance profile and representative image media type, and checks CORS behavior for both JSON and image responses. As with manifests, a missing, empty, or non-string required identifier fails, while a different non-empty identifier warns.
 
 The CORS diagnostics show every returned `Access-Control-*` header. A preflight passes when it returns exactly one usable `Access-Control-Allow-Origin`, permits `GET`, and permits the `Accept` request header. The configured dashboard origin or `*` is accepted.
 
