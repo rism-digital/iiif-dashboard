@@ -9,6 +9,13 @@
       "imageInfoUrl": "https://api.onb.ac.at/iiif/image/v3/13204673/uk4nGb4prkEVA8S5/info.json"
     },
     {
+      "id": "am-quartex",
+      "name": "AM Quartex",
+      "homepage": "https://www.amdigital.co.uk/am-quartex/digital-asset-management",
+      "manifestUrl": "https://iiif.quartexcollections.com/ncdcr/iiif/f51054b4-15cf-4242-85f1-456db3b86dba/manifest",
+      "imageInfoUrl": "https://iiif.quartexcollections.com/ncdcr/iiif/eb1d470f-d3fb-4ed8-9b28-1397a43e94a5/info.json"
+    },
+    {
       "id": "digital-blb-karlsruhe-de",
       "name": "Badische Landesbibliothek Karlsruhe",
       "homepage": "https://digital.blb-karlsruhe.de/",
@@ -112,6 +119,13 @@
       "homepage": "https://fragmentarium.ms/",
       "manifestUrl": "https://fragmentarium.ms/metadata/iiif/F-3pfu/manifest.json",
       "imageInfoUrl": "https://fragmentarium.ms/loris/F-zsh7/StAL_B_231_Bd_2470_IIv_Ir_oben.jp2/info.json"
+    },
+    {
+      "id": "fromthepage",
+      "name": "FromThePage",
+      "homepage": "https://fromthepage.com",
+      "manifestUrl": "https://fromthepage.com/iiif/12/manifest",
+      "imageInfoUrl": "https://fromthepage.com/image-service/1871/info.json"
     },
     {
       "id": "gallica-bnf-fr",
