@@ -176,6 +176,13 @@
       "manifestUrl": "https://mdz-nbn-resolving.de/urn:nbn:de:bvb:12-bsb00132707-7"
     },
     {
+      "id":"mohistory",
+      "name":"Missouri Historical Society",
+      "homepage":"https://images.mohistory.org/images",
+      "manifestUrl":"https://images.mohistory.org/manifest/Lib565-041",
+      "imageInfoUrl":"https://images.mohistory.org/iiif/lib565-041_0001/info.json"
+    },
+    {
       "id": "digibib-mozarteum-at",
       "name": "Mozarteum",
       "homepage": "https://digibib.mozarteum.at/",
@@ -197,6 +204,13 @@
       "imageInfoUrl": "https://noah.nrw/i3f/v20/6150264/info.json"
     },
     {
+      "id":"ncsu-digital",
+      "name":"North Carolina State University",
+      "homepage":"https://d.lib.ncsu.edu/",
+      "manifestUrl":"https://d.lib.ncsu.edu/collections/catalog/gng00129/manifest.json",
+      "imageInfoUrl":"https://iiif.lib.ncsu.edu/iiif/gng00129/info.json"
+    },
+    {
       "id": "nul-dc",
       "name": "Northwestern University Library Digital Collections",
       "homepage": "https://dc.library.northwestern.edu/",
@@ -216,6 +230,13 @@
       "homepage": "https://polona2.pl/",
       "manifestUrl": "https://polona2.pl/iiif/item/MTEyMDA3NzA1/manifest.json",
       "imageInfoUrl": "https://zas.bn.org.pl/iiif/112007705/113897317.tif/info.json"
+    },
+    {
+      "id":"portal-texas-history",
+      "name":"Portal to Texas History (University of North Texas)",
+      "homepage":"https://texashistory.unt.edu",
+      "manifestUrl":"https://texashistory.unt.edu/ark:/67531/metapth1693427/manifest/",
+      "imageInfoUrl":"https://texashistory.unt.edu/iiif/ark:/67531/metapth1693427/m1/1/info.json"
     },
     {
       "id": "purl-stanford-edu",
@@ -245,6 +266,13 @@
       "imageInfoUrl": "https://images.iiif.slub-dresden.de/iiif/2/data%2Fkitodo%2Fmozaidom_383789257%2Fmozaidom_383789257_tif%2Fjpegs%2F00000003.tif.medium.jpg/info.json"
     },
     {
+      "id":"tamu-library",
+      "name":"Texas A&M University",
+      "homepage":"https://library.tamu.edu/",
+      "manifestUrl":"https://api-pre.library.tamu.edu/iiif-service/fedora/presentation/bb/97/f2/3e/bb97f23e-803a-4bd6-8406-06802623554c/lumpkin-papers_objects/10",
+      "imageInfoUrl":"https://api-pre.library.tamu.edu/iiif/2/7a980124-2714-30ab-9f37-a5a1e2ba3115/info.json"
+    },
+    {
       "id": "textgridlab-org",
       "name": "TextGrid",
       "homepage": "https://textgridlab.org/",
@@ -266,6 +294,13 @@
       "imageInfoUrl": "https://bl.digirati.io/thumbs/v3/ark:/81055/vdc_100109683290.0x000002/info.json"
     },
     {
+      "id":"ushmm",
+      "name":"United States Holocaust Memorial Museum",
+      "homepage":"https://collections.ushmm.org",
+      "manifestUrl":"https://collections.ushmm.org/iiif/manifest/2013.374.1/140841",
+      "imageInfoUrl":"https://collections.ushmm.org/assets/iiif/2/267232/info.json"
+    },
+    {
       "id": "collections-thulb-uni-jena-de",
       "name": "Universitaet Jena",
       "homepage": "https://collections.thulb.uni-jena.de/",
@@ -278,6 +313,27 @@
       "homepage": "https://iiif.ub.unibe.ch/",
       "manifestUrl": "https://iiif.ub.unibe.ch/presentation/v3.0/manifest/4ad6f2e4-e3cc-4d4a-b86d-46b6f24c2de5/",
       "imageInfoUrl": "https://iiif.ub.unibe.ch/image/v3.0/cffa1382-3fb8-407c-8f07-9dea91ee2b02/info.json"
+    },
+    {
+      "id":"umich-quod",
+      "name":"University of Michigan",
+      "homepage":"https://quod.lib.umich.edu/lib/colllist/",
+      "manifestUrl":"https://quod.lib.umich.edu/cgi/t/text/api/manifest/mitchill:mitchill.0145.002",
+      "imageInfoUrl":"https://quod.lib.umich.edu/cgi/t/text/api/image/mitchill:mitchill.0145.002:00000001/info.json"
+    },
+    {
+      "id":"university-toronto",
+      "name":"University of Toronto",
+      "homepage":"https://library.utoronto.ca/",
+      "manifestUrl":"https://iiif.library.utoronto.ca/presentation/v2/fisher2:mss_gen_49_056/manifest",
+      "imageInfoUrl":"https://iiif.library.utoronto.ca/image/v2/fisher2:mss_gen_49_056_001/info.json"
+    },
+    {
+      "id":"university-of-virginia",
+      "name":"University of Virginia",
+      "homepage":"https://library.virginia.edu/",
+      "manifestUrl":"https://iiifman.lib.virginia.edu/pid/tsb:109207?unit=60349",
+      "imageInfoUrl":"https://iiif.lib.virginia.edu/iiif/tsm:3381073/info.json"
     },
     {
       "id": "iiif-wellcomecollection-org",
