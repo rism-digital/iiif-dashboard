@@ -1,0 +1,17 @@
+name: Report runner public IP
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  report-ip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report public IPv4 address
+        shell: bash
+        run: |
+          set -euo pipefail
+          public_ip="$(curl --ipv4 --fail --silent --show-error --max-time 15 https://api.ipify.org)"
+          echo "GitHub-hosted runner public IPv4 address: ${public_ip}"
