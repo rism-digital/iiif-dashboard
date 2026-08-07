@@ -1,9 +1,11 @@
-name: Refresh service results
+name: Deploy committed service results
 
 on:
-  schedule:
-    - cron: "17 6 * * 1"
   workflow_dispatch:
+  # Scheduled live checks are temporarily disabled. Run the checker locally,
+  # commit results.json, and let the push workflow deploy that snapshot.
+  # schedule:
+  #   - cron: "17 6 * * 1"
 
 permissions:
   contents: read
@@ -26,15 +28,17 @@ jobs:
         with:
           node-version: 24
           cache: yarn
-      - uses: actions/setup-go@v6
-        with:
-          go-version-file: go.mod
-          cache: true
+      # Live service checks are run locally and committed in results.json.
+      # - uses: actions/setup-go@v6
+      #   with:
+      #     go-version-file: go.mod
+      #     cache: true
       - run: yarn install --frozen-lockfile
       - run: make validate
-      - run: make build-with-results
-        env:
-          DASHBOARD_ORIGIN: ${{ vars.DASHBOARD_ORIGIN || format('https://{0}.github.io', github.repository_owner) }}
+      - run: make build
+      # - run: make build-with-results
+      #   env:
+      #     DASHBOARD_ORIGIN: ${{ vars.DASHBOARD_ORIGIN || format('https://{0}.github.io', github.repository_owner) }}
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

@@ -2,6 +2,7 @@ SHELL := /bin/sh
 
 ELM_SRC := src/Main.elm
 DIST_DIR := dist
+RESULTS_FILE := results.json
 ELM_RAW := $(DIST_DIR)/dashboard.unminified.js
 ELM_OUT := $(DIST_DIR)/dashboard.js
 OPTIMIZE_SCRIPT := ./optimize.sh
@@ -10,15 +11,12 @@ OPTIMIZE_SCRIPT := ./optimize.sh
 
 all: build
 
-$(DIST_DIR)/results.json:
-	mkdir -p $(DIST_DIR)
-	printf '%s\n' '{"schemaVersion":2,"generatedAt":null,"projects":[]}' > $(DIST_DIR)/results.json
-
-prepare-dist: $(DIST_DIR)/results.json
+prepare-dist:
 	mkdir -p $(DIST_DIR)
 	cp index.html $(DIST_DIR)/
 	cp src/styles.css $(DIST_DIR)/styles.css
 	cp projects.json $(DIST_DIR)/projects.json
+	cp $(RESULTS_FILE) $(DIST_DIR)/results.json
 
 build: prepare-dist
 	$(OPTIMIZE_SCRIPT) $(ELM_SRC) $(ELM_RAW) $(ELM_OUT)
@@ -27,8 +25,9 @@ build: prepare-dist
 build-dev: prepare-dist
 	yarn -s elm make --debug $(ELM_SRC) --output=$(ELM_OUT)
 
-build-with-results: build
+build-with-results:
 	$(MAKE) check-services
+	$(MAKE) build
 
 serve: build-dev
 	python3 -m http.server 8010 --directory $(DIST_DIR)
@@ -42,7 +41,7 @@ test:
 check: validate test build
 
 check-services:
-	go run ./cmd/iiif-checker
+	go run ./cmd/iiif-checker -results $(RESULTS_FILE)
 
 clean:
 	rm -rf $(DIST_DIR)

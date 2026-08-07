@@ -24,14 +24,16 @@ jobs:
         with:
           node-version: 24
           cache: yarn
-      - uses: actions/setup-go@v6
-        with:
-          go-version-file: go.mod
-          cache: true
+      # Live service checks are run locally and committed in results.json.
+      # - uses: actions/setup-go@v6
+      #   with:
+      #     go-version-file: go.mod
+      #     cache: true
       - run: yarn install --frozen-lockfile
-      - run: make build-with-results
-        env:
-          DASHBOARD_ORIGIN: ${{ vars.DASHBOARD_ORIGIN || format('https://{0}.github.io', github.repository_owner) }}
+      - run: make build
+      # - run: make build-with-results
+      #   env:
+      #     DASHBOARD_ORIGIN: ${{ vars.DASHBOARD_ORIGIN || format('https://{0}.github.io', github.repository_owner) }}
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist

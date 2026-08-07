@@ -49,7 +49,7 @@ The main API badges and health meter summarize passes, warnings, and failures. A
 | Elm dashboard | `src/` | Loads the registry and latest snapshot and renders summaries and diagnostics. |
 | Service checker | `cmd/iiif-checker/` | Makes concurrent HTTP requests and writes the observation snapshot. |
 | Project registry | `projects.json` | Contributor-maintained list of projects and sample endpoints; copied into the built site. |
-| Result snapshot | `dist/results.json` | Generated checker output consumed directly by the built dashboard. |
+| Result snapshot | `results.json` | Committed checker output; copied into the built dashboard. |
 | Registry schema | `schema/projects.schema.json` | JSON Schema used for pull-request validation. |
 | Build pipeline | `Makefile`, `optimize.sh`, `.swcrc` | Produces the static site with Elm and SWC. |
 | Automation | `.github/workflows/` | Validates contributions, refreshes observations, and deploys GitHub Pages. |
@@ -92,8 +92,8 @@ make validate       # Validate projects.json
 make test           # Run Elm and Go tests
 make build          # Build the optimized production site in dist/
 make build-dev      # Build an unminified Elm debug site in dist/
-make check-services # Refresh dist/results.json from live services
-make build-with-results # Build, run live checks, and produce a deployable site
+make check-services # Refresh the committed results.json from live services
+make build-with-results # Run live checks locally, then build the site
 make clean
 ```
 
@@ -141,7 +141,7 @@ Validate a registry edit before opening a pull request:
 make validate
 ```
 
-Pull-request validation is deliberately offline: it validates the JSON structure but does not contact contributed endpoints. Live requests are made by the scheduled checker after a contribution is merged.
+Pull-request validation and deployment are deliberately offline: they do not contact contributed endpoints. Live requests are run locally and the resulting `results.json` snapshot is committed to the repository.
 
 ## Running the service checker
 
@@ -151,7 +151,7 @@ Check every registered project and replace the current snapshot:
 make check-services
 ```
 
-The command can also be run directly:
+The command can also be run directly; it writes `results.json` by default:
 
 ```sh
 go run ./cmd/iiif-checker
@@ -214,21 +214,19 @@ This single-purpose migration tool reads Harvard manifest URLs from `iiif_server
 
 ## GitHub Pages deployment
 
-`make build` creates the static Pages assets in `dist/`, copies `projects.json` there, and preserves an existing generated `dist/results.json`. If no results exist yet, it creates an empty snapshot so the dashboard remains usable. `make build-with-results` then runs the live checker and produces the complete deployable artifact.
+`make build` creates the static Pages assets in `dist/` and copies the committed `projects.json` and `results.json` files into the build. It never contacts external IIIF services. `make build-with-results` is a local convenience that refreshes `results.json` first and then builds the complete deployable artifact.
 
-Both deployment workflows use `make build-with-results`, so `results.json` is generated directly inside the Pages artifact and is not retained as a source file in the repository.
+GitHub Actions deploys the committed snapshot with `make build`; checker execution in the deployment workflows is intentionally disabled. The former weekly refresh schedule is also disabled. To publish fresh observations:
 
-The weekly service workflow:
+1. run `make check-services` locally;
+2. review the generated `results.json`, including any captured response headers;
+3. commit `results.json`; and
+4. push the commit so the normal Pages workflow builds and deploys it.
 
-1. validates the registry;
-2. builds the static site;
-3. writes fresh observations directly to `dist/results.json`; and
-4. deploys the refreshed static site.
+For a custom domain, set `DASHBOARD_ORIGIN` when running the checker locally, for example:
 
-For a custom domain, create a repository Actions variable named `DASHBOARD_ORIGIN` containing the production origin, for example:
-
-```text
-https://iiif.example.org
+```sh
+DASHBOARD_ORIGIN=https://iiif.example.org make check-services
 ```
 
 Use only the scheme and host, without a path or trailing slash. This ensures CORS is evaluated against the same origin from which users load the dashboard. In the repository’s Pages settings, select **GitHub Actions** as the publishing source and configure the custom domain there.
@@ -237,7 +235,7 @@ For the standard project site at `https://rism-digital.github.io/iiif-dashboard/
 
 ## Scope and limitations
 
-- Results are scheduled observations of curated samples, not continuous uptime monitoring.
+- Results are point-in-time observations generated locally from curated samples, not continuous uptime monitoring.
 - One manifest and one image service cannot demonstrate every capability of a large implementation.
 - IIIF JSON checks recognize the relevant version and required top-level shape; they are not exhaustive conformance suites.
 - The Image API level is the compliance profile declared by `info.json`; every feature required by that level is not exercised.
@@ -255,4 +253,4 @@ Contributions of new projects, corrected samples, checker improvements, and UI r
 3. run `make test`; and
 4. open a pull request describing the service or behavior being added.
 
-Do not hand-edit `dist/results.json`; it is generated by the Go checker and excluded from version control with the rest of `dist/`.
+Do not hand-edit `results.json`; refresh it with `make check-services` and commit the generated changes. `dist/results.json` is only a build copy and remains excluded from version control with the rest of `dist/`.
