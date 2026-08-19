@@ -232,15 +232,43 @@ func TestCheckJSONRetainsRedirectResponseHeaders(t *testing.T) {
 	}
 }
 
-func TestBaseRedirectDirectResponseIsAdvisory(t *testing.T) {
+func TestBaseRedirectDirectResponseIsWarning(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("information"))
 	}))
 	defer server.Close()
 
 	result := newChecker("https://dashboard.example").checkBaseRedirect(context.Background(), server.URL+"/info.json", nil)
-	if result.Status != "advisory" {
-		t.Fatalf("status = %q, want advisory; summary: %s", result.Status, result.Summary)
+	if result.Status != "warning" {
+		t.Fatalf("status = %q, want warning; summary: %s", result.Status, result.Summary)
+	}
+}
+
+func TestBaseRedirectNonRedirectResponseIsWarning(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "not found", http.StatusNotFound)
+	}))
+	defer server.Close()
+
+	result := newChecker("https://dashboard.example").checkBaseRedirect(context.Background(), server.URL+"/info.json", nil)
+	if result.Status != "warning" {
+		t.Fatalf("status = %q, want warning; summary: %s", result.Status, result.Summary)
+	}
+	if result.HTTPStatus != http.StatusNotFound {
+		t.Fatalf("HTTP status = %d, want %d", result.HTTPStatus, http.StatusNotFound)
+	}
+}
+
+func TestBaseRedirectAlternativeRedirectIsWarning(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Location", "/info.json")
+		w.WriteHeader(http.StatusFound)
+	}))
+	defer server.Close()
+
+	result := newChecker("https://dashboard.example").checkBaseRedirect(context.Background(), server.URL+"/info.json", nil)
+	if result.Status != "warning" {
+		t.Fatalf("status = %q, want warning; summary: %s", result.Status, result.Summary)
 	}
 }
 

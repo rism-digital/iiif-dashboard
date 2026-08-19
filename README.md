@@ -27,6 +27,8 @@ For an Image API sample `info.json`, the checker makes:
 
 It reports the detected Image API version, verifies that the Image Service `id` (v3) or `@id` (v2) matches the final `info.json` response URL with `/info.json` and any trailing slash removed, tests gzip compression, reports the declared Level 0, 1, or 2 compliance profile and representative image media type, and checks CORS behavior for both JSON and image responses. As with manifests, a missing, empty, or non-string required identifier fails, while a different non-empty identifier warns.
 
+Dereferencing the image service base URI passes when it returns the IIIF-recommended `303` redirect to `info.json`. Any received non-`303` HTTP response is a warning rather than a failure because the redirect is recommended, not required. A request failure or a malformed `303` without a usable `Location` remains a failure.
+
 The CORS diagnostics show every returned `Access-Control-*` header. A preflight passes when it returns exactly one usable `Access-Control-Allow-Origin`, permits `GET`, and permits the `Accept` request header. The configured dashboard origin or `*` is accepted.
 
 The complete response-header set from each plain Presentation and Image API GET is also stored. When a request follows redirects, every intermediate status, `Location`, and complete response-header set is retained as a redirect chain. These are available under closed disclosures in the diagnostic view.

@@ -558,12 +558,12 @@ func (c *Checker) checkBaseRedirect(ctx context.Context, infoAddress string, doc
 		return responseResult("warning", fmt.Sprintf("Base URI returned HTTP 303 to %s, which differs from both the checked and declared image information URIs.", resolved), resp, "")
 	}
 	if resp.StatusCode == 200 {
-		return responseResult("advisory", "Base URI returned HTTP 200 directly; IIIF recommends a 303 redirect to info.json.", resp, "")
+		return responseResult("warning", "Base URI returned HTTP 200 directly; IIIF recommends a 303 redirect to info.json.", resp, "")
 	}
 	if resp.StatusCode >= 300 && resp.StatusCode < 400 {
-		return responseResult("advisory", fmt.Sprintf("Base URI redirected with HTTP %d to %s; IIIF recommends 303.", resp.StatusCode, resolved), resp, "")
+		return responseResult("warning", fmt.Sprintf("Base URI redirected with HTTP %d to %s; IIIF recommends 303.", resp.StatusCode, resolved), resp, "")
 	}
-	return responseResult("fail", fmt.Sprintf("Base URI returned HTTP %d instead of a 303 redirect to info.json.", resp.StatusCode), resp, "")
+	return responseResult("warning", fmt.Sprintf("Base URI returned HTTP %d instead of the recommended 303 redirect to info.json.", resp.StatusCode), resp, "")
 }
 
 func (c *Checker) checkProject(ctx context.Context, project Project) ProjectResults {
@@ -621,7 +621,7 @@ func validateOptions(limit int, projectID string, concurrency int) error {
 
 func run() error {
 	projectsPath := flag.String("projects", "projects.json", "project registry path")
-	resultsPath := flag.String("results", "dist/results.json", "result output path")
+	resultsPath := flag.String("results", "results.json", "result output path")
 	origin := flag.String("origin", envOr("DASHBOARD_ORIGIN", defaultOrigin), "Origin used for CORS checks")
 	projectID := flag.String("project", "", "check only this project ID and preserve other stored results")
 	limit := flag.Int("n", 0, "maximum number of projects to check; 0 checks all projects")
