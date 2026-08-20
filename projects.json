@@ -163,6 +163,13 @@
       "imageInfoUrl": "https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/info.json"
     },
     {
+      "id": "iiif-diamm-net",
+      "name": "iiif.diamm.net",
+      "homepage": "https://iiif.diamm.net/",
+      "manifestUrl": "https://iiif.diamm.net/manifests/V-CVbav-Urb_602/manifest.json",
+      "imageInfoUrl": "https://iiif.diamm.net/images/V-CVbav-Urb_602/V-CVbav-Urb-602-0217_108v.tif/info.json"
+    },
+    {
       "id": "iiif-rism-digital",
       "name": "iiif.rism.digital",
       "homepage": "https://iiif.rism.digital/",
