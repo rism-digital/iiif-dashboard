@@ -86,6 +86,16 @@ func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/3/context.json","id":"https://wrong.example/manifest","type":"Manifest","items":[]}`))
 		case "/missing-id-manifest":
 			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/3/context.json","type":"Manifest","items":[]}`))
+		case "/lowercase-manifest-type":
+			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/3/context.json","id":"` + server.URL + `/lowercase-manifest-type","type":"manifest","items":[]}`))
+		case "/missing-manifest-items":
+			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/3/context.json","id":"` + server.URL + `/missing-manifest-items","type":"Manifest"}`))
+		case "/v2-manifest":
+			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"` + server.URL + `/v2-manifest","@type":"sc:Manifest","sequences":[]}`))
+		case "/v2-manifest-missing-type":
+			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"` + server.URL + `/v2-manifest-missing-type","sequences":[]}`))
+		case "/v2-manifest-wrong-type":
+			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"` + server.URL + `/v2-manifest-wrong-type","@type":"Manifest","sequences":[]}`))
 		case "/not-acceptable":
 			w.WriteHeader(http.StatusNotAcceptable)
 		case "/image-redirect/info.json":
@@ -114,6 +124,11 @@ func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 		{name: "manifest follows redirect", address: server.URL + "/manifest-redirect", kind: "presentation", wantStatus: "pass", wantSummary: "id matches the final response URL"},
 		{name: "manifest mismatch", address: server.URL + "/bad-manifest", kind: "presentation", requested: "v2", wantStatus: "warning", wantSummary: `Valid v3 manifest retrieved, but id is "https://wrong.example/manifest"; expected the final response URL`},
 		{name: "manifest missing identifier", address: server.URL + "/missing-id-manifest", kind: "presentation", wantStatus: "fail", wantSummary: "missing the required id string"},
+		{name: "manifest type has wrong case", address: server.URL + "/lowercase-manifest-type", kind: "presentation", wantStatus: "fail", wantSummary: `requires the top-level type to be "Manifest"; received "manifest". Type values are case-sensitive`},
+		{name: "manifest missing items", address: server.URL + "/missing-manifest-items", kind: "presentation", wantStatus: "fail", wantSummary: "requires a top-level items array"},
+		{name: "v2 manifest type is valid", address: server.URL + "/v2-manifest", kind: "presentation", wantStatus: "pass", wantSummary: "@id matches the final response URL"},
+		{name: "v2 manifest missing type", address: server.URL + "/v2-manifest-missing-type", kind: "presentation", wantStatus: "fail", wantSummary: `requires the top-level @type string "sc:Manifest", but it is missing`},
+		{name: "v2 manifest has wrong type", address: server.URL + "/v2-manifest-wrong-type", kind: "presentation", wantStatus: "fail", wantSummary: `requires the top-level @type to be "sc:Manifest"; received "Manifest". Type values are case-sensitive`},
 		{name: "identifier result remains visible with an advisory", address: server.URL + "/manifest", kind: "presentation", requested: "v2", wantStatus: "advisory", wantSummary: "id matches the final response URL"},
 		{name: "unavailable representation is handled", address: server.URL + "/not-acceptable", kind: "presentation", requested: "v3", wantStatus: "pass", wantSummary: "correctly declined"},
 		{name: "default representation cannot be declined", address: server.URL + "/not-acceptable", kind: "presentation", wantStatus: "fail", wantSummary: "HTTP 406"},

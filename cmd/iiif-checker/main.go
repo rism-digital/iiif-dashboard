@@ -282,21 +282,43 @@ func detectLevel(doc map[string]any) string {
 	return ""
 }
 
-func validShape(doc map[string]any, kind, version string) bool {
+func structureIssue(doc map[string]any, kind, version string) string {
 	if kind == "presentation" {
 		if version == "v3" {
-			_, items := doc["items"].([]any)
-			return doc["type"] == "Manifest" && items
+			resourceType, hasType := doc["type"].(string)
+			if !hasType || resourceType == "" {
+				return `IIIF Presentation API v3 requires the top-level type string "Manifest", but it is missing.`
+			}
+			if resourceType != "Manifest" {
+				return fmt.Sprintf(`IIIF Presentation API v3 requires the top-level type to be "Manifest"; received %q. Type values are case-sensitive.`, resourceType)
+			}
+			if _, ok := doc["items"].([]any); !ok {
+				return `IIIF Presentation API v3 requires a top-level items array, but it is missing or is not an array.`
+			}
+			return ""
 		}
 		if version == "v2" {
-			_, sequences := doc["sequences"].([]any)
-			return sequences
+			resourceType, hasType := doc["@type"].(string)
+			if !hasType || resourceType == "" {
+				return `IIIF Presentation API v2 requires the top-level @type string "sc:Manifest", but it is missing.`
+			}
+			if resourceType != "sc:Manifest" {
+				return fmt.Sprintf(`IIIF Presentation API v2 requires the top-level @type to be "sc:Manifest"; received %q. Type values are case-sensitive.`, resourceType)
+			}
+			if _, ok := doc["sequences"].([]any); !ok {
+				return `IIIF Presentation API v2 requires a top-level sequences array, but it is missing or is not an array.`
+			}
+			return ""
 		}
-		return false
+		return "The JSON does not declare a recognized IIIF Presentation API context."
 	}
-	_, width := doc["width"].(float64)
-	_, height := doc["height"].(float64)
-	return width && height
+	if _, ok := doc["width"].(float64); !ok {
+		return "IIIF image information requires a numeric top-level width, but it is missing or is not a number."
+	}
+	if _, ok := doc["height"].(float64); !ok {
+		return "IIIF image information requires a numeric top-level height, but it is missing or is not a number."
+	}
+	return ""
 }
 
 func identifierProperty(version string) string {
@@ -386,8 +408,8 @@ func (c *Checker) checkJSON(ctx context.Context, address, kind, requested string
 		identifierTarget = "image service base URI"
 	}
 	summary := fmt.Sprintf("Valid %s %s; %s matches the %s.", detected, noun, identifierName, identifierTarget)
-	if !validShape(doc, kind, version) {
-		status, summary = "fail", fmt.Sprintf("JSON does not have a recognizable IIIF %s structure.", noun)
+	if issue := structureIssue(doc, kind, version); issue != "" {
+		status, summary = "fail", issue
 	} else if !hasIdentifier || identifier == "" {
 		status, summary = "fail", fmt.Sprintf("The IIIF %s is missing the required %s string.", noun, identifierName)
 	} else if identifier != expectedIdentifier {
