@@ -326,9 +326,11 @@ func expectedDocumentIdentifier(kind string, responseURL *url.URL) string {
 }
 
 func headerContains(header http.Header, name, target string) bool {
-	for _, part := range strings.Split(header.Get(name), ",") {
-		if strings.EqualFold(strings.TrimSpace(part), target) || strings.TrimSpace(part) == "*" {
-			return true
+	for _, value := range header.Values(name) {
+		for _, part := range strings.Split(value, ",") {
+			if strings.EqualFold(strings.TrimSpace(part), target) || strings.TrimSpace(part) == "*" {
+				return true
+			}
 		}
 	}
 	return false

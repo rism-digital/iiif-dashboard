@@ -146,10 +146,13 @@ func TestCheckCompression(t *testing.T) {
 		case "/corrupt":
 			w.Header().Set("Content-Encoding", "gzip")
 			_, _ = w.Write([]byte("not gzip"))
-		case "/gzip", "/gzip-without-vary":
+		case "/gzip", "/gzip-with-multiple-vary", "/gzip-without-vary":
 			w.Header().Set("Content-Encoding", "gzip")
 			if r.URL.Path == "/gzip" {
 				w.Header().Set("Vary", "Accept-Encoding")
+			} else if r.URL.Path == "/gzip-with-multiple-vary" {
+				w.Header().Add("Vary", "Origin")
+				w.Header().Add("Vary", "Accept-Encoding")
 			}
 			writer := gzip.NewWriter(w)
 			_, _ = writer.Write([]byte(`{"ok":true}`))
@@ -167,6 +170,7 @@ func TestCheckCompression(t *testing.T) {
 		wantStatus string
 	}{
 		{name: "gzip", path: "/gzip", wantStatus: "pass"},
+		{name: "gzip with multiple vary fields", path: "/gzip-with-multiple-vary", wantStatus: "pass"},
 		{name: "identity", path: "/identity", wantStatus: "advisory"},
 		{name: "missing vary", path: "/gzip-without-vary", wantStatus: "warning"},
 		{name: "corrupt gzip", path: "/corrupt", wantStatus: "fail"},
