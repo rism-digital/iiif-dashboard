@@ -12,6 +12,29 @@
     <script src="./dashboard.js"></script>
     <script>
       Elm.Main.init({ node: document.getElementById("app") });
+
+      const scrollToFragment = () => {
+        if (!window.location.hash) return false;
+        let fragment;
+        try {
+          fragment = decodeURIComponent(window.location.hash.slice(1));
+        } catch (_) {
+          return false;
+        }
+        const target = document.getElementById(fragment);
+        if (!target) return false;
+        target.scrollIntoView({ block: "start" });
+        return true;
+      };
+
+      window.addEventListener("hashchange", scrollToFragment);
+      if (window.location.hash && !scrollToFragment()) {
+        const observer = new MutationObserver(() => {
+          if (scrollToFragment()) observer.disconnect();
+        });
+        observer.observe(document.getElementById("app"), { childList: true, subtree: true });
+        window.setTimeout(() => observer.disconnect(), 10000);
+      }
     </script>
   </body>
 </html>

@@ -249,11 +249,22 @@ projectRows model project =
             Set.member project.id model.expanded
 
         mainRow =
-            tr [ class "project-row" ]
+            tr [ class "project-row", id project.id ]
                 [ td [ class "service-cell" ]
-                    [ a [ href project.homepage, target "_blank", rel "noopener noreferrer", class "service-name" ] [ text project.name ]
-                    , span [ class "source-label" ] [ text sourceText ]
-                    , healthIndicator checkedState displayed
+                    [ div [ class "service-cell-content" ]
+                        [ div [ class "service-title-row" ]
+                            [ a [ href project.homepage, target "_blank", rel "noopener noreferrer", class "service-name" ] [ text project.name ]
+                            , a
+                                [ href ("#" ++ project.id)
+                                , class "entry-permalink"
+                                , title ("Link to " ++ project.name)
+                                , attribute "aria-label" ("Link to " ++ project.name)
+                                ]
+                                [ text "#" ]
+                            ]
+                        , span [ class "source-label" ] [ text sourceText ]
+                        , healthIndicator checkedState displayed
+                        ]
                     ]
                 , td []
                     [ case project.manifestUrl of
@@ -272,14 +283,16 @@ projectRows model project =
                             unavailableApiSummary "No image sample"
                     ]
                 , td [ class "actions-cell" ]
-                    [ button [ class "details-button", onClick (ToggleDetails project.id), attribute "aria-expanded" (boolString isExpanded) ]
-                        [ text
-                            (if isExpanded then
-                                "Hide details"
+                    [ div [ class "actions-content" ]
+                        [ button [ class "details-button", onClick (ToggleDetails project.id), attribute "aria-expanded" (boolString isExpanded) ]
+                            [ text
+                                (if isExpanded then
+                                    "Hide details"
 
-                             else
-                                "Details"
-                            )
+                                 else
+                                    "Details"
+                                )
+                            ]
                         ]
                     ]
                 ]

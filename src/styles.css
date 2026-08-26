@@ -61,9 +61,15 @@ h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.45rem); letter-spacing: -.035em
 .dashboard-table th:nth-child(2), .dashboard-table th:nth-child(3) { width: 28%; }
 .dashboard-table th:last-child { width: 16%; }
 .project-row > td { padding: 20px 18px; border-top: 1px solid var(--line); vertical-align: middle; }
-.service-cell { display: flex; flex-direction: column; gap: 5px; }
+.project-row { scroll-margin-top: 16px; }
+.project-row:target > td { background: #e9f6f4; }
+.service-cell-content { display: flex; flex-direction: column; gap: 5px; }
+.service-title-row { display: flex; align-items: baseline; gap: 7px; }
 .service-name { color: var(--ink); font-weight: 700; text-decoration: none; }
 .service-name:hover { color: var(--blue); text-decoration: underline; }
+.entry-permalink { color: #7a8c98; font-size: .76rem; font-weight: 800; text-decoration: none; opacity: .55; }
+.entry-permalink:hover, .entry-permalink:focus-visible { color: var(--blue); opacity: 1; }
+.project-row:target .entry-permalink { color: var(--blue); opacity: 1; }
 .source-label, .level-label { color: var(--muted); font-size: .78rem; }
 .project-health { display: flex; align-items: center; gap: 8px; min-height: 12px; margin-top: 4px; }
 .health-label, .health-empty { color: var(--muted); font-size: .68rem; }
@@ -89,7 +95,7 @@ h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.45rem); letter-spacing: -.035em
 .mini-fail .mini-dot, .status-bg-fail { background: var(--fail); }
 .mini-unknown .mini-dot, .status-bg-unknown { background: var(--unknown); }
 .mini-unavailable .mini-dot { border: 2px solid var(--unknown); background: transparent; }
-.actions-cell { display: flex; gap: 8px; justify-content: flex-end; }
+.actions-content { display: flex; gap: 8px; justify-content: flex-end; }
 button { cursor: pointer; padding: 8px 11px; font-size: .8rem; font-weight: 650; }
 .details-button { color: #3c5264; background: white; border: 1px solid #bbc7cf; }
 .details-button:hover { background: #f3f7f9; }
@@ -188,8 +194,8 @@ button { cursor: pointer; padding: 8px 11px; font-size: .8rem; font-weight: 650;
   .project-row > td { display: block; padding: 15px; border-top: 1px solid var(--line); }
   .project-row > td:first-child { grid-column: 1 / -1; border-top: 0; }
   .project-row > td:last-child { grid-column: 1 / -1; }
-  .actions-cell { justify-content: stretch; }
-  .actions-cell button { flex: 1; }
+  .actions-content { justify-content: stretch; }
+  .actions-content button { flex: 1; }
   .details-row { display: block; margin-bottom: 18px; }
   .details-row > td { display: block; border: 1px solid var(--line); border-top: 0; }
   .diagnostic-grid { grid-template-columns: 1fr; }
