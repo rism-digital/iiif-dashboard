@@ -203,7 +203,8 @@
       "id": "mdz-nbn-resolving-de",
       "name": "mdz-nbn-resolving.de",
       "homepage": "https://mdz-nbn-resolving.de/",
-      "manifestUrl": "https://mdz-nbn-resolving.de/urn:nbn:de:bvb:12-bsb00132707-7"
+      "manifestUrl": "https://api.digitale-sammlungen.de/iiif/presentation/v2/bsb00132707/manifest",
+      "imageInfoUrl": "https://api.digitale-sammlungen.de/iiif/image/v2/bsb00132707_00001/info.json"
     },
     {
       "id":"mohistory",
