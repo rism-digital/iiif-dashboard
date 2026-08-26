@@ -97,8 +97,11 @@ type ResultsFile struct {
 }
 
 type jsonCheck struct {
-	Result   CheckResult
-	Document map[string]any
+	Result       CheckResult
+	Document     map[string]any
+	Version      string
+	Recognizable bool
+	VaryAccept   bool
 }
 
 type Checker struct {
@@ -377,7 +380,7 @@ func (c *Checker) checkJSON(ctx context.Context, address, kind, requested string
 		}
 		result := responseResult(status, summary, resp, "")
 		result.RequestAccept = accept
-		return jsonCheck{Result: addDefaultResponseHeaders(result, resp, requested)}
+		return jsonCheck{Result: addDefaultResponseHeaders(result, resp, requested), VaryAccept: headerContains(resp.Header, "Vary", "Accept")}
 	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -408,7 +411,8 @@ func (c *Checker) checkJSON(ctx context.Context, address, kind, requested string
 		identifierTarget = "image service base URI"
 	}
 	summary := fmt.Sprintf("Valid %s %s; %s matches the %s.", detected, noun, identifierName, identifierTarget)
-	if issue := structureIssue(doc, kind, version); issue != "" {
+	issue := structureIssue(doc, kind, version)
+	if issue != "" {
 		status, summary = "fail", issue
 	} else if !hasIdentifier || identifier == "" {
 		status, summary = "fail", fmt.Sprintf("The IIIF %s is missing the required %s string.", noun, identifierName)
@@ -423,8 +427,6 @@ func (c *Checker) checkJSON(ctx context.Context, address, kind, requested string
 		status, summary = "warning", "Image information is valid, but no recognized compliance level is declared."
 	} else if requested != "" && version != requested {
 		status, summary = "advisory", fmt.Sprintf("Requested %s but received %s; supporting the requested representation through content negotiation is recommended.", requested, version)
-	} else if requested != "" && !headerContains(resp.Header, "Vary", "Accept") {
-		status, summary = "warning", fmt.Sprintf("The requested %s representation was returned, but Vary: Accept is missing and shared caches may serve the wrong version.", requested)
 	}
 	if (status == "warning" || status == "advisory") && hasIdentifier && identifier == expectedIdentifier {
 		summary += fmt.Sprintf(" The %s matches the %s.", identifierName, identifierTarget)
@@ -432,7 +434,45 @@ func (c *Checker) checkJSON(ctx context.Context, address, kind, requested string
 	result := responseResult(status, summary, resp, detected)
 	result.RequestAccept = accept
 	result = addDefaultResponseHeaders(result, resp, requested)
-	return jsonCheck{Result: result, Document: doc}
+	return jsonCheck{
+		Result:       result,
+		Document:     doc,
+		Version:      version,
+		Recognizable: issue == "",
+		VaryAccept:   headerContains(resp.Header, "Vary", "Accept"),
+	}
+}
+
+func applyVaryRequirement(check jsonCheck, kind, requested string) jsonCheck {
+	if check.Result.Status != "pass" || check.VaryAccept {
+		return check
+	}
+	identifierName := identifierProperty(requested)
+	identifierTarget := "final response URL"
+	if kind == "image" {
+		identifierTarget = "image service base URI"
+	}
+	check.Result.Status = "warning"
+	check.Result.Summary = fmt.Sprintf("The requested %s representation was returned, but Vary: Accept is missing and shared caches may serve the wrong version. The %s matches the %s.", requested, identifierName, identifierTarget)
+	return check
+}
+
+func evaluateNegotiatedPair(kind string, v2, v3 jsonCheck) (CheckResult, CheckResult) {
+	requireV2, requireV3 := false, false
+	if v2.Recognizable && v3.Recognizable && v2.Version != v3.Version {
+		requireV2, requireV3 = true, true
+	} else if v2.Recognizable && v3.Result.HTTPStatus == http.StatusNotAcceptable {
+		requireV2 = true
+	} else if v3.Recognizable && v2.Result.HTTPStatus == http.StatusNotAcceptable {
+		requireV3 = true
+	}
+	if requireV2 {
+		v2 = applyVaryRequirement(v2, kind, "v2")
+	}
+	if requireV3 {
+		v3 = applyVaryRequirement(v3, kind, "v3")
+	}
+	return v2.Result, v3.Result
 }
 
 func (c *Checker) checkCompression(ctx context.Context, address string) CheckResult {
@@ -482,25 +522,25 @@ func (c *Checker) checkCompression(ctx context.Context, address string) CheckRes
 	return responseResult("pass", "The response was gzip-compressed and decompressed successfully.", resp, "")
 }
 
-func (c *Checker) checkPreflight(ctx context.Context, address string) CheckResult {
+func (c *Checker) checkNegotiationPreflight(ctx context.Context, address string) CheckResult {
 	resp, err := c.request(ctx, http.MethodOptions, address, "", true, true)
 	if err != nil {
-		return responseResult("fail", "OPTIONS preflight failed: "+err.Error(), nil, "")
+		return responseResult("fail", "Content-negotiation OPTIONS preflight failed: "+err.Error(), nil, "")
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return responseResult("fail", fmt.Sprintf("OPTIONS preflight returned HTTP %d.", resp.StatusCode), resp, "")
+		return responseResult("fail", fmt.Sprintf("Content-negotiation OPTIONS preflight returned HTTP %d.", resp.StatusCode), resp, "")
 	}
 	if !c.corsPass(resp.Header) {
-		return responseResult("fail", "OPTIONS responded, but its CORS response is invalid: "+c.corsIssue(resp.Header)+".", resp, "")
+		return responseResult("fail", "Content-negotiation OPTIONS responded, but its CORS response is invalid: "+c.corsIssue(resp.Header)+".", resp, "")
 	}
 	if !headerContains(resp.Header, "Access-Control-Allow-Methods", "GET") {
-		return responseResult("warning", "OPTIONS succeeded, but Access-Control-Allow-Methods does not include GET.", resp, "")
+		return responseResult("warning", "Content-negotiation OPTIONS succeeded, but Access-Control-Allow-Methods does not include GET.", resp, "")
 	}
 	if !headerContains(resp.Header, "Access-Control-Allow-Headers", "Accept") {
-		return responseResult("warning", "OPTIONS succeeded, but Access-Control-Allow-Headers does not include Accept.", resp, "")
+		return responseResult("warning", `Content-negotiation OPTIONS succeeded, but Access-Control-Allow-Headers does not include Accept. IIIF profile-valued Accept headers contain CORS-unsafe characters and therefore require preflight permission.`, resp, "")
 	}
-	return responseResult("pass", "OPTIONS preflight permits GET with the Accept request header.", resp, "")
+	return responseResult("pass", "OPTIONS preflight permits GET with a profile-valued Accept request header.", resp, "")
 }
 
 func representativeImageURL(infoAddress string, doc map[string]any) string {
@@ -595,25 +635,25 @@ func (c *Checker) checkProject(ctx context.Context, project Project) ProjectResu
 	if project.ManifestURL != "" {
 		checks["presentation.default"] = c.checkJSON(ctx, project.ManifestURL, "presentation", "").Result
 		checks["presentation.compression"] = c.checkCompression(ctx, project.ManifestURL)
-		checks["presentation.v2"] = c.checkJSON(ctx, project.ManifestURL, "presentation", "v2").Result
-		checks["presentation.v3"] = c.checkJSON(ctx, project.ManifestURL, "presentation", "v3").Result
-		checks["presentation.preflight"] = c.checkPreflight(ctx, project.ManifestURL)
+		v2 := c.checkJSON(ctx, project.ManifestURL, "presentation", "v2")
+		v3 := c.checkJSON(ctx, project.ManifestURL, "presentation", "v3")
+		checks["presentation.v2"], checks["presentation.v3"] = evaluateNegotiatedPair("presentation", v2, v3)
+		checks["presentation.preflight"] = c.checkNegotiationPreflight(ctx, project.ManifestURL)
 	}
 	if project.ImageInfoURL != "" {
 		info := c.checkJSON(ctx, project.ImageInfoURL, "image", "")
 		checks["image.default"] = info.Result
 		checks["image.compression"] = c.checkCompression(ctx, project.ImageInfoURL)
-		checks["image.v2"] = c.checkJSON(ctx, project.ImageInfoURL, "image", "v2").Result
-		checks["image.v3"] = c.checkJSON(ctx, project.ImageInfoURL, "image", "v3").Result
-		checks["image.info-preflight"] = c.checkPreflight(ctx, project.ImageInfoURL)
+		v2 := c.checkJSON(ctx, project.ImageInfoURL, "image", "v2")
+		v3 := c.checkJSON(ctx, project.ImageInfoURL, "image", "v3")
+		checks["image.v2"], checks["image.v3"] = evaluateNegotiatedPair("image", v2, v3)
+		checks["image.info-preflight"] = c.checkNegotiationPreflight(ctx, project.ImageInfoURL)
 		checks["image.base-redirect"] = c.checkBaseRedirect(ctx, project.ImageInfoURL, info.Document)
 		if info.Document != nil {
 			imageURL := representativeImageURL(project.ImageInfoURL, info.Document)
 			checks["image.response"] = c.checkImage(ctx, imageURL)
-			checks["image.response-preflight"] = c.checkPreflight(ctx, imageURL)
 		} else {
 			checks["image.response"] = responseResult("unknown", "Representative image was not requested because default info.json could not be parsed.", nil, "")
-			checks["image.response-preflight"] = responseResult("unknown", "OPTIONS was not requested because the representative image URL could not be derived.", nil, "")
 		}
 	}
 	return ProjectResults{ID: project.ID, Name: project.Name, Checked: true, CheckedAt: time.Now().UTC().Format(time.RFC3339Nano), Checks: checks}

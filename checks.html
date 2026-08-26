@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="How the IIIF Service Dashboard evaluates Presentation and Image API services" />
+    <title>Checks explained · IIIF Service Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="site-header">
+        <div class="header-inner">
+          <div>
+            <h1>Checks explained</h1>
+            <p class="subtitle">What the IIIF Service Dashboard requests and how results are classified</p>
+          </div>
+          <nav class="header-links" aria-label="Site navigation">
+            <a class="header-link" href="./">Dashboard</a>
+            <a class="header-link" href="https://github.com/rism-digital/iiif-dashboard" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="page-shell checks-page">
+        <section class="checks-intro">
+          <h2>Server behaviour, not full JSON validation</h2>
+          <p>The checker makes real HTTP requests to one sample Manifest and one sample Image Service for each project. It concentrates on retrieval, redirects, content negotiation, compression, CORS, media types, identifiers, and a small set of properties needed to recognize the response. It is not a replacement for a complete IIIF JSON validator.</p>
+          <p>Each request contributes one result. When several things are wrong with the same response, the report shows the highest-priority diagnostic rather than adding several blocks for one request.</p>
+          <nav class="checks-nav" aria-label="Checks on this page">
+            <a href="#statuses">Result colours</a>
+            <a href="#presentation">Presentation API</a>
+            <a href="#image">Image API</a>
+            <a href="#cors">CORS</a>
+            <a href="#metadata">Recorded metadata</a>
+          </nav>
+        </section>
+
+        <section class="checks-section" id="statuses">
+          <h2>Result colours</h2>
+          <p>Advisories are shown only in the details and do not lower the main API label. Preflight results are also details-only. The health meter counts passes, warnings, and failures.</p>
+          <div class="status-legend">
+            <div class="legend-card"><span class="status-badge status-pass"><span class="status-symbol" aria-hidden="true">✓</span>Pass</span><p>The request and its primary diagnostic succeeded.</p></div>
+            <div class="legend-card"><span class="status-badge status-advisory"><span class="status-symbol" aria-hidden="true">◆</span>Advisory</span><p>The response is usable, but an optional or recommended improvement is unavailable.</p></div>
+            <div class="legend-card"><span class="status-badge status-warning"><span class="status-symbol" aria-hidden="true">!</span>Warning</span><p>The response is usable, but there is a concrete interoperability or caching risk.</p></div>
+            <div class="legend-card"><span class="status-badge status-fail"><span class="status-symbol" aria-hidden="true">×</span>Fail</span><p>The request or required representation is unusable.</p></div>
+          </div>
+          <p class="checks-note"><strong>Not checked</strong> means a limited run deliberately omitted the project. <strong>Not tested</strong> means there is no configured sample, no observation, or a prerequisite failed—for example, an image cannot be derived from an unreadable <code>info.json</code>.</p>
+        </section>
+
+        <section class="checks-section" id="presentation">
+          <h2>Presentation API checks</h2>
+          <p>These checks use the configured sample Manifest URL.</p>
+          <div class="check-doc-grid">
+            <article class="check-doc check-doc-wide">
+              <h3>Default Manifest response</h3><code class="check-key">presentation.default</code>
+              <p class="check-purpose">Sends a GET without an explicit <code>Accept</code>. The context identifies v2 or v3. A v2 Manifest must have <code>@type: "sc:Manifest"</code> and a <code>sequences</code> array; v3 must have <code>type: "Manifest"</code> and an <code>items</code> array. Type values are case-sensitive. The required identifier must match the final URL after redirects.</p>
+              <ul class="outcome-list">
+                <li><span class="outcome-label pass">Pass</span><span>Recognizable JSON, matching <code>@id</code>/<code>id</code>, JSON media type, and usable CORS.</span></li>
+                <li><span class="outcome-label warning">Warning</span><span>A non-empty identifier differs from the final response URL, CORS is invalid, or <code>Content-Type</code> is not a JSON media type.</span></li>
+                <li><span class="outcome-label fail">Fail</span><span>Request or HTTP failure, unreadable or invalid JSON, unrecognized context or shape, or a missing, empty, or non-string identifier.</span></li>
+              </ul>
+              <p class="check-references"><strong>References</strong><a href="https://iiif.io/api/presentation/2.1/#51-manifest">Presentation API 2.1 §5.1</a> · <a href="https://iiif.io/api/presentation/3.0/#52-manifest">Presentation API 3.0 §5.2</a></p>
+            </article>
+
+            <article class="check-doc">
+              <h3>Gzip compression</h3><code class="check-key">presentation.compression</code>
+              <p class="check-purpose">Requests the Manifest with <code>Accept-Encoding: gzip</code> and verifies that a declared gzip body can be decompressed as JSON.</p>
+              <ul class="outcome-list">
+                <li><span class="outcome-label pass">Pass</span><span>Valid gzip-compressed JSON with <code>Vary: Accept-Encoding</code>.</span></li>
+                <li><span class="outcome-label advisory">Advisory</span><span>A usable identity response is returned; gzip is recommended.</span></li>
+                <li><span class="outcome-label warning">Warning</span><span>Gzip works, but <code>Vary: Accept-Encoding</code> is missing.</span></li>
+                <li><span class="outcome-label fail">Fail</span><span>Request/HTTP failure, unsupported encoding, corrupt gzip, or decompressed content that is not JSON.</span></li>
+              </ul>
+              <p class="check-references"><strong>References</strong><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Encoding">MDN Content-Encoding</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Vary">MDN Vary</a></p>
+            </article>
+
+            <article class="check-doc">
+              <h3>v2 and v3 content negotiation</h3><code class="check-key">presentation.v2 · presentation.v3</code>
+              <p class="check-purpose">Makes two GETs with the IIIF v2 and v3 profile-valued <code>Accept</code> headers, then evaluates the pair together.</p>
+              <ul class="outcome-list">
+                <li><span class="outcome-label pass">Pass</span><span>The requested version is returned, or the unavailable version is correctly declined with HTTP 406. When both probes return the same version, the matching response does not need <code>Vary</code>.</span></li>
+                <li><span class="outcome-label advisory">Advisory</span><span>A different recognizable version is returned. Supporting the requested version is recommended.</span></li>
+                <li><span class="outcome-label warning">Warning</span><span>The probes return different versions, or success versus 406, but an otherwise-valid successful response lacks <code>Vary: Accept</code>. Default-response warnings can also apply.</span></li>
+                <li><span class="outcome-label fail">Fail</span><span>The negotiated request or returned representation fails the same required checks as the default response.</span></li>
+              </ul>
+              <p class="check-references"><strong>References</strong><a href="https://iiif.io/api/presentation/2.1/#72-responses">Presentation API 2.1 §7.2</a> · <a href="https://iiif.io/api/presentation/3.0/#63-responses">Presentation API 3.0 §6.3</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Vary">MDN Vary</a></p>
+            </article>
+
+            <article class="check-doc check-doc-wide">
+              <h3>Manifest negotiation preflight</h3><code class="check-key">presentation.preflight</code>
+              <p class="check-purpose">Sends OPTIONS with the configured dashboard origin, <code>Access-Control-Request-Method: GET</code>, and <code>Access-Control-Request-Headers: Accept</code>. IIIF profile-valued Accept headers contain quotes and a URI colon, so they are not CORS-safelisted.</p>
+              <ul class="outcome-list">
+                <li><span class="outcome-label pass">Pass</span><span>OPTIONS succeeds and permits the origin, GET, and the Accept request header.</span></li>
+                <li><span class="outcome-label warning">Warning</span><span>OPTIONS succeeds but does not list GET or Accept.</span></li>
+                <li><span class="outcome-label fail">Fail</span><span>Request/non-2xx failure or an invalid <code>Access-Control-Allow-Origin</code> response.</span></li>
+              </ul>
+              <p class="check-references"><strong>References</strong><a href="https://fetch.spec.whatwg.org/#cors-safelisted-request-header">Fetch Standard request-header safelist</a> · <a href="https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request">MDN preflight requests</a></p>
+            </article>
+          </div>
+        </section>
+
+        <section class="checks-section" id="image">
+          <h2>Image API checks</h2>
+          <p>These checks use the configured sample <code>info.json</code> and derive an image request and service base URI from it.</p>
+          <div class="check-doc-grid">
+            <article class="check-doc check-doc-wide">
+              <h3>Default image information response</h3><code class="check-key">image.default</code>
+              <p class="check-purpose">Sends a GET without an explicit <code>Accept</code>. The response must contain numeric <code>width</code> and <code>height</code>. Its v2 <code>@id</code> or v3 <code>id</code> must match the final <code>info.json</code> URL after removing <code>/info.json</code>, query, fragment, and trailing slash.</p>
+              <ul class="outcome-list">
+                <li><span class="outcome-label pass">Pass</span><span>Recognizable image information with matching identifier, JSON media type, usable CORS, and a recognized Level 0, 1, or 2 profile.</span></li>
+                <li><span class="outcome-label warning">Warning</span><span>Identifier mismatch, invalid CORS, non-JSON media type, or no recognized compliance level.</span></li>
+                <li><span class="outcome-label fail">Fail</span><span>Request/HTTP/JSON failure, missing numeric dimensions, or a missing, empty, or non-string identifier.</span></li>
+              </ul>
+              <p class="check-references"><strong>References</strong><a href="https://iiif.io/api/image/2.1/#52-technical-properties">Image API 2.1 §5.2</a> · <a href="https://iiif.io/api/image/3.0/#52-technical-properties">Image API 3.0 §5.2</a></p>
+            </article>
+
+            <article class="check-doc">
+              <h3>Gzip compression</h3><code class="check-key">image.compression</code>
+              <p class="check-purpose">Requests <code>info.json</code> with <code>Accept-Encoding: gzip</code>. Outcomes are the same as the Presentation gzip check: compressed valid JSON passes, usable identity is advisory, missing <code>Vary: Accept-Encoding</code> warns, and unusable compression fails.</p>
+              <p class="check-references"><strong>References</strong><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Encoding">MDN Content-Encoding</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Vary">MDN Vary</a></p>
+            </article>
+
+            <article class="check-doc">
+              <h3>v2 and v3 content negotiation</h3><code class="check-key">image.v2 · image.v3</code>
+              <p class="check-purpose">Requests both Image API profile media types and compares the detected versions. It uses the same paired pass, advisory, 406, and <code>Vary: Accept</code> policy as Presentation negotiation.</p>
+              <p class="check-references"><strong>References</strong><a href="https://iiif.io/api/image/2.1/#51-image-information-request">Image API 2.1 §5.1</a> · <a href="https://iiif.io/api/image/3.0/#51-image-information-request">Image API 3.0 §5.1</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Vary">MDN Vary</a></p>
+            </article>
+
+            <article class="check-doc">
+              <h3>info.json negotiation preflight</h3><code class="check-key">image.info-preflight</code>
+              <p class="check-purpose">Sends the same profile-negotiation OPTIONS request as the Manifest preflight. It passes when the origin, GET method, and Accept header are permitted; missing GET/Accept warns; request, HTTP, or ACAO failures fail.</p>
+              <p class="check-references"><strong>References</strong><a href="https://iiif.io/api/image/3.0/#71-cors">Image API 3.0 §7.1</a> · <a href="https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request">MDN preflight requests</a></p>
+            </article>
+
+            <article class="check-doc">
+              <h3>Base URI to info.json</h3><code class="check-key">image.base-redirect</code>
+              <p class="check-purpose">Dereferences the service base URI without following redirects. IIIF recommends HTTP 303 to the checked or declared <code>info.json</code> URI.</p>
+              <ul class="outcome-list">
+                <li><span class="outcome-label pass">Pass</span><span>HTTP 303 has a usable Location matching the checked or declared image information URI.</span></li>
+                <li><span class="outcome-label warning">Warning</span><span>303 points elsewhere, 200 returns directly, another redirect code is used, or any other HTTP response is received.</span></li>
+                <li><span class="outcome-label fail">Fail</span><span>The request fails, or a 303 has no usable Location.</span></li>
+              </ul>
+              <p class="check-references"><strong>References</strong><a href="https://iiif.io/api/image/3.0/#2-uri-syntax">Image API 3.0 §2 URI syntax</a></p>
+            </article>
+
+            <article class="check-doc check-doc-wide">
+              <h3>Representative image response</h3><code class="check-key">image.response</code>
+              <p class="check-purpose">Uses the smallest declared size, or width 256 when no sizes are declared, to request <code>full/{size}/0/default.jpg</code>. No OPTIONS preflight is required for this ordinary image GET.</p>
+              <ul class="outcome-list">
+                <li><span class="outcome-label pass">Pass</span><span>HTTP success with an <code>image/*</code> media type and usable CORS.</span></li>
+                <li><span class="outcome-label warning">Warning</span><span>The response is delivered but has a non-image media type or invalid CORS.</span></li>
+                <li><span class="outcome-label fail">Fail</span><span>Request failure or non-2xx HTTP response.</span></li>
+                <li><span class="outcome-label unknown">Not tested</span><span>No image request is possible because the default <code>info.json</code> could not be parsed.</span></li>
+              </ul>
+              <p class="check-references"><strong>References</strong><a href="https://iiif.io/api/image/3.0/#4-image-requests">Image API 3.0 §4</a> · <a href="https://iiif.io/api/image/3.0/#71-cors">Image API 3.0 §7.1</a></p>
+            </article>
+          </div>
+        </section>
+
+        <section class="checks-section" id="cors">
+          <h2>CORS behaviour</h2>
+          <p>The checker sends <code>Origin: https://rism-digital.github.io</code> by default. A response has usable CORS when it contains exactly one <code>Access-Control-Allow-Origin</code> value and that value is either the configured origin or <code>*</code>. Servers may return ACAO only when the request includes Origin; the dashboard records what was returned to its own request.</p>
+          <p class="checks-note">When a server dynamically echoes the allowed origin, <code>Vary: Origin</code> prevents a shared cache from serving one origin’s response to another. The checker records this header but does not score it as a separate rule. Every returned <code>Access-Control-*</code> header is shown in the expanded CORS details.</p>
+        </section>
+
+        <section class="checks-section" id="metadata">
+          <h2>Recorded response metadata</h2>
+          <p>The report stores HTTP status, detected IIIF version and level, content type, request Accept value, Location, and returned CORS headers. For each default Manifest and <code>info.json</code> GET it also stores the complete response headers. Every followed redirect retains its URL, status, Location, and complete headers in order.</p>
+          <p class="checks-note">Results are point-in-time observations from anonymous requests. A later browser request may differ because of conditional headers, caches, firewall policy, rate limiting, or a changed service configuration.</p>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-inner">
+          <p>Created by the <a href="https://rism.digital/" target="_blank" rel="noopener noreferrer">RISM Digital Center</a>.</p>
+          <a class="rism-online-link" href="./">Return to dashboard</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

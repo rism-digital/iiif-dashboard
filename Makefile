@@ -14,6 +14,7 @@ all: build
 prepare-dist:
 	mkdir -p $(DIST_DIR)
 	cp index.html $(DIST_DIR)/
+	cp checks.html $(DIST_DIR)/
 	cp src/styles.css $(DIST_DIR)/styles.css
 	cp projects.json $(DIST_DIR)/projects.json
 	cp $(RESULTS_FILE) $(DIST_DIR)/results.json

@@ -98,13 +98,20 @@ view model =
                     [ h1 [] [ text "IIIF Service Dashboard" ]
                     , p [ class "subtitle" ] [ text "Presentation and Image API compatibility overview" ]
                     ]
-                , a
-                    [ class "github-link"
-                    , href "https://github.com/rism-digital/iiif-dashboard"
-                    , target "_blank"
-                    , rel "noopener noreferrer"
+                , div [ class "header-links" ]
+                    [ a
+                        [ class "header-link"
+                        , href "./checks.html"
+                        ]
+                        [ text "Checks explained" ]
+                    , a
+                        [ class "header-link"
+                        , href "https://github.com/rism-digital/iiif-dashboard"
+                        , target "_blank"
+                        , rel "noopener noreferrer"
+                        ]
+                        [ text "View on GitHub ↗" ]
                     ]
-                    [ text "View on GitHub ↗" ]
                 ]
             ]
         , main_ [ class "page-shell" ]
@@ -541,7 +548,7 @@ detailsPanel project checks =
                         [ h2 [] [ text "Image API" ]
                         , p [ class "empty-checks" ] [ text "Not tested because this project does not yet have a sample image service." ]
                         ]
-            , div [ class "cors-group" ] [ diagnosticGroup "CORS and OPTIONS preflight" corsRows ]
+            , div [ class "cors-group" ] [ diagnosticGroup "CORS and content-negotiation preflight" corsRows ]
             ]
         ]
 
@@ -745,10 +752,14 @@ ruleReferences key check =
                 ]
 
         "presentation.v2" ->
-            [ ( "Presentation API 2.1 §7.2", "https://iiif.io/api/presentation/2.1/#72-responses" ) ]
+            [ ( "Presentation API 2.1 §7.2", "https://iiif.io/api/presentation/2.1/#72-responses" )
+            , ( "MDN Vary", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Vary" )
+            ]
 
         "presentation.v3" ->
-            [ ( "Presentation API 3.0 §6.3", "https://iiif.io/api/presentation/3.0/#63-responses" ) ]
+            [ ( "Presentation API 3.0 §6.3", "https://iiif.io/api/presentation/3.0/#63-responses" )
+            , ( "MDN Vary", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Vary" )
+            ]
 
         "presentation.compression" ->
             [ ( "Presentation API 3.0 §6.3", "https://iiif.io/api/presentation/3.0/#63-responses" )
@@ -756,7 +767,9 @@ ruleReferences key check =
             ]
 
         "presentation.preflight" ->
-            [ ( "MDN preflight requests", "https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request" ) ]
+            [ ( "Fetch Standard — CORS-safelisted request headers", "https://fetch.spec.whatwg.org/#cors-safelisted-request-header" )
+            , ( "MDN preflight requests", "https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request" )
+            ]
 
         "image.default" ->
             if check.detected |> Maybe.map (String.startsWith "v2") |> Maybe.withDefault False then
@@ -771,10 +784,14 @@ ruleReferences key check =
                 ]
 
         "image.v2" ->
-            [ ( "Image API 2.1 §5.1", "https://iiif.io/api/image/2.1/#51-image-information-request" ) ]
+            [ ( "Image API 2.1 §5.1", "https://iiif.io/api/image/2.1/#51-image-information-request" )
+            , ( "MDN Vary", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Vary" )
+            ]
 
         "image.v3" ->
-            [ ( "Image API 3.0 §5.1", "https://iiif.io/api/image/3.0/#51-image-information-request" ) ]
+            [ ( "Image API 3.0 §5.1", "https://iiif.io/api/image/3.0/#51-image-information-request" )
+            , ( "MDN Vary", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Vary" )
+            ]
 
         "image.compression" ->
             [ ( "MDN Content-Encoding", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Encoding" )
@@ -783,6 +800,7 @@ ruleReferences key check =
 
         "image.info-preflight" ->
             [ ( "Image API 3.0 §7.1", "https://iiif.io/api/image/3.0/#71-cors" )
+            , ( "Fetch Standard — CORS-safelisted request headers", "https://fetch.spec.whatwg.org/#cors-safelisted-request-header" )
             , ( "MDN preflight requests", "https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request" )
             ]
 
@@ -819,10 +837,10 @@ checkName key =
             "Representative image"
 
         Just "preflight" ->
-            "Manifest OPTIONS preflight"
+            "Manifest negotiation preflight"
 
         Just "info-preflight" ->
-            "info.json OPTIONS preflight"
+            "info.json negotiation preflight"
 
         Just "response-preflight" ->
             "Representative image OPTIONS preflight"

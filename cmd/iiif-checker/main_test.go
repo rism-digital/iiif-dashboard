@@ -148,6 +148,112 @@ func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 	}
 }
 
+func TestEvaluateNegotiatedPairDeterminesWhetherVaryIsNeeded(t *testing.T) {
+	var server *httptest.Server
+	server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Content-Type", "application/ld+json")
+		requestedV3 := strings.Contains(r.Header.Get("Accept"), "/presentation/3/")
+		version := "v2"
+		switch r.URL.Path {
+		case "/same":
+		case "/vary":
+			if requestedV3 {
+				version = "v3"
+			}
+		case "/vary-with-header":
+			w.Header().Add("Vary", "Origin")
+			w.Header().Add("Vary", "Accept")
+			if requestedV3 {
+				version = "v3"
+			}
+		case "/not-acceptable":
+			if requestedV3 {
+				w.WriteHeader(http.StatusNotAcceptable)
+				return
+			}
+		case "/malformed":
+			if requestedV3 {
+				_, _ = w.Write([]byte(`{"not":"a manifest"}`))
+				return
+			}
+		default:
+			http.NotFound(w, r)
+			return
+		}
+
+		if version == "v3" {
+			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/3/context.json","id":"` + server.URL + r.URL.Path + `","type":"Manifest","items":[]}`))
+			return
+		}
+		_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"` + server.URL + r.URL.Path + `","@type":"sc:Manifest","sequences":[]}`))
+	}))
+	defer server.Close()
+
+	checker := newChecker("https://dashboard.example")
+	for _, test := range []struct {
+		name          string
+		path          string
+		wantV2Status  string
+		wantV3Status  string
+		wantV2Summary string
+		wantV3Summary string
+	}{
+		{
+			name:          "same version does not require vary",
+			path:          "/same",
+			wantV2Status:  "pass",
+			wantV3Status:  "advisory",
+			wantV2Summary: "Valid v2 manifest",
+			wantV3Summary: "Requested v3 but received v2",
+		},
+		{
+			name:          "different versions require vary",
+			path:          "/vary",
+			wantV2Status:  "warning",
+			wantV3Status:  "warning",
+			wantV2Summary: "Vary: Accept is missing",
+			wantV3Summary: "Vary: Accept is missing",
+		},
+		{
+			name:          "multiple vary fields permit negotiated versions",
+			path:          "/vary-with-header",
+			wantV2Status:  "pass",
+			wantV3Status:  "pass",
+			wantV2Summary: "Valid v2 manifest",
+			wantV3Summary: "Valid v3 manifest",
+		},
+		{
+			name:          "success and 406 require vary on successful response",
+			path:          "/not-acceptable",
+			wantV2Status:  "warning",
+			wantV3Status:  "pass",
+			wantV2Summary: "Vary: Accept is missing",
+			wantV3Summary: "correctly declined",
+		},
+		{
+			name:          "malformed probe does not imply variance",
+			path:          "/malformed",
+			wantV2Status:  "pass",
+			wantV3Status:  "fail",
+			wantV2Summary: "Valid v2 manifest",
+			wantV3Summary: "does not declare a recognized IIIF Presentation API context",
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			v2 := checker.checkJSON(context.Background(), server.URL+test.path, "presentation", "v2")
+			v3 := checker.checkJSON(context.Background(), server.URL+test.path, "presentation", "v3")
+			v2Result, v3Result := evaluateNegotiatedPair("presentation", v2, v3)
+			if v2Result.Status != test.wantV2Status || v3Result.Status != test.wantV3Status {
+				t.Fatalf("statuses = (%q, %q), want (%q, %q); summaries: %q / %q", v2Result.Status, v3Result.Status, test.wantV2Status, test.wantV3Status, v2Result.Summary, v3Result.Summary)
+			}
+			if !strings.Contains(v2Result.Summary, test.wantV2Summary) || !strings.Contains(v3Result.Summary, test.wantV3Summary) {
+				t.Fatalf("summaries = %q / %q, want them to contain %q / %q", v2Result.Summary, v3Result.Summary, test.wantV2Summary, test.wantV3Summary)
+			}
+		})
+	}
+}
+
 func TestCheckCompression(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Header.Get("Accept-Encoding") != "gzip" {
@@ -194,6 +300,63 @@ func TestCheckCompression(t *testing.T) {
 			result := checker.checkCompression(context.Background(), server.URL+test.path)
 			if result.Status != test.wantStatus {
 				t.Fatalf("status = %q, want %q; summary: %s", result.Status, test.wantStatus, result.Summary)
+			}
+		})
+	}
+}
+
+func TestCheckNegotiationPreflight(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodOptions {
+			http.Error(w, "expected OPTIONS", http.StatusMethodNotAllowed)
+			return
+		}
+		if r.Header.Get("Origin") != "https://dashboard.example" {
+			http.Error(w, "missing checker origin", http.StatusBadRequest)
+			return
+		}
+		if r.Header.Get("Access-Control-Request-Method") != "GET" || !headerContains(r.Header, "Access-Control-Request-Headers", "Accept") {
+			http.Error(w, "invalid preflight request", http.StatusBadRequest)
+			return
+		}
+
+		w.Header().Set("Access-Control-Allow-Origin", "https://dashboard.example")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		switch r.URL.Path {
+		case "/pass":
+			w.Header().Set("Access-Control-Allow-Headers", "Accept")
+		case "/missing-accept":
+		case "/missing-get":
+			w.Header().Set("Access-Control-Allow-Methods", "OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Accept")
+		case "/invalid-origin":
+			w.Header().Set("Access-Control-Allow-Origin", "https://other.example")
+			w.Header().Set("Access-Control-Allow-Headers", "Accept")
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer server.Close()
+
+	checker := newChecker("https://dashboard.example")
+	for _, test := range []struct {
+		name        string
+		path        string
+		wantStatus  string
+		wantSummary string
+	}{
+		{name: "permits negotiation", path: "/pass", wantStatus: "pass", wantSummary: "profile-valued Accept"},
+		{name: "does not permit Accept", path: "/missing-accept", wantStatus: "warning", wantSummary: "contain CORS-unsafe characters"},
+		{name: "does not permit GET", path: "/missing-get", wantStatus: "warning", wantSummary: "does not include GET"},
+		{name: "does not permit origin", path: "/invalid-origin", wantStatus: "fail", wantSummary: "does not permit https://dashboard.example"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			result := checker.checkNegotiationPreflight(context.Background(), server.URL+test.path)
+			if result.Status != test.wantStatus {
+				t.Fatalf("status = %q, want %q; summary: %s", result.Status, test.wantStatus, result.Summary)
+			}
+			if !strings.Contains(result.Summary, test.wantSummary) {
+				t.Fatalf("summary = %q, want it to contain %q", result.Summary, test.wantSummary)
 			}
 		})
 	}
@@ -461,10 +624,14 @@ func TestImageBaseURL(t *testing.T) {
 }
 
 func TestCheckProjectSupportsImageOnlyProjects(t *testing.T) {
+	representativeImageOptions := 0
 	var server *httptest.Server
 	server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		if r.Method == http.MethodOptions {
+			if strings.Contains(r.URL.Path, "/full/") {
+				representativeImageOptions++
+			}
 			w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 			w.Header().Set("Access-Control-Allow-Headers", "Accept")
 			w.WriteHeader(http.StatusNoContent)
@@ -498,6 +665,12 @@ func TestCheckProjectSupportsImageOnlyProjects(t *testing.T) {
 		if strings.HasPrefix(key, "presentation.") {
 			t.Fatalf("image-only project unexpectedly produced %q", key)
 		}
+	}
+	if _, present := result.Checks["image.response-preflight"]; present {
+		t.Fatal("representative image preflight should not be recorded")
+	}
+	if representativeImageOptions != 0 {
+		t.Fatalf("representative image received %d OPTIONS requests, want none", representativeImageOptions)
 	}
 	if result.Checks["image.default"].Status != "pass" {
 		t.Fatalf("image.default = %#v", result.Checks["image.default"])

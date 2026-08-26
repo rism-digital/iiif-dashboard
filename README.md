@@ -12,24 +12,23 @@ For a Presentation API sample manifest, the checker makes:
 - a GET requesting gzip compression;
 - a GET requesting IIIF Presentation API 2;
 - a GET requesting IIIF Presentation API 3; and
-- an `OPTIONS` preflight for a GET with an `Accept` request header.
+- an `OPTIONS` preflight for browser-based content negotiation with a profile-valued `Accept` request header.
 
-It identifies the returned IIIF version, checks for a recognizable manifest structure, verifies that the Manifest `id` (v3) or `@id` (v2) exactly matches the final response URL after redirects, reports the response media type, tests gzip compression, evaluates CORS, and checks negotiated responses for `Vary: Accept`. A missing, empty, or non-string required identifier is a failure; a different non-empty identifier is a warning because the retrieved manifest is still recognizable and usable.
+It identifies the returned IIIF version, checks for a recognizable manifest structure, verifies that the Manifest `id` (v3) or `@id` (v2) exactly matches the final response URL after redirects, reports the response media type, tests gzip compression, evaluates CORS, and compares the v2 and v3 responses before deciding whether `Vary: Accept` is needed. When both requests return the same version, the matching request passes and the unavailable requested version is an advisory; `Vary: Accept` is required only when `Accept` observably changes the returned version or produces a success/406 distinction. A missing, empty, or non-string required identifier is a failure; a different non-empty identifier is a warning because the retrieved manifest is still recognizable and usable.
 
 For an Image API sample `info.json`, the checker makes:
 
 - plain, Image API 2, and Image API 3 `info.json` requests;
 - an `info.json` request asking for gzip compression;
-- an `OPTIONS` preflight for `info.json`;
+- an `OPTIONS` preflight for browser-based `info.json` content negotiation;
 - a request to the image service base URI, checking for the recommended `303` redirect to `info.json`;
-- a representative image request derived from `info.json`; and
-- an `OPTIONS` preflight for that representative image.
+- a representative image request derived from `info.json`.
 
-It reports the detected Image API version, verifies that the Image Service `id` (v3) or `@id` (v2) matches the final `info.json` response URL with `/info.json` and any trailing slash removed, tests gzip compression, reports the declared Level 0, 1, or 2 compliance profile and representative image media type, and checks CORS behavior for both JSON and image responses. As with manifests, a missing, empty, or non-string required identifier fails, while a different non-empty identifier warns.
+It reports the detected Image API version, verifies that the Image Service `id` (v3) or `@id` (v2) matches the final `info.json` response URL with `/info.json` and any trailing slash removed, tests gzip compression, reports the declared Level 0, 1, or 2 compliance profile and representative image media type, and checks CORS behavior for both JSON and image responses. Image API negotiation uses the same paired `Vary: Accept` policy as Presentation API negotiation. As with manifests, a missing, empty, or non-string required identifier fails, while a different non-empty identifier warns.
 
 Dereferencing the image service base URI passes when it returns the IIIF-recommended `303` redirect to `info.json`. Any received non-`303` HTTP response is a warning rather than a failure because the redirect is recommended, not required. A request failure or a malformed `303` without a usable `Location` remains a failure.
 
-The CORS diagnostics show every returned `Access-Control-*` header. A preflight passes when it returns exactly one usable `Access-Control-Allow-Origin`, permits `GET`, and permits the `Accept` request header. The configured dashboard origin or `*` is accepted.
+The CORS diagnostics show every returned `Access-Control-*` header. Ordinary manifest, `info.json`, and image CORS support is evaluated from each actual GET response and does not require `Access-Control-Allow-Headers`. The separate manifest and `info.json` negotiation preflights pass when they return exactly one usable `Access-Control-Allow-Origin`, permit `GET`, and permit the `Accept` request header. Although `Accept` is normally CORS-safelisted, IIIF profile-valued forms contain quotes and a URI colon, which are CORS-unsafe characters and trigger a browser preflight when explicitly set. The configured dashboard origin or `*` is accepted.
 
 The complete response-header set from each plain Presentation and Image API GET is also stored. When a request follows redirects, every intermediate status, `Location`, and complete response-header set is retained as a redirect chain. These are available under closed disclosures in the diagnostic view.
 
@@ -49,6 +48,7 @@ The main API badges and health meter summarize passes, warnings, and failures. A
 | Component | Location | Purpose |
 | --- | --- | --- |
 | Elm dashboard | `src/` | Loads the registry and latest snapshot and renders summaries and diagnostics. |
+| Check documentation | `checks.html` | Publishes the requests, classification rules, possible outcomes, and references. |
 | Service checker | `cmd/iiif-checker/` | Makes concurrent HTTP requests and writes the observation snapshot. |
 | Project registry | `projects.json` | Contributor-maintained list of projects and sample endpoints; copied into the built site. |
 | Result snapshot | `results.json` | Committed checker output; copied into the built dashboard. |
@@ -216,7 +216,7 @@ This single-purpose migration tool reads Harvard manifest URLs from `iiif_server
 
 ## GitHub Pages deployment
 
-`make build` creates the static Pages assets in `dist/` and copies the committed `projects.json` and `results.json` files into the build. It never contacts external IIIF services. `make build-with-results` is a local convenience that refreshes `results.json` first and then builds the complete deployable artifact.
+`make build` creates the static Pages assets in `dist/`, including `checks.html`, and copies the committed `projects.json` and `results.json` files into the build. It never contacts external IIIF services. `make build-with-results` is a local convenience that refreshes `results.json` first and then builds the complete deployable artifact.
 
 GitHub Actions deploys the committed snapshot with `make build`; checker execution in the deployment workflows is intentionally disabled. The former weekly refresh schedule is also disabled. To publish fresh observations:
 
