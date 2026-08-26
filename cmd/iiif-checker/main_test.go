@@ -24,6 +24,19 @@ func TestDetectVersionAndLevel(t *testing.T) {
 	}
 }
 
+func TestDetectsLegacyImageAPIContext(t *testing.T) {
+	doc := map[string]any{
+		"@context": "http://library.stanford.edu/iiif/image-api/1.1/context.json",
+		"@id":      "https://example.org/iiif/image",
+	}
+	if got := detectVersion(doc); got != "v1" {
+		t.Fatalf("detectVersion() = %q, want v1", got)
+	}
+	if got := identifierProperty(detectVersion(doc)); got != "@id" {
+		t.Fatalf("identifierProperty() = %q, want @id", got)
+	}
+}
+
 func TestRepresentativeImageURL(t *testing.T) {
 	doc := map[string]any{"sizes": []any{
 		map[string]any{"width": float64(800), "height": float64(600)},
@@ -72,6 +85,32 @@ func TestCheckerSetsExplicitUserAgent(t *testing.T) {
 	}
 }
 
+func TestCheckerScopesUserAgentOverride(t *testing.T) {
+	received := make(chan string, 2)
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		received <- r.UserAgent()
+		w.WriteHeader(http.StatusNoContent)
+	}))
+	defer server.Close()
+
+	checker := newChecker("https://dashboard.example")
+	overridden := checker.withUserAgent("Mozilla/5.0")
+	for _, current := range []*Checker{overridden, checker} {
+		response, err := current.request(context.Background(), http.MethodGet, server.URL, "", false, true)
+		if err != nil {
+			t.Fatal(err)
+		}
+		response.Body.Close()
+	}
+
+	if got := <-received; got != "Mozilla/5.0" {
+		t.Fatalf("overridden User-Agent = %q, want Mozilla/5.0", got)
+	}
+	if got := <-received; got != checkerUserAgent {
+		t.Fatalf("default User-Agent after override = %q, want %q", got, checkerUserAgent)
+	}
+}
+
 func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 	var server *httptest.Server
 	server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -106,6 +145,8 @@ func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/image/2/context.json","@id":"` + server.URL + `/iiif/other","profile":"http://iiif.io/api/image/2/level2.json","width":640,"height":480}`))
 		case "/iiif/missing-id/info.json":
 			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/image/2/context.json","profile":"http://iiif.io/api/image/2/level2.json","width":640,"height":480}`))
+		case "/iiif/legacy/info.json":
+			_, _ = w.Write([]byte(`{"@context":"http://library.stanford.edu/iiif/image-api/1.1/context.json","@id":"` + server.URL + `/iiif/legacy","profile":"http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2","width":640,"height":480}`))
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,6 +176,7 @@ func TestCheckJSONValidatesIdentifierAgainstFinalResponseURL(t *testing.T) {
 		{name: "image follows redirect", address: server.URL + "/image-redirect/info.json", kind: "image", wantStatus: "pass", wantSummary: "id matches the image service base URI"},
 		{name: "image mismatch", address: server.URL + "/iiif/bad/info.json", kind: "image", wantStatus: "warning", wantSummary: `Valid v2 image information retrieved, but @id is "` + server.URL + `/iiif/other"; expected the image service base URI "` + server.URL + `/iiif/bad"`},
 		{name: "image missing identifier", address: server.URL + "/iiif/missing-id/info.json", kind: "image", wantStatus: "fail", wantSummary: "missing the required @id string"},
+		{name: "legacy image context remains recognizable", address: server.URL + "/iiif/legacy/info.json", kind: "image", wantStatus: "pass", wantSummary: "Valid v1 · Level 2 image information"},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			result := checker.checkJSON(context.Background(), test.address, test.kind, test.requested).Result
@@ -625,8 +667,12 @@ func TestImageBaseURL(t *testing.T) {
 
 func TestCheckProjectSupportsImageOnlyProjects(t *testing.T) {
 	representativeImageOptions := 0
+	const projectUserAgent = "Project-specific/1.0"
 	var server *httptest.Server
 	server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.UserAgent() != projectUserAgent {
+			t.Errorf("project request User-Agent = %q, want %q", r.UserAgent(), projectUserAgent)
+		}
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		if r.Method == http.MethodOptions {
 			if strings.Contains(r.URL.Path, "/full/") {
@@ -656,9 +702,10 @@ func TestCheckProjectSupportsImageOnlyProjects(t *testing.T) {
 	defer server.Close()
 
 	result := newChecker("https://dashboard.example").checkProject(context.Background(), Project{
-		ID:           "image-only",
-		Name:         "Image only",
-		ImageInfoURL: server.URL + "/iiif/image/info.json",
+		ID:               "image-only",
+		Name:             "Image only",
+		ImageInfoURL:     server.URL + "/iiif/image/info.json",
+		CheckerUserAgent: projectUserAgent,
 	})
 
 	for key := range result.Checks {

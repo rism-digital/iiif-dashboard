@@ -137,6 +137,10 @@ Image-API-only projects are supported:
 
 Likewise, `imageInfoUrl` may be omitted for a Presentation-API-only project. All sample URLs must be public HTTPS URLs, and an image sample must point to `info.json`.
 
+Projects may also provide a public `notes` string for endpoint-specific context. The note is shown in the expanded dashboard details. In exceptional cases, `checkerUserAgent` may set a project-specific HTTP User-Agent when a service works in ordinary browsers but blocks the checker's identifying default. Overrides must be narrowly scoped and explained in `notes`; they are applied only to that project's requests and remain visible in the registry.
+
+The checker recognizes legacy Image API 1.x contexts so that older, still-operational services receive accurate default-response diagnostics. Content-negotiation comparisons remain focused on Image API v2 and v3.
+
 Validate a registry edit before opening a pull request:
 
 ```sh
@@ -174,7 +178,7 @@ Useful options include:
 
 Interactive terminal runs display pending, active, and finished projects in a bounded in-place progress view. Redirected output and CI use stable log lines. A slow service occupies only its own worker and does not block unrelated projects.
 
-Every checker request is unauthenticated and identifies itself with `IIIF-Checker-Bot/1.0 (https://rism-digital.github.io/iiif-dashboard) go-http-client/1.1`. Remember that `results.json` is public: the default and intermediate redirect response headers may include cookies, CDN identifiers, and other metadata returned to anonymous clients.
+Every checker request is unauthenticated and normally identifies itself with `IIIF-Checker-Bot/1.0 (https://rism-digital.github.io/iiif-dashboard) go-http-client/1.1`. A project-specific exception may be declared and explained publicly in `projects.json`, as described above. Remember that `results.json` is public: the default and intermediate redirect response headers may include cookies, CDN identifiers, and other metadata returned to anonymous clients.
 
 ## Registry maintenance tools
 

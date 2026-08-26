@@ -16,6 +16,7 @@ type alias Project =
     , homepage : String
     , manifestUrl : Maybe String
     , imageInfoUrl : Maybe String
+    , notes : Maybe String
     }
 
 
@@ -73,12 +74,13 @@ registryDecoder =
 
 projectDecoder : Decoder Project
 projectDecoder =
-    Decode.map5 Project
+    Decode.map6 Project
         (Decode.field "id" Decode.string)
         (Decode.field "name" Decode.string)
         (Decode.field "homepage" Decode.string)
         (Decode.maybe (Decode.field "manifestUrl" Decode.string))
         (Decode.maybe (Decode.field "imageInfoUrl" Decode.string))
+        (Decode.maybe (Decode.field "notes" Decode.string))
 
 
 resultsDecoder : Decoder ResultsFile

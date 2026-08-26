@@ -39,10 +39,11 @@ type Registry struct {
 }
 
 type Project struct {
-	ID           string `json:"id"`
-	Name         string `json:"name"`
-	ManifestURL  string `json:"manifestUrl,omitempty"`
-	ImageInfoURL string `json:"imageInfoUrl,omitempty"`
+	ID               string `json:"id"`
+	Name             string `json:"name"`
+	ManifestURL      string `json:"manifestUrl,omitempty"`
+	ImageInfoURL     string `json:"imageInfoUrl,omitempty"`
+	CheckerUserAgent string `json:"checkerUserAgent,omitempty"`
 }
 
 type CheckResult struct {
@@ -105,12 +106,22 @@ type jsonCheck struct {
 }
 
 type Checker struct {
-	origin string
-	client *http.Client
+	origin    string
+	userAgent string
+	client    *http.Client
 }
 
 func newChecker(origin string) *Checker {
-	return &Checker{origin: origin, client: &http.Client{Timeout: 20 * time.Second}}
+	return &Checker{origin: origin, userAgent: checkerUserAgent, client: &http.Client{Timeout: 20 * time.Second}}
+}
+
+func (c *Checker) withUserAgent(userAgent string) *Checker {
+	if userAgent == "" {
+		return c
+	}
+	configured := *c
+	configured.userAgent = userAgent
+	return &configured
 }
 
 func (c *Checker) request(ctx context.Context, method, address, accept string, preflight bool, follow bool) (*http.Response, error) {
@@ -122,7 +133,7 @@ func (c *Checker) requestWithHeaders(ctx context.Context, method, address, accep
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("User-Agent", checkerUserAgent)
+	req.Header.Set("User-Agent", c.userAgent)
 	req.Header.Set("Origin", c.origin)
 	if accept != "" {
 		req.Header.Set("Accept", accept)
@@ -258,6 +269,11 @@ func detectVersion(doc map[string]any) string {
 			return "v2"
 		}
 	}
+	for _, context := range contexts {
+		if strings.Contains(context, "/1/context.json") || strings.Contains(context, "/1.1/context.json") {
+			return "v1"
+		}
+	}
 	return ""
 }
 
@@ -325,7 +341,7 @@ func structureIssue(doc map[string]any, kind, version string) string {
 }
 
 func identifierProperty(version string) string {
-	if version == "v2" {
+	if version == "v1" || version == "v2" {
 		return "@id"
 	}
 	return "id"
@@ -631,27 +647,28 @@ func (c *Checker) checkBaseRedirect(ctx context.Context, infoAddress string, doc
 }
 
 func (c *Checker) checkProject(ctx context.Context, project Project) ProjectResults {
+	checker := c.withUserAgent(project.CheckerUserAgent)
 	checks := map[string]CheckResult{}
 	if project.ManifestURL != "" {
-		checks["presentation.default"] = c.checkJSON(ctx, project.ManifestURL, "presentation", "").Result
-		checks["presentation.compression"] = c.checkCompression(ctx, project.ManifestURL)
-		v2 := c.checkJSON(ctx, project.ManifestURL, "presentation", "v2")
-		v3 := c.checkJSON(ctx, project.ManifestURL, "presentation", "v3")
+		checks["presentation.default"] = checker.checkJSON(ctx, project.ManifestURL, "presentation", "").Result
+		checks["presentation.compression"] = checker.checkCompression(ctx, project.ManifestURL)
+		v2 := checker.checkJSON(ctx, project.ManifestURL, "presentation", "v2")
+		v3 := checker.checkJSON(ctx, project.ManifestURL, "presentation", "v3")
 		checks["presentation.v2"], checks["presentation.v3"] = evaluateNegotiatedPair("presentation", v2, v3)
-		checks["presentation.preflight"] = c.checkNegotiationPreflight(ctx, project.ManifestURL)
+		checks["presentation.preflight"] = checker.checkNegotiationPreflight(ctx, project.ManifestURL)
 	}
 	if project.ImageInfoURL != "" {
-		info := c.checkJSON(ctx, project.ImageInfoURL, "image", "")
+		info := checker.checkJSON(ctx, project.ImageInfoURL, "image", "")
 		checks["image.default"] = info.Result
-		checks["image.compression"] = c.checkCompression(ctx, project.ImageInfoURL)
-		v2 := c.checkJSON(ctx, project.ImageInfoURL, "image", "v2")
-		v3 := c.checkJSON(ctx, project.ImageInfoURL, "image", "v3")
+		checks["image.compression"] = checker.checkCompression(ctx, project.ImageInfoURL)
+		v2 := checker.checkJSON(ctx, project.ImageInfoURL, "image", "v2")
+		v3 := checker.checkJSON(ctx, project.ImageInfoURL, "image", "v3")
 		checks["image.v2"], checks["image.v3"] = evaluateNegotiatedPair("image", v2, v3)
-		checks["image.info-preflight"] = c.checkNegotiationPreflight(ctx, project.ImageInfoURL)
-		checks["image.base-redirect"] = c.checkBaseRedirect(ctx, project.ImageInfoURL, info.Document)
+		checks["image.info-preflight"] = checker.checkNegotiationPreflight(ctx, project.ImageInfoURL)
+		checks["image.base-redirect"] = checker.checkBaseRedirect(ctx, project.ImageInfoURL, info.Document)
 		if info.Document != nil {
 			imageURL := representativeImageURL(project.ImageInfoURL, info.Document)
-			checks["image.response"] = c.checkImage(ctx, imageURL)
+			checks["image.response"] = checker.checkImage(ctx, imageURL)
 		} else {
 			checks["image.response"] = responseResult("unknown", "Representative image was not requested because default info.json could not be parsed.", nil, "")
 		}

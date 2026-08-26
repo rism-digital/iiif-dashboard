@@ -132,7 +132,9 @@
       "name": "gallica.bnf.fr",
       "homepage": "https://gallica.bnf.fr/",
       "manifestUrl": "https://gallica.bnf.fr/iiif/ark:/12148/btv1b52524698x/manifest.json",
-      "imageInfoUrl": "https://gallica.bnf.fr/iiif/ark:/12148/btv1b52524698x/f3/info.json"
+      "imageInfoUrl": "https://gallica.bnf.fr/iiif/ark:/12148/btv1b52524698x/f3/info.json",
+      "notes": "Gallica rejects the checker's identifying User-Agent but serves these endpoints to ordinary browser User-Agents. This sample is therefore checked with the project-specific User-Agent Mozilla/5.0. The image service declares legacy IIIF Image API 1.1, which the dashboard recognizes for diagnostic purposes even though its version comparisons cover v2 and v3.",
+      "checkerUserAgent": "Mozilla/5.0"
     },
     {
       "id": "getty-museum",

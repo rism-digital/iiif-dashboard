@@ -263,6 +263,12 @@ projectRows model project =
                                 [ text "#" ]
                             ]
                         , span [ class "source-label" ] [ text sourceText ]
+                        , case project.notes of
+                            Just _ ->
+                                span [ class "project-note-indicator" ] [ text "Project note available" ]
+
+                            Nothing ->
+                                text ""
                         , healthIndicator checkedState displayed
                         ]
                     ]
@@ -542,6 +548,15 @@ detailsPanel project checks =
                         span [ class "missing-sample" ] [ text "No image sample configured" ]
                 ]
             ]
+        , case project.notes of
+            Just note ->
+                div [ class "project-note" ]
+                    [ span [ class "project-note-label" ] [ text "Project note" ]
+                    , p [] [ text note ]
+                    ]
+
+            Nothing ->
+                text ""
         , div [ class "diagnostic-grid" ]
             [ case project.manifestUrl of
                 Just _ ->
@@ -785,7 +800,10 @@ ruleReferences key check =
             ]
 
         "image.default" ->
-            if check.detected |> Maybe.map (String.startsWith "v2") |> Maybe.withDefault False then
+            if check.detected |> Maybe.map (String.startsWith "v1") |> Maybe.withDefault False then
+                [ ( "Image API 1.1", "https://iiif.io/api/image/1.1/" ) ]
+
+            else if check.detected |> Maybe.map (String.startsWith "v2") |> Maybe.withDefault False then
                 [ ( "Image API 2.1 §5.2", "https://iiif.io/api/image/2.1/#52-technical-properties" ) ]
 
             else if check.detected |> Maybe.map (String.startsWith "v3") |> Maybe.withDefault False then

@@ -17,6 +17,7 @@ matches query project =
             , project.homepage
             , Maybe.withDefault "" project.manifestUrl
             , Maybe.withDefault "" project.imageInfoUrl
+            , Maybe.withDefault "" project.notes
             ]
                 |> String.join " "
                 |> String.toLower

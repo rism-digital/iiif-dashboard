@@ -15,6 +15,11 @@ tests =
                 Decode.decodeString Domain.registryDecoder registryJson
                     |> Result.map (.projects >> List.map .id)
                     |> Expect.equal (Ok [ "example-library" ])
+        , test "decodes an optional project note" <|
+            \_ ->
+                Decode.decodeString Domain.registryDecoder registryWithNoteJson
+                    |> Result.map (.projects >> List.head >> Maybe.andThen .notes)
+                    |> Expect.equal (Ok (Just "Uses an endpoint-specific request workaround."))
         , test "decodes generated observations" <|
             \_ ->
                 Decode.decodeString Domain.resultsDecoder resultsJson
@@ -142,6 +147,11 @@ tests =
 registryJson : String
 registryJson =
     "{\"schemaVersion\":1,\"projects\":[{\"id\":\"example-library\",\"name\":\"Example Library\",\"homepage\":\"https://example.org\",\"manifestUrl\":\"https://example.org/manifest\",\"imageInfoUrl\":\"https://example.org/info.json\"}]}"
+
+
+registryWithNoteJson : String
+registryWithNoteJson =
+    "{\"schemaVersion\":1,\"projects\":[{\"id\":\"example-library\",\"name\":\"Example Library\",\"homepage\":\"https://example.org\",\"manifestUrl\":\"https://example.org/manifest\",\"notes\":\"Uses an endpoint-specific request workaround.\"}]}"
 
 
 resultsJson : String
