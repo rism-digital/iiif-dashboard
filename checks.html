@@ -25,7 +25,7 @@
       <main class="page-shell checks-page">
         <section class="checks-intro">
           <h2>Server behaviour, not full JSON validation</h2>
-          <p>The checker makes real HTTP requests to one sample Manifest and one sample Image Service for each project. It concentrates on retrieval, redirects, content negotiation, compression, CORS, media types, identifiers, and a small set of properties needed to recognize the response. It is not a replacement for a complete IIIF JSON validator.</p>
+          <p>The checker makes HTTP requests to one sample Manifest and one sample Image Service for each project. It concentrates on retrieval, redirects, content negotiation, compression, CORS, media types, identifiers, and a small set of properties needed to recognize the response. Beyond a couple checks on certain values in the JSON responses, it does not validate the IIIF JSON responses.</p>
           <p>Each request contributes one result. When several things are wrong with the same response, the report shows the highest-priority diagnostic rather than adding several blocks for one request.</p>
           <nav class="checks-nav" aria-label="Checks on this page">
             <a href="#statuses">Result colours</a>
@@ -161,7 +161,9 @@
         <section class="checks-section" id="cors">
           <h2>CORS behaviour</h2>
           <p>The checker sends <code>Origin: https://rism-digital.github.io</code> by default. A response has usable CORS when it contains exactly one <code>Access-Control-Allow-Origin</code> value and that value is either the configured origin or <code>*</code>. Servers may return ACAO only when the request includes Origin; the dashboard records what was returned to its own request.</p>
+          <p class="checks-note"><code>Accept</code> is normally a CORS-safelisted request header, but only when its value does not contain a CORS-unsafe request-header byte. IIIF content-negotiation values commonly include a quoted profile URI—for example, <code>application/ld+json;profile="http://iiif.io/api/presentation/3/context.json"</code>. The quotation marks and the colon in <code>http:</code> are CORS-unsafe bytes, so a client that sends this value must first make an <code>OPTIONS</code> preflight. To permit that request, the preflight response needs a usable <code>Access-Control-Allow-Origin</code>, must allow <code>GET</code> in <code>Access-Control-Allow-Methods</code>, and must include <code>Accept</code> in <code>Access-Control-Allow-Headers</code>. The subsequent GET response still needs its own usable <code>Access-Control-Allow-Origin</code>.</p>
           <p class="checks-note">When a server dynamically echoes the allowed origin, <code>Vary: Origin</code> prevents a shared cache from serving one origin’s response to another. The checker records this header but does not score it as a separate rule. Every returned <code>Access-Control-*</code> header is shown in the expanded CORS details.</p>
+          <p class="check-references"><strong>References</strong><a href="https://fetch.spec.whatwg.org/#cors-safelisted-request-header">Fetch Standard request-header safelist</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS#preflighted_requests">MDN preflighted CORS requests</a></p>
         </section>
 
         <section class="checks-section" id="metadata">
