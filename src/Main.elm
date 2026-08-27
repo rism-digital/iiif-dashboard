@@ -1,4 +1,4 @@
-module Main exposing (VersionState(..), coreStatus, main, negotiatedVersionState, ruleReferences)
+module Main exposing (VersionState(..), coreStatus, healthStatuses, main, negotiatedVersionState, ruleReferences)
 
 import Browser
 import Dict exposing (Dict)
@@ -269,7 +269,7 @@ projectRows model project =
 
                             Nothing ->
                                 text ""
-                        , healthIndicator checkedState displayed
+                        , healthIndicator checkedState project displayed
                         ]
                     ]
                 , td []
@@ -332,13 +332,62 @@ findProjectResults projectId projects =
     List.filter (\project -> project.id == projectId) projects |> List.head
 
 
-healthIndicator : Maybe Bool -> Dict String CheckResult -> Html msg
-healthIndicator checkedState checks =
+primaryHealthGroups : Project -> List ( String, List String )
+primaryHealthGroups project =
+    [ case project.manifestUrl of
+        Just _ ->
+            Just
+                ( "P"
+                , [ "presentation.default"
+                  , "presentation.compression"
+                  , "presentation.v2"
+                  , "presentation.v3"
+                  ]
+                )
+
+        Nothing ->
+            Nothing
+    , case project.imageInfoUrl of
+        Just _ ->
+            Just
+                ( "I"
+                , [ "image.default"
+                  , "image.compression"
+                  , "image.v2"
+                  , "image.v3"
+                  , "image.base-redirect"
+                  , "image.response"
+                  ]
+                )
+
+        Nothing ->
+            Nothing
+    ]
+        |> List.filterMap identity
+
+
+healthStatuses : Project -> Dict String CheckResult -> List Status
+healthStatuses project checks =
+    primaryHealthGroups project
+        |> List.concatMap Tuple.second
+        |> List.map
+            (\key ->
+                Dict.get key checks
+                    |> Maybe.map .status
+                    |> Maybe.withDefault Unknown
+            )
+
+
+healthIndicator : Maybe Bool -> Project -> Dict String CheckResult -> Html msg
+healthIndicator checkedState project checks =
     let
         count status =
-            Dict.values checks
-                |> List.filter (\check -> check.status == status)
+            statuses
+                |> List.filter ((==) status)
                 |> List.length
+
+        statuses =
+            healthStatuses project checks
 
         passed =
             count Pass
@@ -349,44 +398,128 @@ healthIndicator checkedState checks =
         failed =
             count Fail
 
+        advisories =
+            count Advisory
+
+        notTested =
+            count Unknown
+
+        scored =
+            passed + warnings + failed
+
+        total =
+            List.length statuses
+
+        plural amount singular pluralForm =
+            if amount == 1 then
+                singular
+
+            else
+                pluralForm
+
         summary =
             if checkedState == Just False then
                 "Health: not checked"
 
             else
                 "Health: "
+                    ++ String.fromInt scored
+                    ++ " scored of "
+                    ++ String.fromInt total
+                    ++ " primary "
+                    ++ plural total "request" "requests"
+                    ++ " — "
                     ++ String.fromInt passed
                     ++ " passed, "
                     ++ String.fromInt warnings
-                    ++ " warnings, "
+                    ++ " "
+                    ++ plural warnings "warning" "warnings"
+                    ++ ", "
                     ++ String.fromInt failed
-                    ++ " failed"
+                    ++ " failed; "
+                    ++ String.fromInt advisories
+                    ++ " "
+                    ++ plural advisories "advisory" "advisories"
+                    ++ "; "
+                    ++ String.fromInt notTested
+                    ++ " not tested. Preflight is shown in details."
 
-        ledGroup status amount =
-            span [ class "health-led-group" ]
-                (List.repeat amount
-                    (span
-                        [ class ("health-led status-bg-" ++ statusClass status)
-                        , attribute "aria-hidden" "true"
-                        ]
-                        []
-                    )
-                )
+        slot key =
+            let
+                result =
+                    Dict.get key checks
+
+                status =
+                    result
+                        |> Maybe.map .status
+                        |> Maybe.withDefault Unknown
+
+                apiName =
+                    if String.startsWith "presentation." key then
+                        "Presentation API"
+
+                    else
+                        "Image API"
+
+                explanation =
+                    result
+                        |> Maybe.map .summary
+                        |> Maybe.andThen
+                            (\value ->
+                                if String.isEmpty value then
+                                    Nothing
+
+                                else
+                                    Just value
+                            )
+                        |> Maybe.withDefault "No result is available for this request."
+
+                tooltip =
+                    apiName
+                        ++ " — "
+                        ++ checkName key
+                        ++ " — "
+                        ++ statusLabel status
+                        ++ ": "
+                        ++ explanation
+
+                statusClassName =
+                    case status of
+                        Pass ->
+                            " status-bg-pass"
+
+                        Warning ->
+                            " status-bg-warning"
+
+                        Fail ->
+                            " status-bg-fail"
+
+                        Advisory ->
+                            " status-bg-advisory"
+
+                        Unknown ->
+                            " status-bg-unknown"
+            in
+            span
+                [ class ("health-led" ++ statusClassName)
+                , attribute "data-tooltip" tooltip
+                , attribute "tabindex" "0"
+                , attribute "aria-label" tooltip
+                ]
+                []
+
+        meterGroup ( labelText, keys ) =
+            span [ class "health-api-group" ]
+                (span [ class "health-api-label", attribute "aria-hidden" "true" ] [ text labelText ] :: List.map slot keys)
     in
-    div [ class "project-health", attribute "role" "img", attribute "aria-label" summary, title summary ]
+    div [ class "project-health", attribute "role" "group", attribute "aria-label" summary ]
         [ span [ class "health-label", attribute "aria-hidden" "true" ] [ text "Health" ]
         , if checkedState == Just False then
             span [ class "health-empty" ] [ text "Not checked" ]
 
-          else if passed + warnings + failed == 0 then
-            span [ class "health-empty" ] [ text "No checks" ]
-
           else
-            span [ class "health-meter", attribute "aria-hidden" "true" ]
-                [ ledGroup Pass passed
-                , ledGroup Warning warnings
-                , ledGroup Fail failed
-                ]
+            span [ class "health-meter" ]
+                (List.map meterGroup (primaryHealthGroups project))
         ]
 
 
@@ -700,6 +833,18 @@ corsDiagnosticRow ( key, check ) =
 
             else
                 "The scheduled checker received the GET response and recorded its CORS headers."
+
+        corsReferences =
+            if String.contains "Access-Control-Allow-Headers does not include Accept" check.summary then
+                [ ( "Fetch Standard — CORS-safelisted request headers", "https://fetch.spec.whatwg.org/#cors-safelisted-request-header" )
+                , ( "MDN preflight requests", "https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request" )
+                ]
+
+            else if preflight then
+                [ ( "MDN preflight requests", "https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request" ) ]
+
+            else
+                [ ( "MDN CORS", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS" ) ]
     in
     div [ class ("diagnostic-item cors-diagnostic diagnostic-" ++ statusClass displayStatus) ]
         [ div [ class "diagnostic-title" ]
@@ -737,12 +882,7 @@ corsDiagnosticRow ( key, check ) =
                         check.corsHeaders
                 )
         , ruleReferenceView
-            (if preflight then
-                [ ( "MDN preflight requests", "https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request" ) ]
-
-             else
-                [ ( "MDN CORS", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS" ) ]
-            )
+            (checkPageReference key ++ corsReferences)
         ]
 
 
@@ -766,6 +906,57 @@ ruleReferenceView references =
 
 ruleReferences : String -> CheckResult -> List ( String, String )
 ruleReferences key check =
+    checkPageReference key ++ externalRuleReferences key check
+
+
+checkPageReference : String -> List ( String, String )
+checkPageReference key =
+    case key of
+        "presentation.default" ->
+            [ ( "How this check works", "./checks.html#presentation-default" ) ]
+
+        "presentation.compression" ->
+            [ ( "How this check works", "./checks.html#presentation-compression" ) ]
+
+        "presentation.v2" ->
+            [ ( "How this check works", "./checks.html#presentation-negotiation" ) ]
+
+        "presentation.v3" ->
+            [ ( "How this check works", "./checks.html#presentation-negotiation" ) ]
+
+        "presentation.preflight" ->
+            [ ( "How this check works", "./checks.html#presentation-preflight" ) ]
+
+        "image.default" ->
+            [ ( "How this check works", "./checks.html#image-default" ) ]
+
+        "image.compression" ->
+            [ ( "How this check works", "./checks.html#image-compression" ) ]
+
+        "image.v2" ->
+            [ ( "How this check works", "./checks.html#image-negotiation" ) ]
+
+        "image.v3" ->
+            [ ( "How this check works", "./checks.html#image-negotiation" ) ]
+
+        "image.info-preflight" ->
+            [ ( "How this check works", "./checks.html#image-preflight" ) ]
+
+        "image.base-redirect" ->
+            [ ( "How this check works", "./checks.html#image-base-redirect" ) ]
+
+        "image.response" ->
+            [ ( "How this check works", "./checks.html#image-response" ) ]
+
+        "image.response-preflight" ->
+            [ ( "How this check works", "./checks.html#image-response" ) ]
+
+        _ ->
+            []
+
+
+externalRuleReferences : String -> CheckResult -> List ( String, String )
+externalRuleReferences key check =
     case key of
         "presentation.default" ->
             if check.detected |> Maybe.map (String.startsWith "v2") |> Maybe.withDefault False then

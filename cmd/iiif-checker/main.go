@@ -15,6 +15,8 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	req "github.com/imroc/req/v3"
 )
 
 const (
@@ -39,11 +41,12 @@ type Registry struct {
 }
 
 type Project struct {
-	ID               string `json:"id"`
-	Name             string `json:"name"`
-	ManifestURL      string `json:"manifestUrl,omitempty"`
-	ImageInfoURL     string `json:"imageInfoUrl,omitempty"`
-	CheckerUserAgent string `json:"checkerUserAgent,omitempty"`
+	ID                string `json:"id"`
+	Name              string `json:"name"`
+	ManifestURL       string `json:"manifestUrl,omitempty"`
+	ImageInfoURL      string `json:"imageInfoUrl,omitempty"`
+	CheckerUserAgent  string `json:"checkerUserAgent,omitempty"`
+	CheckerTLSProfile string `json:"checkerTLSProfile,omitempty"`
 }
 
 type CheckResult struct {
@@ -121,6 +124,23 @@ func (c *Checker) withUserAgent(userAgent string) *Checker {
 	}
 	configured := *c
 	configured.userAgent = userAgent
+	return &configured
+}
+
+func (c *Checker) withTLSProfile(profile string) *Checker {
+	if profile == "" {
+		return c
+	}
+	profileClient := req.C()
+	switch profile {
+	case "chrome":
+		profileClient.ImpersonateChrome()
+	default:
+		return c
+	}
+	profileClient.DisableAutoDecompress()
+	configured := *c
+	configured.client = &http.Client{Transport: profileClient.GetTransport(), Timeout: c.client.Timeout}
 	return &configured
 }
 
@@ -647,7 +667,7 @@ func (c *Checker) checkBaseRedirect(ctx context.Context, infoAddress string, doc
 }
 
 func (c *Checker) checkProject(ctx context.Context, project Project) ProjectResults {
-	checker := c.withUserAgent(project.CheckerUserAgent)
+	checker := c.withUserAgent(project.CheckerUserAgent).withTLSProfile(project.CheckerTLSProfile)
 	checks := map[string]CheckResult{}
 	if project.ManifestURL != "" {
 		checks["presentation.default"] = checker.checkJSON(ctx, project.ManifestURL, "presentation", "").Result

@@ -75,10 +75,18 @@ h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.45rem); letter-spacing: -.035em
 .project-health { display: flex; align-items: center; gap: 8px; min-height: 12px; margin-top: 4px; }
 .health-label, .health-empty { color: var(--muted); font-size: .68rem; }
 .health-label { font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
-.health-meter { display: inline-flex; align-items: center; gap: 5px; }
-.health-led-group { display: inline-flex; gap: 2px; }
-.health-led { display: block; width: 9px; height: 9px; border: 1px solid rgba(24,34,48,.16); }
+.health-meter { display: inline-flex; align-items: center; gap: 8px; }
+.health-api-group { display: inline-flex; align-items: center; gap: 2px; }
+.health-api-label { margin-right: 2px; color: var(--muted); font-size: .58rem; font-weight: 800; }
+.health-led { position: relative; display: block; width: 11px; height: 11px; border: 1px solid rgba(24,34,48,.16); cursor: help; }
 .health-led.status-bg-warning { background: #e3a008; }
+.health-led::after { position: absolute; bottom: calc(100% + 9px); left: 50%; z-index: 20; width: max-content; max-width: min(300px, 70vw); padding: 8px 10px; color: white; background: var(--navy); box-shadow: 0 4px 12px rgba(16,42,67,.25); content: attr(data-tooltip); font-size: .72rem; font-weight: 600; line-height: 1.4; opacity: 0; pointer-events: none; text-align: left; text-transform: none; transform: translate(-50%, 3px); transition: opacity .12s ease, transform .12s ease; visibility: hidden; white-space: normal; }
+.health-led::before { position: absolute; bottom: calc(100% + 4px); left: 50%; z-index: 21; width: 0; height: 0; border: 5px solid transparent; border-top-color: var(--navy); content: ""; opacity: 0; pointer-events: none; transform: translateX(-50%); transition: opacity .12s ease; visibility: hidden; }
+.health-led:hover, .health-led:focus-visible { z-index: 22; outline: 2px solid var(--blue); outline-offset: 2px; }
+.health-led:hover::after, .health-led:focus-visible::after, .health-led:hover::before, .health-led:focus-visible::before { opacity: 1; visibility: visible; }
+.health-led:hover::after, .health-led:focus-visible::after { transform: translate(-50%, 0); }
+.health-api-group:first-child .health-led::after { left: 0; transform: translate(0, 3px); }
+.health-api-group:first-child .health-led:hover::after, .health-api-group:first-child .health-led:focus-visible::after { transform: translate(0, 0); }
 .api-summary { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 9px; font-size: .78rem; font-weight: 700; }
 .status-symbol { font-weight: 900; }
@@ -166,7 +174,7 @@ button { cursor: pointer; padding: 8px 11px; font-size: .8rem; font-weight: 650;
 .legend-card { padding: 14px; border: 1px solid var(--line); background: white; }
 .legend-card p { margin: 9px 0 0; color: var(--muted); font-size: .8rem; line-height: 1.45; }
 .check-doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.check-doc { padding: 18px; border: 1px solid var(--line); background: white; }
+.check-doc { padding: 18px; border: 1px solid var(--line); background: white; scroll-margin-top: 16px; }
 .check-doc-wide { grid-column: 1 / -1; }
 .check-doc h3 { margin: 0; color: var(--navy); font-size: 1rem; }
 .check-key { display: block; margin-top: 4px; color: #788692; font: .68rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
@@ -184,6 +192,10 @@ button { cursor: pointer; padding: 8px 11px; font-size: .8rem; font-weight: 650;
 .check-references a { font-weight: 650; }
 .checks-note { padding: 16px 18px; border-left: 5px solid var(--blue); background: #eaf4f8; color: #405a6b; font-size: .84rem; line-height: 1.55; }
 .checks-note code, .check-purpose code, .outcome-list code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .92em; }
+.health-example { display: flex; align-items: center; gap: 10px; width: fit-content; margin: 18px 0 12px; padding: 14px 16px; border: 1px solid var(--line); background: white; }
+.health-example .health-label { font-size: .72rem; }
+.health-example .health-led { width: 15px; height: 15px; }
+.health-example-summary { color: #405566 !important; font-size: .84rem; font-weight: 700; }
 
 @media (max-width: 820px) {
   .page-shell, .header-inner, .footer-inner { padding-left: 18px; padding-right: 18px; }

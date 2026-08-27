@@ -1,12 +1,12 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-27T08:10:52.263921Z",
+  "generatedAt": "2026-08-27T09:24:53.09642Z",
   "projects": [
     {
       "id": "am-quartex",
       "name": "AM Quartex",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:53.479414Z",
+      "checkedAt": "2026-08-27T09:21:26.536618Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -38,7 +38,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: public, max-age=3600",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:51 GMT"
+            "Date: Thu, 27 Aug 2026 09:21:24 GMT"
           ]
         },
         "image.info-preflight": {
@@ -104,7 +104,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: public, max-age=3600",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:50 GMT"
+            "Date: Thu, 27 Aug 2026 09:21:23 GMT"
           ]
         },
         "presentation.preflight": {
@@ -145,7 +145,7 @@
       "id": "api-onb-ac-at",
       "name": "Austrian National Library (ÖNB)",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:14.900868Z",
+      "checkedAt": "2026-08-27T09:21:21.829785Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -181,7 +181,7 @@
             "Access-Control-Allow-Origin: https://rism-digital.github.io",
             "Content-Length: 1032",
             "Content-Type: application/json;charset=UTF-8",
-            "Date: Thu, 27 Aug 2026 08:09:14 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:20 GMT",
             "Server: apache/ap",
             "Strict-Transport-Security: max-age=63072000; includeSubDomains"
           ]
@@ -254,7 +254,7 @@
             "Access-Control-Allow-Credentials: false",
             "Access-Control-Allow-Origin: https://rism-digital.github.io",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:13 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:20 GMT",
             "Server: apache/ap",
             "Strict-Transport-Security: max-age=63072000; includeSubDomains"
           ]
@@ -296,7 +296,7 @@
       "id": "digital-blb-karlsruhe-de",
       "name": "Badische Landesbibliothek Karlsruhe",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:15.915499Z",
+      "checkedAt": "2026-08-27T09:21:40.192297Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -327,7 +327,7 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:15 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:40 GMT",
             "Referer: ",
             "Server: VLS/2506",
             "Set-Cookie: session_id=5a0d8b5373cb4d8fe2986b7083a6eb2f65453607; Path=/; SameSite=Lax; secure",
@@ -399,7 +399,7 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:14 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:39 GMT",
             "Referer: ",
             "Server: VLS/2506",
             "Set-Cookie: session_id=5a0d8b5373cb4d8fe2986b7083a6eb2f65453607; Path=/; SameSite=Lax; secure",
@@ -447,7 +447,7 @@
       "id": "api-digitale-sammlungen-de",
       "name": "Bavarian State Library (BSB)",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:50.00926Z",
+      "checkedAt": "2026-08-27T09:21:42.30781Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -480,7 +480,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: public, max-age=604800, must-revalidate",
             "Content-Type: application/ld+json;profile=\"http://iiif.io/api/image/2/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:08:49 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:41 GMT",
             "Etag: W/\"0080a9f7727726783617077919407ceec77865f5ae67d908b87ab0b42ef55fc9\"",
             "Last-Modified: Wed, 05 Jan 2022 09:42:41 GMT",
             "Strict-Transport-Security: max-age=31536000; includeSubDomains"
@@ -514,7 +514,7 @@
               "responseHeaders": [
                 "Access-Control-Allow-Origin: *",
                 "Content-Type: text/plain",
-                "Date: Thu, 27 Aug 2026 08:08:49 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:42 GMT",
                 "Etag: W/\"0080a9f7727726783617077919407ceec77865f5ae67d908b87ab0b42ef55fc9\"",
                 "Last-Modified: Wed, 05 Jan 2022 09:42:41 GMT",
                 "Location: https://api.digitale-sammlungen.de/iiif/image/v2/bsb00085097_00063/full/158,/0/default.jpg",
@@ -571,7 +571,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: max-age=3600, must-revalidate, public",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:48 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:41 GMT",
             "Etag: W/\"Vy8xLjAuMy0xNzg2MzQxMTgxNTI5LVYyLWJzYjAwMDg1MDk3LTE3ODM1NjQyMDcwMDA=\"",
             "Last-Modified: Thu, 09 Jul 2026 02:30:07 GMT",
             "Strict-Transport-Security: max-age=31536000; includeSubDomains",
@@ -579,7 +579,7 @@
             "Vary: Access-Control-Request-Method",
             "Vary: Access-Control-Request-Headers",
             "X-Proxy-Cache: MISS",
-            "X-Request-Id: f637f7b5aaed1a8866be232abd085e16"
+            "X-Request-Id: bf153392e258768521166107f5a4ccc3"
           ]
         },
         "presentation.preflight": {
@@ -596,22 +596,24 @@
         },
         "presentation.v2": {
           "status": "pass",
-          "summary": "The server correctly declined the unavailable representation (406 Not Acceptable).",
+          "summary": "Valid v2 manifest; @id matches the final response URL.",
           "corsHeaders": [
             "access-control-allow-origin: *"
           ],
-          "httpStatus": 406,
-          "contentType": "application/problem+json",
+          "httpStatus": 200,
+          "detected": "v2",
+          "contentType": "application/json",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/2/context.json\""
         },
         "presentation.v3": {
-          "status": "pass",
-          "summary": "The server correctly declined the unavailable representation (406 Not Acceptable).",
+          "status": "advisory",
+          "summary": "Requested v3 but received v2; supporting the requested representation through content negotiation is recommended. The @id matches the final response URL.",
           "corsHeaders": [
             "access-control-allow-origin: *"
           ],
-          "httpStatus": 406,
-          "contentType": "application/problem+json",
+          "httpStatus": 200,
+          "detected": "v2",
+          "contentType": "application/json",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/3/context.json\""
         }
       }
@@ -620,7 +622,7 @@
       "id": "content-staatsbibliothek-berlin-de",
       "name": "Berlin State Library (SBB)",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:53.536266Z",
+      "checkedAt": "2026-08-27T09:21:21.636285Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -656,7 +658,7 @@
             "Content-Security-Policy: default-src 'self'; img-src 'self'; object-src 'none'",
             "Content-Security-Policy: default-src 'self'; img-src 'self'; object-src 'none'",
             "Content-Type: application/ld+json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:49 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:20 GMT",
             "Server: nginx",
             "Status: 200 OK",
             "Strict-Transport-Security: max-age=63072000",
@@ -734,7 +736,7 @@
             "Content-Security-Policy: default-src 'self'; img-src 'self'; object-src 'none'",
             "Content-Security-Policy: default-src 'self'; img-src 'self'; object-src 'none'",
             "Content-Type: application/ld+json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:48 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:20 GMT",
             "Server: nginx",
             "Status: 200 OK",
             "Strict-Transport-Security: max-age=63072000",
@@ -784,7 +786,7 @@
       "id": "library-bc-edu",
       "name": "Boston College Libraries",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:50.658072Z",
+      "checkedAt": "2026-08-27T09:21:32.878297Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -817,7 +819,7 @@
             "Connection: keep-alive",
             "Content-Length: 869",
             "Content-Type: application/json;charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:49 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:32 GMT",
             "Server: nginx",
             "Vary: Accept, Accept-Charset, Accept-Encoding, Accept-Language, Origin",
             "X-Frame-Options: SAMEORIGIN",
@@ -897,7 +899,7 @@
             "Access-Control-Allow-Origin: *",
             "Access-Control-Expose-Headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:49 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:31 GMT",
             "Etag: W/\"6685bfa0-4de19\"",
             "Last-Modified: Wed, 03 Jul 2024 21:16:16 GMT",
             "Server: nginx"
@@ -949,7 +951,7 @@
       "id": "brown-university",
       "name": "Brown University Library",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:51.483346Z",
+      "checkedAt": "2026-08-27T09:21:47.476747Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -980,12 +982,12 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Cf-Cache-Status: DYNAMIC",
-            "Cf-Ray: a31997319e2824c4-ZRH",
+            "Cf-Ray: a31a0207f82f0d25-ZRH",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:50 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:46 GMT",
             "Referrer-Policy: same-origin",
             "Server: cloudflare",
-            "Set-Cookie: _cfuvid=p6eXWVBi.eOMQ6V5GNPUcGJxF5L.1MFWGgwBK7nLeU8-1787818130.1800888-1.0.1.1-zpW5YBq2gdFbE7imEmTmppwai7_0WcvvAF7Mdog_YuY; HttpOnly; SameSite=None; Secure; Path=/; Domain=brown.edu",
+            "Set-Cookie: _cfuvid=0ei1zOv66RFHnZy_ktIlvjArXIspP2mQSHYkl3FICO4-1787822506.2375793-1.0.1.1-sFCtynOF0WgnI3ChcOdd72QSXwJ99V10nVTu13gmuOk; HttpOnly; SameSite=None; Secure; Path=/; Domain=brown.edu",
             "Status: 200 OK",
             "X-Content-Type-Options: nosniff"
           ]
@@ -1051,12 +1053,12 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Cf-Cache-Status: DYNAMIC",
-            "Cf-Ray: a319972a7ef024c4-ZRH",
+            "Cf-Ray: a31a02007d740d25-ZRH",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:49 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:45 GMT",
             "Referrer-Policy: same-origin",
             "Server: cloudflare",
-            "Set-Cookie: _cfuvid=IfU4acAkWgKMXDFira.gFP7mwqbG6f8oNu4uBjD6fco-1787818129.0371892-1.0.1.1-2pjh22gIH7.S57Pa0eOzqdhRLIZ.X0FGZI5oIQJVm2U; HttpOnly; SameSite=None; Secure; Path=/; Domain=brown.edu",
+            "Set-Cookie: _cfuvid=rFmYHxO2BpppsLgbfsnY2_G2h9esJ.sTRdGSlnogIUk-1787822505.0376596-1.0.1.1-BqKHt7d5v6mA5beEE.QfP_dhOd.gTQZ9o5EV7sx_Ug4; HttpOnly; SameSite=None; Secure; Path=/; Domain=brown.edu",
             "Status: 200 OK",
             "X-Content-Type-Options: nosniff"
           ]
@@ -1098,7 +1100,7 @@
       "id": "cambridge-digital-library",
       "name": "Cambridge University Digital Library",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:51.574966Z",
+      "checkedAt": "2026-08-27T09:21:30.133782Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -1136,7 +1138,7 @@
             "Cache-Control: max-age=86400",
             "Content-Security-Policy: ",
             "Content-Type: application/ld+json",
-            "Date: Thu, 27 Aug 2026 08:08:50 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:29 GMT",
             "Last-Modified: Wed, 18 Oct 2017 21:35:21 GMT",
             "Server: Apache",
             "Strict-Transport-Security: max-age=15768000; includeSubDomains; preload",
@@ -1214,10 +1216,10 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/json;charset=UTF-8",
-            "Date: Thu, 27 Aug 2026 08:08:50 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:29 GMT",
             "Server: CloudFront",
-            "Via: 1.1 67ff75e05c92bc5ca2eabbdc5e6a1ae0.cloudfront.net (CloudFront)",
-            "X-Amz-Cf-Id: Hlt9PtqgGuaUtWlUIlb4M7EAm6FuY2eKvGGhVIofOczwkCiLmFxslw==",
+            "Via: 1.1 16a83c328ec1b5af4d0dc28e1e3a8198.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id: NhDIt06KhT9JSrTJYE3SqKHYNx5VnifjlQe1Y4z37_5pRFB9VSkwSg==",
             "X-Amz-Cf-Pop: ZRH52-P1",
             "X-Cache: Miss from cloudfront"
           ]
@@ -1256,43 +1258,90 @@
       "id": "digital-library-villanova-edu",
       "name": "Digital Library @ Villanova University",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:57.127008Z",
+      "checkedAt": "2026-08-27T09:21:41.373905Z",
       "checks": {
         "image.base-redirect": {
-          "status": "fail",
-          "summary": "Base URI redirect check failed: Get \"https://iiif.library.villanova.edu/iiif/2/vudl%3A807702/\": read tcp 192.168.34.9:55487-\u003e153.104.6.236:443: read: connection reset by peer",
-          "corsHeaders": []
+          "status": "warning",
+          "summary": "Base URI redirected with HTTP 301 to https://iiif.library.villanova.edu/iiif/2/vudl%3A807702; IIIF recommends 303.",
+          "corsHeaders": [],
+          "httpStatus": 301,
+          "location": "https://iiif.library.villanova.edu/iiif/2/vudl%3A807702"
         },
         "image.compression": {
-          "status": "fail",
-          "summary": "Gzip request failed: Get \"https://iiif.library.villanova.edu/iiif/2/vudl%3A807702/info.json\": read tcp 192.168.34.9:55477-\u003e153.104.6.236:443: read: connection reset by peer",
-          "corsHeaders": []
+          "status": "advisory",
+          "summary": "A usable identity response was returned; gzip compression is recommended.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "contentType": "application/json;charset=utf-8"
         },
         "image.default": {
-          "status": "fail",
-          "summary": "Request failed: Get \"https://iiif.library.villanova.edu/iiif/2/vudl%3A807702/info.json\": read tcp 192.168.34.9:55472-\u003e153.104.6.236:443: read: connection reset by peer",
-          "corsHeaders": []
+          "status": "pass",
+          "summary": "Valid v2 · Level 2 image information; @id matches the image service base URI.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "detected": "v2 · Level 2",
+          "contentType": "application/json;charset=utf-8",
+          "responseHeaders": [
+            "Access-Control-Allow-Origin: *",
+            "Cache-Control: max-age=432000 # 5 days, public, no-transform",
+            "Content-Length: 904",
+            "Content-Security-Policy: upgrade-insecure-requests; form-action $",
+            "Content-Type: application/json;charset=utf-8",
+            "Date: Thu, 27 Aug 2026 09:21:40 GMT",
+            "Last-Modified: Wed, 15 Jul 2026 00:29:25 GMT",
+            "Permissions-Policy: camera=(), microphone=(), geolocation=()",
+            "Referrer-Policy: no-referrer-when-downgrade",
+            "Server: Jetty(11.0.24)",
+            "Strict-Transport-Security: max-age=31536000; includeSubDomains",
+            "Vary: Accept,Accept-Charset,Accept-Encoding,Accept-Language,Origin",
+            "X-Content-Type-Options: nosniff",
+            "X-Frame-Options: SAMEORIGIN",
+            "X-Powered-By: Cantaloupe/5.0.7"
+          ]
         },
         "image.info-preflight": {
-          "status": "fail",
-          "summary": "Content-negotiation OPTIONS preflight failed: Options \"https://iiif.library.villanova.edu/iiif/2/vudl%3A807702/info.json\": read tcp 192.168.34.9:55485-\u003e153.104.6.236:443: read: connection reset by peer",
-          "corsHeaders": []
+          "status": "warning",
+          "summary": "Content-negotiation OPTIONS succeeded, but Access-Control-Allow-Methods does not include GET.",
+          "corsHeaders": [
+            "access-control-allow-headers: Authorization",
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 204,
+          "contentType": "application/json"
         },
         "image.response": {
-          "status": "unknown",
-          "summary": "Representative image was not requested because default info.json could not be parsed.",
-          "corsHeaders": []
+          "status": "pass",
+          "summary": "Representative image request succeeded with an image response and usable CORS.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "contentType": "image/jpeg"
         },
         "image.v2": {
-          "status": "fail",
-          "summary": "Request failed: Get \"https://iiif.library.villanova.edu/iiif/2/vudl%3A807702/info.json\": read tcp 192.168.34.9:55478-\u003e153.104.6.236:443: read: connection reset by peer",
-          "corsHeaders": [],
+          "status": "pass",
+          "summary": "Valid v2 · Level 2 image information; @id matches the image service base URI.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "detected": "v2 · Level 2",
+          "contentType": "application/ld+json;charset=UTF-8",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/image/2/context.json\""
         },
         "image.v3": {
-          "status": "fail",
-          "summary": "Request failed: Get \"https://iiif.library.villanova.edu/iiif/2/vudl%3A807702/info.json\": read tcp 192.168.34.9:55479-\u003e153.104.6.236:443: read: connection reset by peer",
-          "corsHeaders": [],
+          "status": "advisory",
+          "summary": "Requested v3 but received v2; supporting the requested representation through content negotiation is recommended. The @id matches the image service base URI.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "detected": "v2 · Level 2",
+          "contentType": "application/ld+json;charset=UTF-8",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/image/3/context.json\""
         },
         "presentation.compression": {
@@ -1318,14 +1367,14 @@
             "Cache-Control: no-store, no-cache, must-revalidate",
             "Content-Security-Policy: upgrade-insecure-requests; form-action https:",
             "Content-Type: application/ld+json; profile=http://iiif.io/api/presentation/3/context.json",
-            "Date: Thu, 27 Aug 2026 08:08:51 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:37 GMT",
             "Expires: Thu, 19 Nov 1981 08:52:00 GMT",
             "Permissions-Policy: camera=(), microphone=(), geolocation=()",
             "Pragma: no-cache",
             "Referrer-Policy: no-referrer-when-downgrade",
             "Server: Apache",
             "Set-Cookie: language=en; path=/; HttpOnly; SameSite=Lax",
-            "Set-Cookie: VUFIND_SESSION=s115hnoi9k6hot30762bn86vh4; path=/; HttpOnly; SameSite=Lax",
+            "Set-Cookie: VUFIND_SESSION=aff3ci18870265pn09v1uog6jf; path=/; HttpOnly; SameSite=Lax",
             "Set-Cookie: ui=standard; path=/; HttpOnly; SameSite=Lax",
             "Strict-Transport-Security: max-age=31536000; includeSubDomains",
             "X-Content-Type-Options: nosniff"
@@ -1368,7 +1417,7 @@
       "id": "digital-obvsg-at",
       "name": "digital.obvsg.at",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:52.859452Z",
+      "checkedAt": "2026-08-27T09:21:22.139493Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -1400,7 +1449,7 @@
             "Access-Control-Allow-Origin: *",
             "Content-Security-Policy: frame-ancestors 'self' https://kulturpool.at/ https://preview.kulturpool.at/",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:52 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:21 GMT",
             "Permissions-Policy: geolocation=(self), midi=(), sync-xhr=(self), microphone=(self), camera=(), magnetometer=(), gyroscope=(), fullscreen=(self), payment=()",
             "Referer: ",
             "Referrer-Policy: no-referrer-when-downgrade",
@@ -1477,7 +1526,7 @@
             "Access-Control-Allow-Origin: *",
             "Content-Security-Policy: frame-ancestors 'self' https://kulturpool.at/ https://preview.kulturpool.at/",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:51 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:20 GMT",
             "Permissions-Policy: geolocation=(self), midi=(), sync-xhr=(self), microphone=(self), camera=(), magnetometer=(), gyroscope=(), fullscreen=(self), payment=()",
             "Referer: ",
             "Referrer-Policy: no-referrer-when-downgrade",
@@ -1529,7 +1578,7 @@
       "id": "digitalcollections-lib-washington-edu",
       "name": "digitalcollections.lib.washington.edu",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:04.466257Z",
+      "checkedAt": "2026-08-27T09:21:39.811613Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -1560,9 +1609,9 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: max-age=2592000, public, no-transform, max-age=0",
             "Content-Type: application/json;charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:03 GMT",
-            "Expires: Thu, 27 Aug 2026 08:09:03 GMT",
-            "Set-Cookie: TS01328102=011e52333505f7b0ae9ab8262bc741663a2d41b3144edbff8e190bc11c80f725824732ac3c0fe266c278d81b4925ba858d8507ac89; Path=/; HttpOnly",
+            "Date: Thu, 27 Aug 2026 09:21:38 GMT",
+            "Expires: Thu, 27 Aug 2026 09:21:38 GMT",
+            "Set-Cookie: TS01328102=011e5233357755c2950632477dc6c7333f841497db7c397e568997a9134a39db40ed040ea4c87a9790a05ae58ad2c2323025c0c4ce; Path=/; HttpOnly",
             "Vary: Accept,Accept-Charset,Accept-Encoding,Accept-Language,Origin",
             "X-Content-Type-Options: nosniff",
             "X-Oclc-Iiif-Provider: cantaloupe",
@@ -1628,11 +1677,11 @@
                 "Cache-Control: max-age=0",
                 "Content-Length: 281",
                 "Content-Type: application/json;charset=UTF-8",
-                "Date: Thu, 27 Aug 2026 08:08:55 GMT",
-                "Expires: Thu, 27 Aug 2026 08:08:55 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:30 GMT",
+                "Expires: Thu, 27 Aug 2026 09:21:30 GMT",
                 "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
                 "Location: https://digitalcollections.lib.washington.edu/iiif/mm:23084/manifest.json",
-                "Set-Cookie: TS01328102=011e523335953dc8bbafb8457be20aaab785441a0762ee02350facfe272b7abe175d820a63e72226b34ac23aa43fd7d6f7695f83c7; Path=/; HttpOnly",
+                "Set-Cookie: TS01328102=011e52333529af8305773bbf78a1a54ab51f7795f457ac91a574f1d42a04cb989e6b22eab2fc7a905fded856a5aed0abb8ec0922b6; Path=/; HttpOnly",
                 "X-Content-Type-Options: nosniff",
                 "X-Oclc-Iiif-Provider: cantaloupe",
                 "X-Xss-Protection: 1; mode=block"
@@ -1648,11 +1697,11 @@
                 "Cache-Control: max-age=0",
                 "Content-Length: 259",
                 "Content-Type: text/html; charset=iso-8859-1",
-                "Date: Thu, 27 Aug 2026 08:08:55 GMT",
-                "Expires: Thu, 27 Aug 2026 08:08:55 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:30 GMT",
+                "Expires: Thu, 27 Aug 2026 09:21:30 GMT",
                 "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
                 "Location: https://digitalcollections.lib.washington.edu/iiif/2/mm:23084/manifest.json",
-                "Set-Cookie: TS01328102=011e5233356895bd5c3d7abe94290055220bf1866877c4bfc7a03008fbed27b37362955e369323db81c3f3a22c541d390c2453dac2; Path=/; HttpOnly",
+                "Set-Cookie: TS01328102=011e523335f2b984db6e8ba1c38cc5326b7d6b3c48f4c48cb779d743f09f754b0444d3a81752887d10db77c524d62679c8083adde0; Path=/; HttpOnly",
                 "X-Content-Type-Options: nosniff",
                 "X-Oclc-Iiif-Provider: cantaloupe",
                 "X-Xss-Protection: 1; mode=block"
@@ -1675,12 +1724,12 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: max-age=0",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:52 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:27 GMT",
             "Etag: \"05c8d4217f8663bf15a04d584fbee14ca--gzip\"",
-            "Expires: Thu, 27 Aug 2026 08:08:52 GMT",
+            "Expires: Thu, 27 Aug 2026 09:21:27 GMT",
             "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
-            "Set-Cookie: JSESSIONID=ZDY0ZWZiNDctMGZhYi00OGI0LTg5YzEtMmI1OWQ4NTUwODRl; Path=/; Secure; HttpOnly; SameSite=Lax",
-            "Set-Cookie: TS01328102=011e523335ab4ed73c117c6d06a55e251e1c27becab1a0ad9ad8fed87cc39c26ce11311da2c27d2f0fb7caf72038b13bdaf0f47299b4fbad461b8a577660fdab7473f77f2d; Path=/; HttpOnly",
+            "Set-Cookie: JSESSIONID=NmIwMDAxNDMtODRkZi00N2NmLThmY2MtNWNkZDMzZTQ5YWEz; Path=/; Secure; HttpOnly; SameSite=Lax",
+            "Set-Cookie: TS01328102=011e523335b00b5b193c830edcb305a1d7a333b62736dc83efc69dfd8efccb96260009a6582089f090a3efbe2f8dcb44f9585049a45703656e44d5e1251c0945a4e957128c; Path=/; HttpOnly",
             "Strict-Transport-Security: max-age=31536000 ; includeSubDomains",
             "Vary: Accept-Encoding,Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
             "X-Content-Type-Options: nosniff",
@@ -1701,11 +1750,11 @@
                 "Cache-Control: max-age=0",
                 "Content-Length: 281",
                 "Content-Type: application/json;charset=UTF-8",
-                "Date: Thu, 27 Aug 2026 08:08:52 GMT",
-                "Expires: Thu, 27 Aug 2026 08:08:52 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:26 GMT",
+                "Expires: Thu, 27 Aug 2026 09:21:26 GMT",
                 "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
                 "Location: https://digitalcollections.lib.washington.edu/iiif/mm:23084/manifest.json",
-                "Set-Cookie: TS01328102=011e523335c5dd4770ee4122f50385a55d2be72be9bcdc4b8e4f05d6de3167b221f9b95a279e528a27eb554ae38d98df7712468d67; Path=/; HttpOnly",
+                "Set-Cookie: TS01328102=011e5233354ec57335d1f54b49287b0c537a15c8739015eb279cc7c4485792e584ba7d6bef7a6355297879cf82877153c5588d4ef3; Path=/; HttpOnly",
                 "X-Content-Type-Options: nosniff",
                 "X-Oclc-Iiif-Provider: cantaloupe",
                 "X-Xss-Protection: 1; mode=block"
@@ -1721,11 +1770,11 @@
                 "Cache-Control: max-age=0",
                 "Content-Length: 259",
                 "Content-Type: text/html; charset=iso-8859-1",
-                "Date: Thu, 27 Aug 2026 08:08:52 GMT",
-                "Expires: Thu, 27 Aug 2026 08:08:52 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:27 GMT",
+                "Expires: Thu, 27 Aug 2026 09:21:27 GMT",
                 "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
                 "Location: https://digitalcollections.lib.washington.edu/iiif/2/mm:23084/manifest.json",
-                "Set-Cookie: TS01328102=011e523335447882a0309b052220fc4aa82a1dca29618aa2c265571086b52ca7432f555c7ab5276126d01783e2ec7fd5b1ab1ccae0; Path=/; HttpOnly",
+                "Set-Cookie: TS01328102=011e5233357152eb19a2331e4f014a2c5a242924a4e588a39c6cbe5b8c1886ef56933168d1781cd4806de3a4bc5694013be0556e3c; Path=/; HttpOnly",
                 "X-Content-Type-Options: nosniff",
                 "X-Oclc-Iiif-Provider: cantaloupe",
                 "X-Xss-Protection: 1; mode=block"
@@ -1753,11 +1802,11 @@
                 "Cache-Control: max-age=0",
                 "Content-Length: 281",
                 "Content-Type: application/json;charset=UTF-8",
-                "Date: Thu, 27 Aug 2026 08:08:59 GMT",
-                "Expires: Thu, 27 Aug 2026 08:08:59 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:34 GMT",
+                "Expires: Thu, 27 Aug 2026 09:21:34 GMT",
                 "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
                 "Location: https://digitalcollections.lib.washington.edu/iiif/mm:23084/manifest.json",
-                "Set-Cookie: TS01328102=011e523335a636f9868afb11e6f08710a4206b69416a6cc78649204c1c43234aec97d8059efeebf8b30cf65ce1a78174487d4f9036; Path=/; HttpOnly",
+                "Set-Cookie: TS01328102=011e523335af9b36ac01a755dc8fd504e20bd6f08e54a93a71aa223aa566c621c7ab917de1805c5ec260a25f7945c7d8241ee35bca; Path=/; HttpOnly",
                 "X-Content-Type-Options: nosniff",
                 "X-Oclc-Iiif-Provider: cantaloupe",
                 "X-Xss-Protection: 1; mode=block"
@@ -1773,11 +1822,11 @@
                 "Cache-Control: max-age=0",
                 "Content-Length: 259",
                 "Content-Type: text/html; charset=iso-8859-1",
-                "Date: Thu, 27 Aug 2026 08:09:00 GMT",
-                "Expires: Thu, 27 Aug 2026 08:09:00 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:34 GMT",
+                "Expires: Thu, 27 Aug 2026 09:21:34 GMT",
                 "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
                 "Location: https://digitalcollections.lib.washington.edu/iiif/2/mm:23084/manifest.json",
-                "Set-Cookie: TS01328102=011e523335f8cfec542464bfd9f800cb8059b95082cbf96bf33760c99661b257ea9ab7b6884d1fc4f509fb1110458811ef610d43e2; Path=/; HttpOnly",
+                "Set-Cookie: TS01328102=011e5233352fbabc047d7ae37fac0e1a6482885ef44ae42cb5312936857ff8ab990992dfc72406f10462914f6aafbdb4573e2e07a6; Path=/; HttpOnly",
                 "X-Content-Type-Options: nosniff",
                 "X-Oclc-Iiif-Provider: cantaloupe",
                 "X-Xss-Protection: 1; mode=block"
@@ -1806,11 +1855,11 @@
                 "Cache-Control: max-age=0",
                 "Content-Length: 281",
                 "Content-Type: application/json;charset=UTF-8",
-                "Date: Thu, 27 Aug 2026 08:08:58 GMT",
-                "Expires: Thu, 27 Aug 2026 08:08:58 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:33 GMT",
+                "Expires: Thu, 27 Aug 2026 09:21:33 GMT",
                 "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
                 "Location: https://digitalcollections.lib.washington.edu/iiif/mm:23084/manifest.json",
-                "Set-Cookie: TS01328102=011e523335a5a49de1a38cb2aff08e0680811a8c32802f006936287120c3b5f63ce85472a529fc8f1efd15a0cd426e02c784b52381; Path=/; HttpOnly",
+                "Set-Cookie: TS01328102=011e5233352576a39de70ad2cab6667064903b32803fef037ba7e4a0d80b9f77b1de6c6c333adeb27d639d6b87846fa8a00b1abee9; Path=/; HttpOnly",
                 "X-Content-Type-Options: nosniff",
                 "X-Oclc-Iiif-Provider: cantaloupe",
                 "X-Xss-Protection: 1; mode=block"
@@ -1826,11 +1875,11 @@
                 "Cache-Control: max-age=0",
                 "Content-Length: 259",
                 "Content-Type: text/html; charset=iso-8859-1",
-                "Date: Thu, 27 Aug 2026 08:08:59 GMT",
-                "Expires: Thu, 27 Aug 2026 08:08:59 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:33 GMT",
+                "Expires: Thu, 27 Aug 2026 09:21:33 GMT",
                 "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
                 "Location: https://digitalcollections.lib.washington.edu/iiif/2/mm:23084/manifest.json",
-                "Set-Cookie: TS01328102=011e5233351f6c394ccc6cec7e1d4a45733a4a984ff68bda0cceefe003ba1a58f5d0fb6fa87deffb18859c685738f8371e64055e8c; Path=/; HttpOnly",
+                "Set-Cookie: TS01328102=011e523335d47551a9641934b66ddce595ff00034ba3e83f1282438d790fea5c073dbd7651dd3e2150e700f3c44f71ffd8398b5ae3; Path=/; HttpOnly",
                 "X-Content-Type-Options: nosniff",
                 "X-Oclc-Iiif-Provider: cantaloupe",
                 "X-Xss-Protection: 1; mode=block"
@@ -1859,11 +1908,11 @@
                 "Cache-Control: max-age=0",
                 "Content-Length: 281",
                 "Content-Type: application/json;charset=UTF-8",
-                "Date: Thu, 27 Aug 2026 08:08:59 GMT",
-                "Expires: Thu, 27 Aug 2026 08:08:59 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:34 GMT",
+                "Expires: Thu, 27 Aug 2026 09:21:34 GMT",
                 "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
                 "Location: https://digitalcollections.lib.washington.edu/iiif/mm:23084/manifest.json",
-                "Set-Cookie: TS01328102=011e52333512b819188b2151a1695a225450cc61aa6d33c4183f0753ebb9b89a20596ff85fe59d9720a0ee2350a1b456a7e9ea2e33; Path=/; HttpOnly",
+                "Set-Cookie: TS01328102=011e52333571f09c67bc5358bbfd0a9cb845de4a0b97a857fea9d8643ca04a0062eb2b681970cbaf9adf3c46bc1e84eb4a63d3d13b; Path=/; HttpOnly",
                 "X-Content-Type-Options: nosniff",
                 "X-Oclc-Iiif-Provider: cantaloupe",
                 "X-Xss-Protection: 1; mode=block"
@@ -1879,11 +1928,11 @@
                 "Cache-Control: max-age=0",
                 "Content-Length: 259",
                 "Content-Type: text/html; charset=iso-8859-1",
-                "Date: Thu, 27 Aug 2026 08:08:59 GMT",
-                "Expires: Thu, 27 Aug 2026 08:08:59 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:34 GMT",
+                "Expires: Thu, 27 Aug 2026 09:21:34 GMT",
                 "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"",
                 "Location: https://digitalcollections.lib.washington.edu/iiif/2/mm:23084/manifest.json",
-                "Set-Cookie: TS01328102=011e52333551b7a5f41cd24e4abcded1616e4f331b81c74dd7c99fc9df5233fd0218e8a2f8cd8a3e624b98a02f4b917a08e76a0e53; Path=/; HttpOnly",
+                "Set-Cookie: TS01328102=011e5233351bf048a5cb4f63ed1340ae0077802e376e5da1985481b430b9d62cc3b49b95780b353d9f5578570c785b1400a7f20f69; Path=/; HttpOnly",
                 "X-Content-Type-Options: nosniff",
                 "X-Oclc-Iiif-Provider: cantaloupe",
                 "X-Xss-Protection: 1; mode=block"
@@ -1897,7 +1946,7 @@
       "id": "digitale-sammlungen-ulb-uni-bonn-de",
       "name": "digitale-sammlungen.ulb.uni-bonn.de",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:52.620984Z",
+      "checkedAt": "2026-08-27T09:21:27.28295Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -1929,7 +1978,7 @@
             "Access-Control-Allow-Origin: *",
             "Alt-Svc: h3=\":443\"; ma=86400;",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:52 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:27 GMT",
             "Referer: ",
             "Server: VLS/2603",
             "Set-Cookie: session_id=5a0d8b5373cb4d8fe2986b7083a6eb2f65453607; Path=/; SameSite=Lax; secure",
@@ -2002,7 +2051,7 @@
             "Access-Control-Allow-Origin: *",
             "Alt-Svc: h3=\":443\"; ma=86400;",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:51 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:26 GMT",
             "Referer: ",
             "Server: VLS/2603",
             "Set-Cookie: session_id=5a0d8b5373cb4d8fe2986b7083a6eb2f65453607; Path=/; SameSite=Lax; secure",
@@ -2049,7 +2098,7 @@
       "id": "digivatlib-it",
       "name": "DigiVatLib Vatican Library",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:59.050605Z",
+      "checkedAt": "2026-08-27T09:21:31.612349Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -2084,11 +2133,11 @@
             "Cache-Control: no-cache, no-store, must-revalidate",
             "Content-Language: en",
             "Content-Type: application/ld+json;charset=UTF-8",
-            "Date: Thu, 27 Aug 2026 08:08:58 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:31 GMT",
             "Expires: Thu, 01 Dec 1994 16:00:00 GMT",
             "Pragma: no-cache",
             "Server: Apache/2.4.57 (Red Hat Enterprise Linux) OpenSSL/3.0.7",
-            "Set-Cookie: JSESSIONID=7F923F2D7497FA2A29881DAEF40CB84F.bavdrp01; Path=/; Secure; HttpOnly",
+            "Set-Cookie: JSESSIONID=6D62A4E283CCE2D8CFEC4E61D26B1FC0.bavdrp01; Path=/; Secure; HttpOnly",
             "Vary: Accept-Encoding",
             "X-Frame-Options: SAMEORIGIN"
           ]
@@ -2166,11 +2215,11 @@
             "Cache-Control: no-cache, no-store, must-revalidate",
             "Content-Language: en",
             "Content-Type: application/ld+json;charset=UTF-8",
-            "Date: Thu, 27 Aug 2026 08:08:56 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:28 GMT",
             "Expires: Thu, 01 Dec 1994 16:00:00 GMT",
             "Pragma: no-cache",
             "Server: Apache/2.4.57 (Red Hat Enterprise Linux) OpenSSL/3.0.7",
-            "Set-Cookie: JSESSIONID=B40E1886192CFD94E6D93D14F5D42CFF.bavdrp01; Path=/; Secure; HttpOnly",
+            "Set-Cookie: JSESSIONID=87568C75696ADD49C69ABC035D1A15A9.bavdrp01; Path=/; Secure; HttpOnly",
             "Vary: Accept-Encoding",
             "X-Frame-Options: SAMEORIGIN"
           ]
@@ -2218,7 +2267,7 @@
       "id": "iiif-durham-ac-uk",
       "name": "Durham University IIIF Collections",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:53.536309Z",
+      "checkedAt": "2026-08-27T09:21:27.313395Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -2250,7 +2299,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: max-age=86400",
             "Content-Type: application/ld+json",
-            "Date: Thu, 27 Aug 2026 08:08:53 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:27 GMT",
             "Last-Modified: Wed, 02 Jun 2021 14:06:41 GMT",
             "Server: Apache"
           ]
@@ -2317,7 +2366,7 @@
             "Accept-Ranges: bytes",
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/json;charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:53 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:26 GMT",
             "Etag: \"cd4b-64c3202b7a6ae-gzip\"",
             "Last-Modified: Wed, 04 Mar 2026 12:32:17 GMT",
             "Server: Apache",
@@ -2361,7 +2410,7 @@
       "id": "ecodices",
       "name": "e-codices",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:54.719113Z",
+      "checkedAt": "2026-08-27T09:21:31.336002Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -2404,8 +2453,8 @@
             "Cache-Control: max-age=5184000",
             "Content-Length: 755",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:54 GMT",
-            "Expires: Mon, 26 Oct 2026 08:08:54 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:31 GMT",
+            "Expires: Mon, 26 Oct 2026 09:21:31 GMT",
             "Last-Modified: Thu, 27 Aug 2026 08:08:54 GMT",
             "Link: \u003chttp://iiif.io/api/image/2/level2.json\u003e;rel=\"profile\",\u003chttp://iiif.io/api/image/2/context.json\u003e;rel=\"http://www.w3.org/ns/json-ld#context\";type=\"application/ld+json\"",
             "Server: Apache/2.4.63 (Ubuntu)",
@@ -2483,11 +2532,11 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: no-transform",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:53 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:30 GMT",
             "Expires: Thu, 19 Nov 1981 08:52:00 GMT",
             "Pragma: no-cache",
             "Server: Apache/2.4.63 (Ubuntu)",
-            "Set-Cookie: ecodices_session=9imjsctt021i1kud64l1qasgubk0nv5j; expires=Thu, 27-Aug-2026 10:08:53 GMT; Max-Age=7200; path=/; HttpOnly",
+            "Set-Cookie: ecodices_session=1dv6s0m6lk1l7qhrd0mkqmmssd2lfqju; expires=Thu, 27-Aug-2026 11:21:30 GMT; Max-Age=7200; path=/; HttpOnly",
             "Strict-Transport-Security: max-age=63072000; includeSubdomains",
             "X-Content-Type-Options: nosniff",
             "X-Ua-Compatible: IE=Edge"
@@ -2530,7 +2579,7 @@
       "id": "figgy-princeton-edu",
       "name": "figgy.princeton.edu",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:54.938075Z",
+      "checkedAt": "2026-08-27T09:21:21.60313Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -2566,12 +2615,12 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Access-Control-Expose-Headers: *",
-            "Age: 70114",
+            "Age: 74461",
             "Cache-Control: max-age=31536000",
             "Content-Type: application/json",
             "Date: Wed, 26 Aug 2026 12:40:20 GMT",
-            "Via: 1.1 15ec222720b66945bbc5c3c677b15d28.cloudfront.net (CloudFront)",
-            "X-Amz-Cf-Id: lEIgBSqxNF36x6eKf8inXQuVdJ-l2AV0LR22hRZTMZn-NH9HpO5Q2g==",
+            "Via: 1.1 4c908c441c16c2ae0f60f3480e16d480.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id: lJohFt1S9QUeI8y-0ywbudGMQAYcEqjNiyzbHuPc4C_vXiezfmFjjA==",
             "X-Amz-Cf-Pop: ZRH52-P1",
             "X-Amzn-Requestid: c8a2ce51-97d8-4122-8e18-62ac4e6d946a",
             "X-Amzn-Trace-Id: Root=1-6a8edeb4-5e38b6df3b50dc07641fea60;Parent=112711763af3e8ff;Sampled=0;Lineage=1:29190b9b:0",
@@ -2653,7 +2702,7 @@
             "Access-Control-Allow-Origin: https://rism-digital.github.io",
             "Cache-Control: max-age=0, private, must-revalidate",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:53 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:20 GMT",
             "Etag: W/\"e1e6e9253737e7d3e91e2cc2e6aadcfb\"",
             "Referrer-Policy: strict-origin-when-cross-origin",
             "Server: nginx/1.29.3",
@@ -2664,8 +2713,8 @@
             "X-Frame-Options: SAMEORIGIN",
             "X-Permitted-Cross-Domain-Policies: none",
             "X-Powered-By: Phusion Passenger(R) 6.2.0",
-            "X-Request-Id: f8237852-0e82-49c0-a6c2-39245127139c",
-            "X-Runtime: 0.034265",
+            "X-Request-Id: cf699ff7-6ef0-48a3-adce-22787015704e",
+            "X-Runtime: 0.031658",
             "X-Xss-Protection: 0"
           ]
         },
@@ -2714,7 +2763,7 @@
       "id": "fragmentarium",
       "name": "Fragmentarium",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:53.926836Z",
+      "checkedAt": "2026-08-27T09:21:38.753399Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -2757,8 +2806,8 @@
             "Cache-Control: max-age=5184000",
             "Content-Length: 839",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:53 GMT",
-            "Expires: Mon, 26 Oct 2026 08:08:53 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:38 GMT",
+            "Expires: Mon, 26 Oct 2026 09:21:38 GMT",
             "Last-Modified: Wed, 15 Jun 2022 15:47:21 GMT",
             "Link: \u003chttp://iiif.io/api/image/2/level2.json\u003e;rel=\"profile\",\u003chttp://iiif.io/api/image/2/context.json\u003e;rel=\"http://www.w3.org/ns/json-ld#context\";type=\"application/ld+json\"",
             "Server: Apache/2.4.62 (Ubuntu)",
@@ -2834,9 +2883,9 @@
           "contentType": "application/json; charset=UTF-8",
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
-            "Cache-Control: max-age=214202, public",
+            "Cache-Control: max-age=209837, public",
             "Content-Type: application/json; charset=UTF-8",
-            "Date: Thu, 27 Aug 2026 08:08:53 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:38 GMT",
             "Expires: Sat, 29 Aug 2026 19:38:55 GMT",
             "Last-Modified: Thu, 30 Jul 2026 19:38:55 GMT",
             "Pragma: public",
@@ -2882,7 +2931,7 @@
       "id": "fromthepage",
       "name": "FromThePage",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:56.301794Z",
+      "checkedAt": "2026-08-27T09:21:39.475314Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -2921,23 +2970,23 @@
             "Alt-Svc: h3=\":443\"; ma=86400",
             "Cache-Control: max-age=31556952, private",
             "Cf-Cache-Status: DYNAMIC",
-            "Cf-Ray: a31997506d4bf877-ZRH",
+            "Cf-Ray: a31a01d6eb5a985f-ZRH",
             "Content-Type: application/ld+json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:55 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:38 GMT",
             "Etag: W/\"60fb9ab279f4bcb770453f3f39c52512-gzip\"",
             "Link: \u003chttp://iiif.io/api/image/2/level1.json\u003e;rel=\"profile\"",
             "Nel: {\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-            "Report-To: {\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=Pvn0JU24ado1Ea%2FBfvc43OXH13QHrISNI9gKxU5xIadYQoYME%2F6kxI%2FrG%2FiveOzW4Vt5AbSN0GnsQkF7y5thegp43L9ifvrd9nvH5jIyNoH3IKeMgmG1nRMdytZmfFxbaBIZyUpLDe2kibT6VCw%3D\"}]}",
+            "Report-To: {\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=4%2BlRAFsT3KMlMCXG0kmlraYht%2BE3UwbwuLAPX4huF%2Fffl%2B73yPI8UrPLSP7za3TdStpuy9EBP8DLrnF5FEVAT7J1ZXvg4xnLFplo628wnxPAIpT7t0nk56d4itLq6XSgnZrd1jkZEiL7OI%2FWhx4%3D\"}]}",
             "Server: cloudflare",
-            "Set-Cookie: ahoy_visitor=6dd30467-a9fa-4198-be3e-325a66def0ec; path=/; expires=Sun, 27 Aug 2028 08:08:55 GMT; secure",
-            "Set-Cookie: ahoy_visit=d1c91f99-c116-48a1-810b-d02cffcbe6d3; path=/; expires=Thu, 27 Aug 2026 12:08:55 GMT; secure",
-            "Set-Cookie: _fromthepage_session=ekeB9PZnusMQONRQpofrZeE3au5ve%2BN9TnIkdxem%2FzRwYgKZHV3yeM96PEtgv9LOKBEJ%2F2I7qgodyCFrx6IC2gLsDXuirrHi28yoIWcZJV0RJDOLOSjJSiShXImImhFEFxbmgim5VSpYbudQy5Gv5d3oZD34MriyH1vmK%2B01Ev1v86lBXimcaHW3TSyuNy%2B0s%2FGculAxyv3qf8xhdOuFbLPutOfiJ4%2B1nLic%2FXu0xGX%2BH%2FZFTiSzB0HmQY9VuJyXxyPoV7jT6bvFlUHX--hBrpvk3l2F1pqddv--7TWO0jwfZDI7olWdkpOnew%3D%3D; domain=fromthepage.com; path=/; secure; HttpOnly",
+            "Set-Cookie: ahoy_visitor=4c44acc5-9fcf-4073-91c6-21377eb44b57; path=/; expires=Sun, 27 Aug 2028 09:21:38 GMT; secure",
+            "Set-Cookie: ahoy_visit=c0eed841-9c48-4f9b-a094-a9d31f87547b; path=/; expires=Thu, 27 Aug 2026 13:21:38 GMT; secure",
+            "Set-Cookie: _fromthepage_session=mju3qkK0QDZ%2BuPOutGZ695hJfbS5ESnbnS9FfyWS%2FesSAIhuq09crWVAvMamfyHljoNOhV5X%2BghJdQbK8oOkPov48AXbKRtuBUOV5BrwfbptSK%2B4TdPX8Mc3gmL3QfbXkax3i64vxkODSa58Gmj8S6EEa1TW2QfbGgQDMRd0X6bvCQjJ730Msc7ChSgcpIm4lGSbmIOvzVimROLgpUTWzTbiet1QZVYESMF5C9j3LUdoXPjT7%2FRqytCueuOnO77s5BciXTCkNkFjWiD8--LZNA27d7%2B9pSZpoT--RSbaKPsUt1BMvhnOMS6c0Q%3D%3D; domain=fromthepage.com; path=/; secure; HttpOnly",
             "Status: 200 OK",
             "Strict-Transport-Security: max-age=63072000; includeSubDomains",
             "Vary: Accept-Encoding",
             "X-Powered-By: Phusion Passenger(R) 6.0.17",
-            "X-Request-Id: aef720c4-20fb-471b-8ca8-3f12558321d8",
-            "X-Runtime: 0.022854"
+            "X-Request-Id: 70a2b4f5-e807-48d1-9fd7-e449de8b1750",
+            "X-Runtime: 0.064778"
           ]
         },
         "image.info-preflight": {
@@ -3013,22 +3062,22 @@
             "Alt-Svc: h3=\":443\"; ma=86400",
             "Cache-Control: max-age=0, private, must-revalidate",
             "Cf-Cache-Status: DYNAMIC",
-            "Cf-Ray: a3199749ab24f877-ZRH",
+            "Cf-Ray: a31a01d06af4985f-ZRH",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:54 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:37 GMT",
             "Etag: W/\"c612e79108ff998965f546fe9eab3ec6-gzip\"",
             "Nel: {\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-            "Report-To: {\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=zYw8SRXMA2z7t3HLu%2BC5wfI7pCm%2FDP1fLv4vRlYCGw6H1WupPwT7Fy0d5xNSqT8LLu1Ub6nlmwvEFzNhCSmGlYmp2Eur9ECqKbiwc0xP3RfOmnB2FU5GLcXdVXIQsJVo88%2FQ4IIrtWFFYNloPoQ%3D\"}]}",
+            "Report-To: {\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=5fU3HkkQkyosBeXYCbPfSnIo6uUDKISxBVLbSssCQiH06TTA%2BTQ2OHKl1Rn9NU0yD52dR0jafXdZSh34IbFjquHRj33emDwXH0I%2FjvdRk4BDbXnBnMTnCdBAiXMjqVjBj6CZytFXPlK9ZuZNTGU%3D\"}]}",
             "Server: cloudflare",
-            "Set-Cookie: ahoy_visitor=cf1f6d83-86f8-4398-b9eb-4b92083e17ed; path=/; expires=Sun, 27 Aug 2028 08:08:54 GMT; secure",
-            "Set-Cookie: ahoy_visit=d6a83fcf-14ef-4961-b561-abc340a3a28a; path=/; expires=Thu, 27 Aug 2026 12:08:54 GMT; secure",
-            "Set-Cookie: _fromthepage_session=Nv4F%2F%2B9G0mc6iicRNaqALjj75eLlgroiSyA4grfu%2F5tS3NMLL%2FyiNuE7%2FwjMqJxTW0uzbfRPy5S9DWtR6CU%2Bo6zw7s5ds35mfY3mXVnV4ns5WOQc6xI%2Bni5fHXcuepZrxVysSkXCDJXr%2Fs37w7uC3QSoeQ0FLDILAdRfsQo8sNxEcqBF%2Bei%2FrOXfo4Vaxx9210m9y4M%2B%2F%2BX8swASdPJP%2FQbVK3N0mumHARG3TjEa2m%2FPoQMmp78APdVorhE%3D--WY7utUtrn53XIoL%2B--W2FfJXnUDC%2BcBGZBejQnPw%3D%3D; domain=fromthepage.com; path=/; secure; HttpOnly",
+            "Set-Cookie: ahoy_visitor=63050dbf-4078-40e8-804a-28f00efdea15; path=/; expires=Sun, 27 Aug 2028 09:21:37 GMT; secure",
+            "Set-Cookie: ahoy_visit=22b1fe89-c3f2-49ac-8776-796b9f9036ab; path=/; expires=Thu, 27 Aug 2026 13:21:37 GMT; secure",
+            "Set-Cookie: _fromthepage_session=X5V%2B7wzG5XTP6u%2F3KqdoIqAuBuZbALcOs1inhuR8lOvWfzEFATaLqiUZbdBmcprxLPQdk1WFs5veRQ0r0TbX8vtPJtnCOreZc53B%2FNKQLDW1p6406oBPF3y2te39dtksbQfwo87Tk7Vc6rpgJS6VSdrqzukqrtNU0boX6tgx78QF26xngYOJLayB6Tk5G4BZHiqkHh9wJ3s5s9sRG6IjcRD7sld0ZeyykuLrlOOWvgZA%2BvbBK3aWriuDVZo%3D--g%2BcVCF%2BVhDh6UwRL--LiTw2cfFrbQVC8eW57B7FA%3D%3D; domain=fromthepage.com; path=/; secure; HttpOnly",
             "Status: 200 OK",
             "Strict-Transport-Security: max-age=63072000; includeSubDomains",
             "Vary: Accept-Encoding",
             "X-Powered-By: Phusion Passenger(R) 6.0.17",
-            "X-Request-Id: 5979825d-2136-4628-91f4-49db74e4b914",
-            "X-Runtime: 0.077351"
+            "X-Request-Id: 93c1dab1-6264-477b-ad5c-42d69ee961b4",
+            "X-Runtime: 0.061988"
           ]
         },
         "presentation.preflight": {
@@ -3072,7 +3121,7 @@
       "id": "gallica-bnf-fr",
       "name": "gallica.bnf.fr",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:56.561002Z",
+      "checkedAt": "2026-08-27T09:21:41.048985Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -3104,9 +3153,9 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:55 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:40 GMT",
             "Server: Apache",
-            "Set-Cookie: JSESSIONID=B3CBA1A5CA24DF8C9A17DEBB8D1F2FD9; Path=/; Secure; HttpOnly",
+            "Set-Cookie: JSESSIONID=A8EF937C7286BE6C17B4A47500FF9B6F; Path=/; Secure; HttpOnly",
             "Strict-Transport-Security: max-age=31536000; includeSubDomains; always",
             "Vary: Accept-Encoding,User-Agent"
           ]
@@ -3170,9 +3219,9 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/json;charset=UTF-8",
-            "Date: Thu, 27 Aug 2026 08:08:54 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:39 GMT",
             "Server: Apache",
-            "Set-Cookie: JSESSIONID=19E598AEF67EF5A5C0CB6FB959CC89B5; Path=/; Secure; HttpOnly",
+            "Set-Cookie: JSESSIONID=B6B1A19FF1B370C1BACD1AF1BCB8527C; Path=/; Secure; HttpOnly",
             "Strict-Transport-Security: max-age=31536000; includeSubDomains; always",
             "Vary: Accept-Encoding,User-Agent"
           ]
@@ -3212,7 +3261,7 @@
       "id": "getty-museum",
       "name": "Getty",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:57.510731Z",
+      "checkedAt": "2026-08-27T09:21:43.667052Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -3256,18 +3305,18 @@
             "Access-Control-Allow-Methods: GET, POST, OPTIONS",
             "Access-Control-Allow-Origin: *",
             "Access-Control-Max-Age: 86400",
-            "Age: 0",
             "Cache-Control: max-age=1800",
             "Content-Disposition: ",
             "Content-Length: 1154",
             "Content-Type: application/ld+json;profile=\"http://iiif.io/api/image/3/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:08:56 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:42 GMT",
             "Last-Modified: Sat, 18 Jul 2026 08:03:23 GMT",
             "Strict-Transport-Security: max-age=31536000; includeSubDomains",
-            "Via: 1.1 varnish (Varnish/6.5), 1.1 a8b33ff40e244f67d922fbfab23360e6.cloudfront.net (CloudFront)",
-            "X-Amz-Cf-Id: 4ZjkC-qSYP1k34GC7QQHzSyO3POOGZqqVqrGiNrARj5vUVcotXDpyg==",
+            "Vary: Accept-Encoding",
+            "Via: 1.1 varnish (Varnish/6.5), 1.1 48317b64b1d0bd7c3636d6918b168b5e.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id: LCVZ3dWZJlA96rqRWOMgn_sq1WuYfjyVOEg3FToaqv_We28hKPsbPw==",
             "X-Amz-Cf-Pop: ZRH52-P1",
-            "X-Cache: Miss from cloudfront",
+            "X-Cache: RefreshHit from cloudfront",
             "X-Powered-By: IIPImage",
             "X-Varnish: 592344"
           ]
@@ -3349,14 +3398,14 @@
             "Cache-Control: max-age=1800",
             "Content-Disposition: ",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:55 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:42 GMT",
             "Strict-Transport-Security: max-age=31536000; includeSubDomains",
             "Vary: Accept-Encoding",
-            "Via: 1.1 varnish (Varnish/6.5), 1.1 a8b33ff40e244f67d922fbfab23360e6.cloudfront.net (CloudFront)",
-            "X-Amz-Cf-Id: nyzJ-Ema6MC8IUG5hkEnY8XX-gDnuaFozybWSO3Qk1rOHZKQ5-JXRQ==",
+            "Via: 1.1 varnish (Varnish/6.5), 1.1 48317b64b1d0bd7c3636d6918b168b5e.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id: rkqau6_TxN9ojGW5qnWkbYaILhH_mHVrTlYJnVo939TEv_CSU6hHqg==",
             "X-Amz-Cf-Pop: ZRH52-P1",
             "X-Cache: Miss from cloudfront",
-            "X-Varnish: 2214271"
+            "X-Varnish: 101310"
           ]
         },
         "presentation.preflight": {
@@ -3396,7 +3445,7 @@
       "id": "iiif-lib-harvard-edu",
       "name": "Harvard University",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:01.419514Z",
+      "checkedAt": "2026-08-27T09:21:48.190367Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -3435,8 +3484,8 @@
             "Content-Length: 869",
             "Content-Security-Policy: default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:00 GMT",
-            "Etag: W/\"365-aJhnvzlgVL5Alf7+/saKtPACCCw\"",
+            "Date: Thu, 27 Aug 2026 09:21:47 GMT",
+            "Etag: W/\"365-2VA4xqXNdiYwH0M5fNb8i4oQeD4\"",
             "Origin-Agent-Cluster: ?1",
             "Referrer-Policy: no-referrer",
             "Server: istio-envoy",
@@ -3444,9 +3493,9 @@
             "Vary: Origin",
             "X-Content-Type-Options: nosniff",
             "X-Dns-Prefetch-Control: off",
-            "X-Envoy-Upstream-Service-Time: 115",
+            "X-Envoy-Upstream-Service-Time: 59",
             "X-Frame-Options: SAMEORIGIN",
-            "X-Mps-Client-Ip: 85.195.201.217, 10.42.6.0, 85.195.201.217",
+            "X-Mps-Client-Ip: 85.195.201.217, 10.42.1.0, 85.195.201.217",
             "X-Xss-Protection: 0"
           ]
         },
@@ -3517,7 +3566,7 @@
                 "Content-Security-Policy: default-src 'self';script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://library.harvard.edu;style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://library.harvard.edu;font-src 'self' https://fonts.gstatic.com https://library.harvard.edu;img-src 'self' data: https://library.harvard.edu;connect-src 'self';frame-src 'none';object-src 'none';upgrade-insecure-requests;base-uri 'self';form-action 'self';frame-ancestors 'self';script-src-attr 'none'",
                 "Content-Type: text/plain; charset=utf-8",
                 "Cross-Origin-Opener-Policy: same-origin",
-                "Date: Thu, 27 Aug 2026 08:08:58 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:45 GMT",
                 "Location: https://mps.lib.harvard.edu/iiif/2/URN-3:FHCL.LOEB:13885556",
                 "Origin-Agent-Cluster: ?1",
                 "Referrer-Policy: origin-when-cross-origin",
@@ -3554,9 +3603,9 @@
             "Access-Control-Allow-Origin: *",
             "Content-Length: 60925",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:57 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:45 GMT",
             "Server: istio-envoy",
-            "X-Envoy-Upstream-Service-Time: 204"
+            "X-Envoy-Upstream-Service-Time: 196"
           ],
           "redirectChain": [
             {
@@ -3569,7 +3618,7 @@
                 "Content-Security-Policy: default-src 'self';script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://library.harvard.edu;style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://library.harvard.edu;font-src 'self' https://fonts.gstatic.com https://library.harvard.edu;img-src 'self' data: https://library.harvard.edu;connect-src 'self';frame-src 'none';object-src 'none';upgrade-insecure-requests;base-uri 'self';form-action 'self';frame-ancestors 'self';script-src-attr 'none'",
                 "Content-Type: text/plain; charset=utf-8",
                 "Cross-Origin-Opener-Policy: same-origin",
-                "Date: Thu, 27 Aug 2026 08:08:56 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:44 GMT",
                 "Location: https://mps.lib.harvard.edu/iiif/2/URN-3:FHCL.LOEB:13885556",
                 "Origin-Agent-Cluster: ?1",
                 "Referrer-Policy: origin-when-cross-origin",
@@ -3620,7 +3669,7 @@
                 "Content-Length: 0",
                 "Content-Security-Policy: default-src 'self';script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://library.harvard.edu;style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://library.harvard.edu;font-src 'self' https://fonts.gstatic.com https://library.harvard.edu;img-src 'self' data: https://library.harvard.edu;connect-src 'self';frame-src 'none';object-src 'none';upgrade-insecure-requests;base-uri 'self';form-action 'self';frame-ancestors 'self';script-src-attr 'none'",
                 "Cross-Origin-Opener-Policy: same-origin",
-                "Date: Thu, 27 Aug 2026 08:08:58 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:46 GMT",
                 "Location: https://mps.lib.harvard.edu/iiif/2/URN-3:FHCL.LOEB:13885556",
                 "Origin-Agent-Cluster: ?1",
                 "Referrer-Policy: origin-when-cross-origin",
@@ -3661,7 +3710,7 @@
                 "Content-Length: 0",
                 "Content-Security-Policy: default-src 'self';script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://library.harvard.edu;style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://library.harvard.edu;font-src 'self' https://fonts.gstatic.com https://library.harvard.edu;img-src 'self' data: https://library.harvard.edu;connect-src 'self';frame-src 'none';object-src 'none';upgrade-insecure-requests;base-uri 'self';form-action 'self';frame-ancestors 'self';script-src-attr 'none'",
                 "Cross-Origin-Opener-Policy: same-origin",
-                "Date: Thu, 27 Aug 2026 08:08:59 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:46 GMT",
                 "Location: https://mps.lib.harvard.edu/iiif/2/URN-3:FHCL.LOEB:13885556",
                 "Origin-Agent-Cluster: ?1",
                 "Referrer-Policy: origin-when-cross-origin",
@@ -3685,141 +3734,135 @@
       "id": "iiif-hab-de",
       "name": "Herzog August Bibliothek",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:58.61725Z",
+      "checkedAt": "2026-08-27T09:21:37.083873Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
-          "summary": "Base URI returned HTTP 200 directly; IIIF recommends a 303 redirect to info.json.",
+          "summary": "Base URI returned HTTP 500 instead of the recommended 303 redirect to info.json.",
           "corsHeaders": [
-            "access-control-allow-origin: https://rism-digital.github.io"
+            "access-control-allow-origin: *"
           ],
-          "httpStatus": 200,
-          "contentType": "application/ld+json;q=json"
+          "httpStatus": 500,
+          "contentType": "text/html; charset=UTF-8"
         },
         "image.compression": {
-          "status": "advisory",
-          "summary": "A usable identity response was returned; gzip compression is recommended.",
+          "status": "fail",
+          "summary": "Gzip request returned HTTP 500.",
           "corsHeaders": [
-            "access-control-allow-origin: https://rism-digital.github.io"
+            "access-control-allow-origin: *"
           ],
-          "httpStatus": 200,
-          "contentType": "application/json;q=json"
+          "httpStatus": 500,
+          "contentType": "text/html; charset=UTF-8"
         },
         "image.default": {
-          "status": "pass",
-          "summary": "Valid v2 · Level 2 image information; @id matches the image service base URI.",
+          "status": "fail",
+          "summary": "The server returned HTTP 500.",
           "corsHeaders": [
-            "access-control-allow-origin: https://rism-digital.github.io"
+            "access-control-allow-origin: *"
           ],
-          "httpStatus": 200,
-          "detected": "v2 · Level 2",
-          "contentType": "application/json;q=json",
+          "httpStatus": 500,
+          "contentType": "text/html; charset=UTF-8",
           "responseHeaders": [
-            "Access-Control-Allow-Origin: https://rism-digital.github.io",
+            "Access-Control-Allow-Origin: *",
             "Connection: keep-alive",
-            "Content-Length: 1719",
-            "Content-Type: application/json;q=json",
-            "Date: Thu, 27 Aug 2026 08:08:57 GMT",
+            "Content-Length: 0",
+            "Content-Type: text/html; charset=UTF-8",
+            "Date: Thu, 27 Aug 2026 09:21:36 GMT",
             "Server: nginx",
             "Strict-Transport-Security: max-age=63072000",
             "Upgrade: h2",
-            "Vary: Origin",
             "X-Powered-By: PHP/7.2.12"
           ]
         },
         "image.info-preflight": {
           "status": "fail",
-          "summary": "Content-negotiation OPTIONS preflight returned HTTP 401.",
+          "summary": "Content-negotiation OPTIONS preflight returned HTTP 500.",
           "corsHeaders": [
             "access-control-allow-origin: *"
           ],
-          "httpStatus": 401
+          "httpStatus": 500,
+          "contentType": "text/html; charset=UTF-8"
         },
         "image.response": {
-          "status": "pass",
-          "summary": "Representative image request succeeded with an image response and usable CORS.",
-          "corsHeaders": [
-            "access-control-allow-origin: https://rism-digital.github.io"
-          ],
-          "httpStatus": 200,
-          "contentType": "image/jpeg"
+          "status": "unknown",
+          "summary": "Representative image was not requested because default info.json could not be parsed.",
+          "corsHeaders": []
         },
         "image.v2": {
-          "status": "pass",
-          "summary": "The server correctly declined the unavailable representation (406 Not Acceptable).",
+          "status": "fail",
+          "summary": "The server returned HTTP 500.",
           "corsHeaders": [
             "access-control-allow-origin: *"
           ],
-          "httpStatus": 406,
+          "httpStatus": 500,
           "contentType": "text/html; charset=UTF-8",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/image/2/context.json\""
         },
         "image.v3": {
-          "status": "pass",
-          "summary": "The server correctly declined the unavailable representation (406 Not Acceptable).",
+          "status": "fail",
+          "summary": "The server returned HTTP 500.",
           "corsHeaders": [
             "access-control-allow-origin: *"
           ],
-          "httpStatus": 406,
+          "httpStatus": 500,
           "contentType": "text/html; charset=UTF-8",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/image/3/context.json\""
         },
         "presentation.compression": {
-          "status": "advisory",
-          "summary": "A usable identity response was returned; gzip compression is recommended.",
+          "status": "fail",
+          "summary": "Gzip request returned HTTP 500.",
           "corsHeaders": [
-            "access-control-allow-origin: https://rism-digital.github.io"
+            "access-control-allow-origin: *"
           ],
-          "httpStatus": 200,
-          "contentType": "application/json;q=json"
+          "httpStatus": 500,
+          "contentType": "text/html; charset=UTF-8"
         },
         "presentation.default": {
-          "status": "warning",
-          "summary": "Valid v2 manifest retrieved, but @id is \"https://iiif.hab.de/object/varia_karten_k-16-3/manifest\"; expected the final response URL \"https://iiif.hab.de/object/varia_karten_k-16-3/manifest.json\".",
+          "status": "fail",
+          "summary": "The server returned HTTP 500.",
           "corsHeaders": [
-            "access-control-allow-origin: https://rism-digital.github.io"
+            "access-control-allow-origin: *"
           ],
-          "httpStatus": 200,
-          "detected": "v2",
-          "contentType": "application/json;q=json",
+          "httpStatus": 500,
+          "contentType": "text/html; charset=UTF-8",
           "responseHeaders": [
-            "Access-Control-Allow-Origin: https://rism-digital.github.io",
+            "Access-Control-Allow-Origin: *",
             "Connection: keep-alive",
-            "Content-Length: 6351",
-            "Content-Type: application/json;q=json",
-            "Date: Thu, 27 Aug 2026 08:08:56 GMT",
+            "Content-Length: 0",
+            "Content-Type: text/html; charset=UTF-8",
+            "Date: Thu, 27 Aug 2026 09:21:36 GMT",
             "Server: nginx",
             "Strict-Transport-Security: max-age=63072000",
             "Upgrade: h2",
-            "Vary: Origin",
             "X-Powered-By: PHP/7.2.12"
           ]
         },
         "presentation.preflight": {
           "status": "fail",
-          "summary": "Content-negotiation OPTIONS preflight returned HTTP 401.",
+          "summary": "Content-negotiation OPTIONS preflight returned HTTP 500.",
           "corsHeaders": [
             "access-control-allow-origin: *"
           ],
-          "httpStatus": 401
+          "httpStatus": 500,
+          "contentType": "text/html; charset=UTF-8"
         },
         "presentation.v2": {
-          "status": "pass",
-          "summary": "The server correctly declined the unavailable representation (406 Not Acceptable).",
+          "status": "fail",
+          "summary": "The server returned HTTP 500.",
           "corsHeaders": [
             "access-control-allow-origin: *"
           ],
-          "httpStatus": 406,
+          "httpStatus": 500,
           "contentType": "text/html; charset=UTF-8",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/2/context.json\""
         },
         "presentation.v3": {
-          "status": "pass",
-          "summary": "The server correctly declined the unavailable representation (406 Not Acceptable).",
+          "status": "fail",
+          "summary": "The server returned HTTP 500.",
           "corsHeaders": [
             "access-control-allow-origin: *"
           ],
-          "httpStatus": 406,
+          "httpStatus": 500,
           "contentType": "text/html; charset=UTF-8",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/3/context.json\""
         }
@@ -3829,7 +3872,7 @@
       "id": "iiif-archive-org",
       "name": "iiif.archive.org",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:59.442329Z",
+      "checkedAt": "2026-08-27T09:24:53.096257Z",
       "checks": {
         "image.base-redirect": {
           "status": "fail",
@@ -3838,29 +3881,13 @@
         },
         "image.compression": {
           "status": "fail",
-          "summary": "Gzip request returned HTTP 500.",
-          "corsHeaders": [
-            "access-control-allow-methods: GET, HEAD, POST, PUT, PATCH, DELETE"
-          ],
-          "httpStatus": 500,
-          "contentType": "text/html"
+          "summary": "Gzip request failed: Get \"https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/info.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
+          "corsHeaders": []
         },
         "image.default": {
           "status": "fail",
-          "summary": "The server returned HTTP 500.",
-          "corsHeaders": [
-            "access-control-allow-methods: GET, HEAD, POST, PUT, PATCH, DELETE"
-          ],
-          "httpStatus": 500,
-          "contentType": "text/html",
-          "responseHeaders": [
-            "Access-Control-Allow-Methods: GET, HEAD, POST, PUT, PATCH, DELETE",
-            "Content-Length: 177",
-            "Content-Type: text/html",
-            "Date: Thu, 27 Aug 2026 08:08:58 GMT",
-            "Server: nginx/1.31.3",
-            "Strict-Transport-Security: max-age=15724800"
-          ]
+          "summary": "Request failed: Get \"https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/info.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
+          "corsHeaders": []
         },
         "image.info-preflight": {
           "status": "fail",
@@ -3874,12 +3901,8 @@
         },
         "image.v2": {
           "status": "fail",
-          "summary": "The server returned HTTP 500.",
-          "corsHeaders": [
-            "access-control-allow-methods: GET, HEAD, POST, PUT, PATCH, DELETE"
-          ],
-          "httpStatus": 500,
-          "contentType": "text/html",
+          "summary": "Request failed: Get \"https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/info.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
+          "corsHeaders": [],
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/image/2/context.json\""
         },
         "image.v3": {
@@ -3890,46 +3913,35 @@
         },
         "presentation.compression": {
           "status": "fail",
-          "summary": "Gzip request returned HTTP 500.",
-          "corsHeaders": [],
-          "httpStatus": 500,
-          "contentType": "text/html"
+          "summary": "Gzip request failed: Get \"https://iiif.archive.org/iiif/3-caja-g-9-622/manifest.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
+          "corsHeaders": []
         },
         "presentation.default": {
           "status": "fail",
-          "summary": "The server returned HTTP 500.",
-          "corsHeaders": [],
-          "httpStatus": 500,
-          "contentType": "text/html",
-          "responseHeaders": [
-            "Content-Length: 177",
-            "Content-Type: text/html",
-            "Date: Thu, 27 Aug 2026 08:08:57 GMT",
-            "Server: nginx/1.31.3",
-            "Strict-Transport-Security: max-age=15724800"
-          ]
+          "summary": "Request failed: Get \"https://iiif.archive.org/iiif/3-caja-g-9-622/manifest.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
+          "corsHeaders": []
         },
         "presentation.preflight": {
-          "status": "fail",
-          "summary": "Content-negotiation OPTIONS preflight returned HTTP 500.",
-          "corsHeaders": [],
-          "httpStatus": 500,
-          "contentType": "text/html"
+          "status": "pass",
+          "summary": "OPTIONS preflight permits GET with a profile-valued Accept request header.",
+          "corsHeaders": [
+            "access-control-allow-headers: Accept",
+            "access-control-allow-methods: DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT",
+            "access-control-allow-origin: https://rism-digital.github.io"
+          ],
+          "httpStatus": 200,
+          "contentType": "text/html; charset=utf-8"
         },
         "presentation.v2": {
           "status": "fail",
-          "summary": "The server returned HTTP 500.",
+          "summary": "Request failed: Get \"https://iiif.archive.org/iiif/3-caja-g-9-622/manifest.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
           "corsHeaders": [],
-          "httpStatus": 500,
-          "contentType": "text/html",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/2/context.json\""
         },
         "presentation.v3": {
           "status": "fail",
-          "summary": "The server returned HTTP 500.",
+          "summary": "Request failed: Get \"https://iiif.archive.org/iiif/3-caja-g-9-622/manifest.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
           "corsHeaders": [],
-          "httpStatus": 500,
-          "contentType": "text/html",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/3/context.json\""
         }
       }
@@ -3938,7 +3950,7 @@
       "id": "iiif-diamm-net",
       "name": "iiif.diamm.net",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:00.291422Z",
+      "checkedAt": "2026-08-27T09:21:42.621199Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -3984,7 +3996,7 @@
             "Access-Control-Max-Age: 1728000",
             "Cache-Control: max-age=86400",
             "Content-Type: application/ld+json;profile=\"http://iiif.io/api/image/3/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:08:59 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:41 GMT",
             "Last-Modified: Tue, 29 Apr 2025 20:31:46 GMT",
             "Server: iipsrv/1.3",
             "Strict-Transport-Security: max-age=63072000",
@@ -4074,9 +4086,9 @@
             "Access-Control-Max-Age: 1728000",
             "Cache-Control: max-age=604800",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:58 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:40 GMT",
             "Etag: W/\"6810bf09-50524\"",
-            "Expires: Thu, 03 Sep 2026 08:08:58 GMT",
+            "Expires: Thu, 03 Sep 2026 09:21:40 GMT",
             "Last-Modified: Tue, 29 Apr 2025 11:59:05 GMT",
             "Server: nginx/1.30.4",
             "Strict-Transport-Security: max-age=63072000",
@@ -4129,7 +4141,7 @@
       "id": "iiif-rism-digital",
       "name": "iiif.rism.digital",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:01.411957Z",
+      "checkedAt": "2026-08-27T09:21:44.545169Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -4175,7 +4187,7 @@
             "Access-Control-Max-Age: 1728000",
             "Cache-Control: max-age=86400",
             "Content-Type: application/ld+json;profile=\"http://iiif.io/api/image/3/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:09:00 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:43 GMT",
             "Last-Modified: Mon, 07 Oct 2013 11:23:49 GMT",
             "Server: iipsrv/1.3",
             "Strict-Transport-Security: max-age=63072000",
@@ -4265,9 +4277,9 @@
             "Access-Control-Max-Age: 1728000",
             "Cache-Control: max-age=604800",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:59 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:42 GMT",
             "Etag: W/\"6537d74c-18e9\"",
-            "Expires: Thu, 03 Sep 2026 08:08:59 GMT",
+            "Expires: Thu, 03 Sep 2026 09:21:42 GMT",
             "Last-Modified: Tue, 24 Oct 2023 14:40:12 GMT",
             "Server: nginx/1.30.4",
             "Strict-Transport-Security: max-age=63072000",
@@ -4320,7 +4332,7 @@
       "id": "jmms-iccu-sbn-it",
       "name": "jmms.iccu.sbn.it",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:00.127227Z",
+      "checkedAt": "2026-08-27T09:21:47.336618Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -4353,7 +4365,7 @@
             "Cache-Control: private",
             "Content-Length: 1114",
             "Content-Type: application/json;charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:59 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:47 GMT",
             "Server: Jetty(9.4.34.v20201102)",
             "Set-Cookie: f972ad882430cb1c8768b5c4478c7246=439533fa466991c428ab6a5745a57911; path=/; HttpOnly; Secure; SameSite=None",
             "Vary: Accept, Accept-Charset, Accept-Encoding, Accept-Language, Origin",
@@ -4429,7 +4441,7 @@
             "Access-Control-Allow-Origin: *",
             "Access-Control-Max-Age: 3600",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:08:59 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:46 GMT",
             "Set-Cookie: 3fa65b0eed18fb9c911cf5f4d53eff1f=02eb0fda01571d7d9bf98a5b28b3f3ea; path=/; HttpOnly; Secure; SameSite=None",
             "Vary: accept-encoding"
           ]
@@ -4477,7 +4489,7 @@
       "id": "palimpsest-stmarytx-edu",
       "name": "Jubilees Palimpsest Project",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:02.488902Z",
+      "checkedAt": "2026-08-27T09:21:46.289683Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -4510,7 +4522,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: max-age=86400",
             "Content-Type: application/ld+json;profile=\"http://iiif.io/api/image/3/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:09:01 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:45 GMT",
             "Last-Modified: Thu, 27 Jun 2019 11:19:13 GMT",
             "Server: Apache/2.4.62 (Ubuntu)",
             "Strict-Transport-Security: max-age=15552000",
@@ -4586,7 +4598,7 @@
             "Access-Control-Allow-Origin: *",
             "Content-Length: 30244",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:00 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:44 GMT",
             "Etag: \"7624-5acd6f2f0f7ac\"",
             "Last-Modified: Fri, 14 Aug 2020 14:08:02 GMT",
             "Server: Apache/2.4.62 (Ubuntu)",
@@ -4633,152 +4645,10 @@
       }
     },
     {
-      "id": "iiif-ub-uni-leipzig-de",
-      "name": "Leipzig University Library",
-      "checked": true,
-      "checkedAt": "2026-08-27T08:09:01.365847Z",
-      "checks": {
-        "image.base-redirect": {
-          "status": "pass",
-          "summary": "Base URI returned HTTP 303 to https://iiif.ub.uni-leipzig.de/iiif/j2k/0000/0552/0000055260/00000205.jpx/info.json.",
-          "corsHeaders": [],
-          "httpStatus": 303,
-          "contentType": "text/html",
-          "location": "https://iiif.ub.uni-leipzig.de/iiif/j2k/0000/0552/0000055260/00000205.jpx/info.json"
-        },
-        "image.compression": {
-          "status": "advisory",
-          "summary": "A usable identity response was returned; gzip compression is recommended.",
-          "corsHeaders": [
-            "access-control-allow-origin: *"
-          ],
-          "httpStatus": 200,
-          "contentType": "application/ld+json;profile=\"http://iiif.io/api/image/2/context.json\""
-        },
-        "image.default": {
-          "status": "pass",
-          "summary": "Valid v2 · Level 2 image information; @id matches the image service base URI.",
-          "corsHeaders": [
-            "access-control-allow-origin: *"
-          ],
-          "httpStatus": 200,
-          "detected": "v2 · Level 2",
-          "contentType": "application/ld+json;profile=\"http://iiif.io/api/image/2/context.json\"",
-          "responseHeaders": [
-            "Access-Control-Allow-Origin: *",
-            "Cache-Control: max-age=86400",
-            "Connection: keep-alive",
-            "Content-Type: application/ld+json;profile=\"http://iiif.io/api/image/2/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:09:01 GMT",
-            "Last-Modified: Mon, 08 Apr 2024 11:22:41 GMT",
-            "Server: nginx",
-            "X-Powered-By: IIPImage"
-          ]
-        },
-        "image.info-preflight": {
-          "status": "warning",
-          "summary": "Content-negotiation OPTIONS succeeded, but Access-Control-Allow-Methods does not include GET.",
-          "corsHeaders": [
-            "access-control-allow-origin: *"
-          ],
-          "httpStatus": 204
-        },
-        "image.response": {
-          "status": "pass",
-          "summary": "Representative image request succeeded with an image response and usable CORS.",
-          "corsHeaders": [
-            "access-control-allow-origin: *"
-          ],
-          "httpStatus": 200,
-          "contentType": "image/jpeg"
-        },
-        "image.v2": {
-          "status": "warning",
-          "summary": "The requested v2 representation was returned, but Vary: Accept is missing and shared caches may serve the wrong version. The @id matches the image service base URI.",
-          "corsHeaders": [
-            "access-control-allow-origin: *"
-          ],
-          "httpStatus": 200,
-          "detected": "v2 · Level 2",
-          "contentType": "application/ld+json;profile=\"http://iiif.io/api/image/2/context.json\"",
-          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/image/2/context.json\""
-        },
-        "image.v3": {
-          "status": "warning",
-          "summary": "The requested v3 representation was returned, but Vary: Accept is missing and shared caches may serve the wrong version. The id matches the image service base URI.",
-          "corsHeaders": [
-            "access-control-allow-origin: *"
-          ],
-          "httpStatus": 200,
-          "detected": "v3 · Level 2",
-          "contentType": "application/ld+json;profile=\"http://iiif.io/api/image/3/context.json\"",
-          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/image/3/context.json\""
-        },
-        "presentation.compression": {
-          "status": "advisory",
-          "summary": "A usable identity response was returned; gzip compression is recommended.",
-          "corsHeaders": [
-            "access-control-allow-origin: *"
-          ],
-          "httpStatus": 200,
-          "contentType": "application/json"
-        },
-        "presentation.default": {
-          "status": "pass",
-          "summary": "Valid v2 manifest; @id matches the final response URL.",
-          "corsHeaders": [
-            "access-control-allow-origin: *"
-          ],
-          "httpStatus": 200,
-          "detected": "v2",
-          "contentType": "application/json",
-          "responseHeaders": [
-            "Access-Control-Allow-Origin: *",
-            "Connection: keep-alive",
-            "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:00 GMT",
-            "Server: nginx",
-            "X-Powered-By: PHP/8.2.32"
-          ]
-        },
-        "presentation.preflight": {
-          "status": "warning",
-          "summary": "Content-negotiation OPTIONS succeeded, but Access-Control-Allow-Methods does not include GET.",
-          "corsHeaders": [
-            "access-control-allow-origin: *"
-          ],
-          "httpStatus": 200,
-          "contentType": "application/json"
-        },
-        "presentation.v2": {
-          "status": "pass",
-          "summary": "Valid v2 manifest; @id matches the final response URL.",
-          "corsHeaders": [
-            "access-control-allow-origin: *"
-          ],
-          "httpStatus": 200,
-          "detected": "v2",
-          "contentType": "application/json",
-          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/2/context.json\""
-        },
-        "presentation.v3": {
-          "status": "advisory",
-          "summary": "Requested v3 but received v2; supporting the requested representation through content negotiation is recommended. The @id matches the final response URL.",
-          "corsHeaders": [
-            "access-control-allow-origin: *"
-          ],
-          "httpStatus": 200,
-          "detected": "v2",
-          "contentType": "application/json",
-          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/3/context.json\""
-        }
-      }
-    },
-    {
       "id": "iiif-kbr-be",
       "name": "KBR (Royal Library of Belgium)",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:04.763137Z",
+      "checkedAt": "2026-08-27T09:21:30.762756Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -4812,7 +4682,7 @@
             "Content-Length: 818",
             "Content-Security-Policy: default-src 'self'; font-src *;img-src * data:; script-src *; style-src *",
             "Content-Type: application/ld+json;charset=UTF-8;profile=\"http://iiif.io/api/image/3/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:09:04 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:30 GMT",
             "Permissions-Policy: geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()",
             "Referrer-Policy: strict-origin",
             "Server: nginx",
@@ -4885,7 +4755,7 @@
             "Cache-Control: no-cache, private",
             "Content-Security-Policy: default-src 'self' https: data:",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:01 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:28 GMT",
             "Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), fullscreen=self",
             "Referrer-Policy: strict-origin-when-cross-origin",
             "Server: nginx",
@@ -4929,10 +4799,152 @@
       }
     },
     {
+      "id": "iiif-ub-uni-leipzig-de",
+      "name": "Leipzig University Library",
+      "checked": true,
+      "checkedAt": "2026-08-27T09:21:28.671183Z",
+      "checks": {
+        "image.base-redirect": {
+          "status": "pass",
+          "summary": "Base URI returned HTTP 303 to https://iiif.ub.uni-leipzig.de/iiif/j2k/0000/0552/0000055260/00000205.jpx/info.json.",
+          "corsHeaders": [],
+          "httpStatus": 303,
+          "contentType": "text/html",
+          "location": "https://iiif.ub.uni-leipzig.de/iiif/j2k/0000/0552/0000055260/00000205.jpx/info.json"
+        },
+        "image.compression": {
+          "status": "advisory",
+          "summary": "A usable identity response was returned; gzip compression is recommended.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "contentType": "application/ld+json;profile=\"http://iiif.io/api/image/2/context.json\""
+        },
+        "image.default": {
+          "status": "pass",
+          "summary": "Valid v2 · Level 2 image information; @id matches the image service base URI.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "detected": "v2 · Level 2",
+          "contentType": "application/ld+json;profile=\"http://iiif.io/api/image/2/context.json\"",
+          "responseHeaders": [
+            "Access-Control-Allow-Origin: *",
+            "Cache-Control: max-age=86400",
+            "Connection: keep-alive",
+            "Content-Type: application/ld+json;profile=\"http://iiif.io/api/image/2/context.json\"",
+            "Date: Thu, 27 Aug 2026 09:21:28 GMT",
+            "Last-Modified: Mon, 08 Apr 2024 11:22:41 GMT",
+            "Server: nginx",
+            "X-Powered-By: IIPImage"
+          ]
+        },
+        "image.info-preflight": {
+          "status": "warning",
+          "summary": "Content-negotiation OPTIONS succeeded, but Access-Control-Allow-Methods does not include GET.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 204
+        },
+        "image.response": {
+          "status": "pass",
+          "summary": "Representative image request succeeded with an image response and usable CORS.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "contentType": "image/jpeg"
+        },
+        "image.v2": {
+          "status": "warning",
+          "summary": "The requested v2 representation was returned, but Vary: Accept is missing and shared caches may serve the wrong version. The @id matches the image service base URI.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "detected": "v2 · Level 2",
+          "contentType": "application/ld+json;profile=\"http://iiif.io/api/image/2/context.json\"",
+          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/image/2/context.json\""
+        },
+        "image.v3": {
+          "status": "warning",
+          "summary": "The requested v3 representation was returned, but Vary: Accept is missing and shared caches may serve the wrong version. The id matches the image service base URI.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "detected": "v3 · Level 2",
+          "contentType": "application/ld+json;profile=\"http://iiif.io/api/image/3/context.json\"",
+          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/image/3/context.json\""
+        },
+        "presentation.compression": {
+          "status": "advisory",
+          "summary": "A usable identity response was returned; gzip compression is recommended.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "contentType": "application/json"
+        },
+        "presentation.default": {
+          "status": "pass",
+          "summary": "Valid v2 manifest; @id matches the final response URL.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "detected": "v2",
+          "contentType": "application/json",
+          "responseHeaders": [
+            "Access-Control-Allow-Origin: *",
+            "Connection: keep-alive",
+            "Content-Type: application/json",
+            "Date: Thu, 27 Aug 2026 09:21:27 GMT",
+            "Server: nginx",
+            "X-Powered-By: PHP/8.2.32"
+          ]
+        },
+        "presentation.preflight": {
+          "status": "warning",
+          "summary": "Content-negotiation OPTIONS succeeded, but Access-Control-Allow-Methods does not include GET.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "contentType": "application/json"
+        },
+        "presentation.v2": {
+          "status": "pass",
+          "summary": "Valid v2 manifest; @id matches the final response URL.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "detected": "v2",
+          "contentType": "application/json",
+          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/2/context.json\""
+        },
+        "presentation.v3": {
+          "status": "advisory",
+          "summary": "Requested v3 but received v2; supporting the requested representation through content negotiation is recommended. The @id matches the final response URL.",
+          "corsHeaders": [
+            "access-control-allow-origin: *"
+          ],
+          "httpStatus": 200,
+          "detected": "v2",
+          "contentType": "application/json",
+          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/3/context.json\""
+        }
+      }
+    },
+    {
       "id": "mdz-nbn-resolving-de",
       "name": "mdz-nbn-resolving.de",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:02.471351Z",
+      "checkedAt": "2026-08-27T09:21:28.86756Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -4965,7 +4977,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: public, max-age=604800, must-revalidate",
             "Content-Type: application/ld+json;profile=\"http://iiif.io/api/image/2/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:09:01 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:28 GMT",
             "Etag: W/\"0080a9f7727726783617077919407ceec77865f5ae67d908b87ab0b42ef55fc9\"",
             "Last-Modified: Sat, 25 Apr 2020 04:40:07 GMT",
             "Strict-Transport-Security: max-age=31536000; includeSubDomains"
@@ -4999,7 +5011,7 @@
               "responseHeaders": [
                 "Access-Control-Allow-Origin: *",
                 "Content-Type: text/plain",
-                "Date: Thu, 27 Aug 2026 08:09:02 GMT",
+                "Date: Thu, 27 Aug 2026 09:21:28 GMT",
                 "Etag: W/\"0080a9f7727726783617077919407ceec77865f5ae67d908b87ab0b42ef55fc9\"",
                 "Last-Modified: Sat, 25 Apr 2020 04:40:07 GMT",
                 "Location: https://api.digitale-sammlungen.de/iiif/image/v2/bsb00132707_00001/full/118,/0/default.jpg",
@@ -5056,7 +5068,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: max-age=3600, must-revalidate, public",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:01 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:28 GMT",
             "Etag: W/\"Vy8xLjAuMy0xNzg2MzQxMTgxNTI5LVYyLWJzYjAwMTMyNzA3LTE3NzI5MDg2NjMwNTI=\"",
             "Last-Modified: Sat, 07 Mar 2026 18:37:43 GMT",
             "Strict-Transport-Security: max-age=31536000; includeSubDomains",
@@ -5064,7 +5076,7 @@
             "Vary: Access-Control-Request-Method",
             "Vary: Access-Control-Request-Headers",
             "X-Proxy-Cache: MISS",
-            "X-Request-Id: 49a7e7981ec33dd6027eb87246ebe360"
+            "X-Request-Id: 8b95b941a89898a90484d8f524109f9b"
           ]
         },
         "presentation.preflight": {
@@ -5081,22 +5093,24 @@
         },
         "presentation.v2": {
           "status": "pass",
-          "summary": "The server correctly declined the unavailable representation (406 Not Acceptable).",
+          "summary": "Valid v2 manifest; @id matches the final response URL.",
           "corsHeaders": [
             "access-control-allow-origin: *"
           ],
-          "httpStatus": 406,
-          "contentType": "application/problem+json",
+          "httpStatus": 200,
+          "detected": "v2",
+          "contentType": "application/json",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/2/context.json\""
         },
         "presentation.v3": {
-          "status": "pass",
-          "summary": "The server correctly declined the unavailable representation (406 Not Acceptable).",
+          "status": "advisory",
+          "summary": "Requested v3 but received v2; supporting the requested representation through content negotiation is recommended. The @id matches the final response URL.",
           "corsHeaders": [
             "access-control-allow-origin: *"
           ],
-          "httpStatus": 406,
-          "contentType": "application/problem+json",
+          "httpStatus": 200,
+          "detected": "v2",
+          "contentType": "application/json",
           "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/3/context.json\""
         }
       }
@@ -5105,7 +5119,7 @@
       "id": "mohistory",
       "name": "Missouri Historical Society",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:04.979915Z",
+      "checkedAt": "2026-08-27T09:21:30.362941Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -5150,13 +5164,13 @@
             "Access-Control-Max-Age: 21600",
             "Cache-Control: no-cache",
             "Cf-Cache-Status: DYNAMIC",
-            "Cf-Ray: a3199785fe7cbbf6-ZRH",
+            "Cf-Ray: a31a0199ca1a23df-ZRH",
             "Content-Disposition: inline; filename=info.json",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:03 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:29 GMT",
             "Last-Modified: Tue, 05 May 2026 16:19:55 GMT",
             "Nel: {\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-            "Report-To: {\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=O0vbw1zhNHpcsWsY%2FpxSD6GVjrEkOK5KawQqsVreaVZ%2F1%2FBEPJECwx%2FsvqgAbRnwE3FSdJ4NNC0HyOxwuMLYWm9EHBTi3SdOnlDIF6nIrqbFIQwvw4NSivgEn06cPyRh8Z51AL%2Buu6QYHq2OQm6dMMui\"}]}",
+            "Report-To: {\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=kQErpHd7nTo51xX5N32e2IgYEkkIuohQkYB%2BWOLO77S8VpQRB6PQ%2BMTyfIFUnLXXIgff0s5on9Cvd%2BYglWUmQacfs1GSCcmcYVVHW71QxCTrQcNQqE3ZKhUw0ItS5QKuD5VRQzWNJRQPGOijP4p6jR3w\"}]}",
             "Server: cloudflare"
           ]
         },
@@ -5237,11 +5251,11 @@
             "Access-Control-Allow-Origin: *",
             "Access-Control-Max-Age: 21600",
             "Cf-Cache-Status: DYNAMIC",
-            "Cf-Ray: a3199778ea57bbf6-ZRH",
+            "Cf-Ray: a31a018efc1923df-ZRH",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:02 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:27 GMT",
             "Nel: {\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
-            "Report-To: {\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=ipz%2FDE%2ByCTQPrklvHyg7U30HEHnRCmrVUqYOEXgoVfaxXIPhd99MyVunY4T5WsRbV9%2By9SgSUyyCddHoDFgrLtRwRn2OgBi1T9Gm0YwlKxnx809qSmG09W3OMqbgji3Cqh23vr5OjIzmwXrw7Ihzfc67\"}]}",
+            "Report-To: {\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=vm7wsFZ9fGSHSU7OZabdG4dEu1c4XbcmLN7%2BCDSRdCANieSy7XC%2FvzL2dU7oDCNZG%2FBuzDZuMAswoT6WshbSmKCQkGxw7Fo7zoceV%2FwfR2vZ2oEFvGQihNJIlm%2BjgRfoY96masBQoJWyVI7YJFA6bRXR\"}]}",
             "Server: cloudflare"
           ]
         },
@@ -5286,7 +5300,7 @@
       "id": "digibib-mozarteum-at",
       "name": "Mozarteum",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:03.880635Z",
+      "checkedAt": "2026-08-27T09:21:31.68315Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -5318,7 +5332,7 @@
             "Access-Control-Allow-Origin: *",
             "Content-Security-Policy: frame-ancestors 'self' https://kulturpool.at/ https://preview.kulturpool.at/",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:03 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:31 GMT",
             "Permissions-Policy: geolocation=(self), midi=(), sync-xhr=(self), microphone=(self), camera=(), magnetometer=(), gyroscope=(), fullscreen=(self), payment=()",
             "Referer: ",
             "Referrer-Policy: no-referrer-when-downgrade",
@@ -5395,7 +5409,7 @@
             "Access-Control-Allow-Origin: *",
             "Content-Security-Policy: frame-ancestors 'self' https://kulturpool.at/ https://preview.kulturpool.at/",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:02 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:30 GMT",
             "Permissions-Policy: geolocation=(self), midi=(), sync-xhr=(self), microphone=(self), camera=(), magnetometer=(), gyroscope=(), fullscreen=(self), payment=()",
             "Referer: ",
             "Referrer-Policy: no-referrer-when-downgrade",
@@ -5447,7 +5461,7 @@
       "id": "nl-scotland",
       "name": "National Library of Scotland",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:03.638387Z",
+      "checkedAt": "2026-08-27T09:21:29.949606Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -5478,7 +5492,7 @@
             "Access-Control-Allow-Origin: *",
             "Content-Length: 839",
             "Content-Type: application/json;charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:03 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:29 GMT",
             "Last-Modified: Thu, 17 Jul 2025 22:22:52 GMT",
             "Server: Jetty(11.0.24)",
             "Vary: Accept,Accept-Charset,Accept-Encoding,Accept-Language,Origin",
@@ -5548,7 +5562,7 @@
             "Access-Control-Allow-Origin: *",
             "Content-Length: 7792",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:02 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:29 GMT",
             "Etag: \"2dcbcbe94610dc1:0\"",
             "Last-Modified: Mon, 18 Aug 2025 13:49:27 GMT",
             "Server: Microsoft-IIS/10.0",
@@ -5587,7 +5601,7 @@
       "id": "noah-nrw",
       "name": "noah.nrw",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:05.072152Z",
+      "checkedAt": "2026-08-27T09:21:31.93496Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -5619,7 +5633,7 @@
             "Access-Control-Allow-Origin: *",
             "Alt-Svc: h3=\":443\"; ma=86400;",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:04 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:31 GMT",
             "Referer: ",
             "Server: VLS/2412",
             "Set-Cookie: session_id=5a0d8b5373cb4d8fe2986b7083a6eb2f65453607; Partitioned=true; Path=/; SameSite=None; secure",
@@ -5691,7 +5705,7 @@
             "Access-Control-Allow-Origin: *",
             "Alt-Svc: h3=\":443\"; ma=86400;",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:04 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:30 GMT",
             "Referer: ",
             "Server: VLS/2412",
             "Set-Cookie: session_id=5a0d8b5373cb4d8fe2986b7083a6eb2f65453607; Partitioned=true; Path=/; SameSite=None; secure",
@@ -5738,7 +5752,7 @@
       "id": "ncsu-digital",
       "name": "North Carolina State University",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:07.643081Z",
+      "checkedAt": "2026-08-27T09:21:36.542544Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -5772,7 +5786,7 @@
             "Accept-Ranges: bytes",
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:06 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:35 GMT",
             "Etag: \"39a-53bee95adbdc0-gzip\"",
             "Last-Modified: Wed, 07 Sep 2016 17:53:03 GMT",
             "Server: Apache",
@@ -5847,7 +5861,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: max-age=0, private, must-revalidate",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:04 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:33 GMT",
             "Etag: W/\"3144304ad69d85e513cf2dafbcb849d4-gzip\"",
             "Referrer-Policy: strict-origin-when-cross-origin",
             "Server: Apache",
@@ -5858,8 +5872,8 @@
             "X-Frame-Options: SAMEORIGIN",
             "X-Permitted-Cross-Domain-Policies: none",
             "X-Powered-By: Phusion Passenger(R) 6.2.0",
-            "X-Request-Id: 73a4afa6-393a-42bb-a892-bebeba788574",
-            "X-Runtime: 0.153543",
+            "X-Request-Id: daa50f53-b0e4-4d8e-bc63-7d95d64fc3ef",
+            "X-Runtime: 0.162214",
             "X-Xss-Protection: 0"
           ]
         },
@@ -5902,7 +5916,7 @@
       "id": "nul-dc",
       "name": "Northwestern University Library Digital Collections",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:06.860249Z",
+      "checkedAt": "2026-08-27T09:21:24.594522Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -5950,13 +5964,13 @@
             "Access-Control-Allow-Origin: https://rism-digital.github.io",
             "Access-Control-Expose-Headers: cache-control,content-language,content-length,content-type,date,expires,last-modified,pragma",
             "Access-Control-Max-Age: 3600",
-            "Age: 70115",
+            "Age: 74453",
             "Connection: keep-alive",
             "Content-Type: application/ld+json",
             "Date: Wed, 26 Aug 2026 12:40:30 GMT",
             "Vary: Accept",
-            "Via: 1.1 575f69068c76de3940cf05b92b6ece22.cloudfront.net (CloudFront)",
-            "X-Amz-Cf-Id: tFflxbPIogmih4OCVnsqrxJ5IXhgHMW6HY3vggCeLAaJtK3IRf5J6A==",
+            "Via: 1.1 05648470f141fa8f78f96e650d89cee6.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id: TNVCDpYC7I_s2ZULhH8HhRJSVqzgVAzNjQLEfwpvXdvgFtJVZ7mvhg==",
             "X-Amz-Cf-Pop: ZRH52-P1",
             "X-Amzn-Requestid: ca46aaca-6070-42fa-93ac-71a5eea4d4ed",
             "X-Amzn-Trace-Id: Root=1-6a8edebd-386bc2ab123bf46621985603;Parent=11bd50efd4ac66ba;Sampled=0;Lineage=1:0525dc25:0",
@@ -6043,12 +6057,12 @@
             "Access-Control-Allow-Credentials: true",
             "Access-Control-Allow-Origin: https://rism-digital.github.io",
             "Access-Control-Expose-Headers: Cache-Control,Content-Language,Content-Length,Content-Type,Date,ETag,Expires,Last-Modified,Pragma,Vary",
-            "Apigw-Requestid: CwKJPg_BoAMEZ7g=",
+            "Apigw-Requestid: CwUuph3QoAMEJ_g=",
             "Content-Length: 6471",
             "Content-Type: application/json; charset=UTF-8",
-            "Date: Thu, 27 Aug 2026 08:09:05 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:20 GMT",
             "Etag: \"c22af2b4fa6026e578e0639e0d4b4680acfe3716\"",
-            "Set-Cookie: dcapi56a927b=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5kYy5saWJyYXJ5Lm5vcnRod2VzdGVybi5lZHUvYXBpL3YyIiwiZXhwIjoxNzg3ODYxMzQ1LCJpYXQiOjE3ODc4MTgxNDUsInNjb3BlcyI6WyJyZWFkOlB1YmxpYyIsInJlYWQ6UHVibGlzaGVkIl0sImVudGl0bGVtZW50cyI6W10sImlzTG9nZ2VkSW4iOmZhbHNlfQ.5vjolbLUIAdV8ja8qyrRoB7Ga5WLoOodTHHd3bMdO2I; Domain=library.northwestern.edu; Path=/; Secure",
+            "Set-Cookie: dcapi56a927b=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5kYy5saWJyYXJ5Lm5vcnRod2VzdGVybi5lZHUvYXBpL3YyIiwiZXhwIjoxNzg3ODY1NjgwLCJpYXQiOjE3ODc4MjI0ODAsInNjb3BlcyI6WyJyZWFkOlB1YmxpYyIsInJlYWQ6UHVibGlzaGVkIl0sImVudGl0bGVtZW50cyI6W10sImlzTG9nZ2VkSW4iOmZhbHNlfQ.o20SOyuED4ksw4eGh9MDSxnXB359nT7bk1kIJsaXu-I; Domain=library.northwestern.edu; Path=/; Secure",
             "Vary: Accept, Origin"
           ]
         },
@@ -6097,7 +6111,7 @@
       "id": "polona-pl",
       "name": "polona.pl",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:06.686742Z",
+      "checkedAt": "2026-08-27T09:21:43.677841Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -6131,7 +6145,7 @@
             "Cache-Control: max-age=3600, public, no-transform",
             "Content-Length: 833",
             "Content-Type: application/ld+json;charset=UTF-8;profile=\"http://iiif.io/api/image/3/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:09:05 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:43 GMT",
             "Server: Jetty(11.0.24)",
             "Vary: Accept, Accept-Charset, Accept-Encoding, Accept-Language, Origin",
             "X-Powered-By: Cantaloupe/5.0.7"
@@ -6205,7 +6219,7 @@
             "Access-Control-Expose-Headers: Content-Disposition",
             "Cache-Control: no-cache, no-store, max-age=0, must-revalidate",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:05 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:42 GMT",
             "Expires: 0",
             "Pragma: no-cache",
             "Strict-Transport-Security: max-age=31536000 ; includeSubDomains",
@@ -6259,7 +6273,7 @@
       "id": "polona2-pl",
       "name": "polona2.pl",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:09.105641Z",
+      "checkedAt": "2026-08-27T09:21:26.167066Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -6293,7 +6307,7 @@
             "Cache-Control: max-age=604800, public",
             "Content-Length: 637",
             "Content-Type: application/ld+json",
-            "Date: Thu, 27 Aug 2026 06:13:10 GMT"
+            "Date: Thu, 27 Aug 2026 07:25:27 GMT"
           ]
         },
         "image.info-preflight": {
@@ -6368,7 +6382,7 @@
             "Allow: GET, OPTIONS",
             "Content-Language: pl",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:06 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:23 GMT",
             "Server: openresty",
             "Vary: Accept-Encoding",
             "Vary: Accept, Authorization, Accept-Language, Cookie",
@@ -6420,7 +6434,7 @@
       "id": "portal-texas-history",
       "name": "Portal to Texas History (University of North Texas)",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:07.926311Z",
+      "checkedAt": "2026-08-27T09:21:24.804015Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -6455,7 +6469,7 @@
             "Alt-Svc: h3=\":443\"; ma=2592000",
             "Cache-Control: max-age=2592000",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:06 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:23 GMT",
             "Etag: \"56d4c9def0da13c39ae1e9255b6f5eaa-gzip\"",
             "Expires: Fri, 25 Sep 2026 12:40:37 GMT",
             "Server: Apache/2.4.62 (Red Hat Enterprise Linux) mod_wsgi/4.7.1 Python/3.9",
@@ -6520,7 +6534,7 @@
             "Alt-Svc: h3=\":443\"; ma=2592000",
             "Cache-Control: max-age=86400",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:05 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:22 GMT",
             "Etag: \"d33bcbfcca039ba587b61e385581ddc6-gzip\"",
             "Expires: Thu, 27 Aug 2026 12:40:34 GMT",
             "Link: \u003chttps://texashistory.unt.edu/ark:/67531/metapth1693427/\u003e; rel=\"cite-as\", \u003chttps://texashistory.unt.edu/ark:/67531/metapth1693427/\u003e; rel=\"collection\"",
@@ -6566,7 +6580,7 @@
       "id": "purl-stanford-edu",
       "name": "purl.stanford.edu",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:10.32266Z",
+      "checkedAt": "2026-08-27T09:21:26.603102Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -6598,7 +6612,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: max-age=600, private",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:09 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:25 GMT",
             "Etag: W/\"bcc76c20038b1a9b69572a7c865b4c04-gzip\"",
             "Last-Modified: Tue, 25 Feb 2014 01:06:57 GMT",
             "Link: \u003chttp://iiif.io/api/image/2/level2.json\u003e;rel=\"profile\"",
@@ -6610,8 +6624,8 @@
             "X-Content-Type-Options: nosniff",
             "X-Frame-Options: SAMEORIGIN",
             "X-Permitted-Cross-Domain-Policies: none",
-            "X-Request-Id: 41cc3c05-4d17-4495-b1e0-af0ddce57fd7",
-            "X-Runtime: 0.106934",
+            "X-Request-Id: 214a427d-8339-4b0c-b92c-3349f9f29b9d",
+            "X-Runtime: 0.110102",
             "X-Xss-Protection: 0"
           ]
         },
@@ -6678,7 +6692,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: max-age=0, private, must-revalidate",
             "Content-Type: application/ld+json; profile=\"http://iiif.io/api/presentation/2/context.json\"; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:07 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:23 GMT",
             "Etag: W/\"117d9499abe0c3ee6cde19795dca3612-gzip\"",
             "Last-Modified: Tue, 21 Jul 2026 10:18:06 GMT",
             "Referrer-Policy: strict-origin-when-cross-origin",
@@ -6689,8 +6703,8 @@
             "X-Content-Type-Options: nosniff",
             "X-Frame-Options: SAMEORIGIN",
             "X-Permitted-Cross-Domain-Policies: none",
-            "X-Request-Id: 2206b307-3be9-4137-a1f0-106d6e351960",
-            "X-Runtime: 0.083156",
+            "X-Request-Id: 3fc860b5-095f-449b-aec8-40dc77f09fb5",
+            "X-Runtime: 0.062104",
             "X-Xss-Protection: 0"
           ]
         },
@@ -6735,7 +6749,7 @@
       "id": "sammlungen-ub-uni-frankfurt-de",
       "name": "sammlungen.ub.uni-frankfurt.de",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:07.885334Z",
+      "checkedAt": "2026-08-27T09:21:23.977702Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -6767,7 +6781,7 @@
             "Access-Control-Allow-Origin: *",
             "Alt-Svc: h3=\":443\"; ma=86400;",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:07 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:23 GMT",
             "Server: VLS/2603",
             "Set-Cookie: session_id=5a0d8b5373cb4d8fe2986b7083a6eb2f65453607; Path=/; SameSite=Lax; secure",
             "User-Agent: IIIF-Checker-Bot/1.0 (https://rism-digital.github.io/iiif-dashboard) go-http-client/1.1",
@@ -6836,7 +6850,7 @@
             "Access-Control-Allow-Origin: *",
             "Alt-Svc: h3=\":443\"; ma=86400;",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:07 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:23 GMT",
             "Server: VLS/2603",
             "Set-Cookie: session_id=5a0d8b5373cb4d8fe2986b7083a6eb2f65453607; Path=/; SameSite=Lax; secure",
             "User-Agent: IIIF-Checker-Bot/1.0 (https://rism-digital.github.io/iiif-dashboard) go-http-client/1.1",
@@ -6882,7 +6896,7 @@
       "id": "scta-info",
       "name": "Sentences Commentary Text Archive",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:09.242485Z",
+      "checkedAt": "2026-08-27T09:21:25.447895Z",
       "checks": {
         "presentation.compression": {
           "status": "advisory",
@@ -6906,7 +6920,7 @@
             "Access-Control-Allow-Origin: *",
             "Content-Length: 1553",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:08 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:24 GMT",
             "X-Content-Type-Options: nosniff",
             "X-Robots-Tag: noindex"
           ]
@@ -6946,7 +6960,7 @@
       "id": "iiif-slub-dresden-de",
       "name": "SLUB Dresden",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:08.876641Z",
+      "checkedAt": "2026-08-27T09:21:25.643977Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -6978,7 +6992,7 @@
             "Cache-Control: max-age=2592000, public, no-transform",
             "Content-Length: 886",
             "Content-Type: application/json;charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:08 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:25 GMT",
             "Server: Apache",
             "Strict-Transport-Security: max-age=63072000",
             "Vary: Accept,Accept-Charset,Accept-Encoding,Accept-Language,Origin"
@@ -7044,7 +7058,7 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:08 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:24 GMT",
             "Server: Apache",
             "Strict-Transport-Security: max-age=63072000",
             "Vary: Accept-Encoding"
@@ -7087,7 +7101,7 @@
       "id": "tamu-library",
       "name": "Texas A\u0026M University",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:10.782325Z",
+      "checkedAt": "2026-08-27T09:21:27.741441Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -7120,7 +7134,7 @@
             "Connection: keep-alive",
             "Content-Length: 895",
             "Content-Type: application/json;charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:09 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:26 GMT",
             "Last-Modified: Thu, 9 Jul 2026 23:51:08 GMT",
             "Server: nginx/1.29.8",
             "Strict-Transport-Security: max-age=31536000; includeSubDomains",
@@ -7194,7 +7208,7 @@
             "Cache-Control: no-cache, no-store, max-age=0, must-revalidate",
             "Connection: keep-alive",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:08 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:25 GMT",
             "Expires: 0",
             "Pragma: no-cache",
             "Server: nginx/1.29.8",
@@ -7251,7 +7265,7 @@
       "id": "textgridlab-org",
       "name": "TextGrid",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:09.302409Z",
+      "checkedAt": "2026-08-27T09:21:25.998084Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -7289,7 +7303,7 @@
             "Cache-Control: no-transform,max-age=86400",
             "Content-Length: 944",
             "Content-Type: application/ld+json",
-            "Date: Thu, 27 Aug 2026 08:09:09 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:25 GMT",
             "Last-Modified: Tue, 28 Mar 2023 12:01:14 GMT",
             "Server: nginx"
           ]
@@ -7363,7 +7377,7 @@
             "Access-Control-Allow-Credentials: false",
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/json;charset=UTF-8",
-            "Date: Thu, 27 Aug 2026 08:09:09 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:25 GMT",
             "Referrer-Policy: no-referrer",
             "Server: nginx",
             "X-Clacks-Overhead: GNU John Dearheart"
@@ -7410,7 +7424,7 @@
       "id": "bodleian-libraries",
       "name": "The Bodleian Libraries",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:10.615397Z",
+      "checkedAt": "2026-08-27T09:21:22.744823Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -7455,12 +7469,12 @@
             "Access-Control-Allow-Origin: *",
             "Access-Control-Max-Age: 1728000",
             "Content-Type: application/ld+json;profile=\"http://iiif.io/api/image/2/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:09:10 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:22 GMT",
             "Last-Modified: Thu, 13 Sep 2018 14:09:52 GMT",
             "Server: nginx/1.30.2",
             "Strict-Transport-Security: max-age=63072000",
             "Vary: Accept",
-            "X-Cache-Status: MISS",
+            "X-Cache-Status: HIT",
             "X-Powered-By: iipsrv/1.3",
             "X-Request-Id: 4219733407bca5453911f2873dff730c"
           ]
@@ -7547,11 +7561,11 @@
             "Access-Control-Allow-Origin: *",
             "Access-Control-Max-Age: 1728000",
             "Content-Type: application/ld+json;profile=\"http://iiif.io/api/presentation/2/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:09:09 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:22 GMT",
             "Server: nginx/1.30.2",
             "Strict-Transport-Security: max-age=63072000",
             "Vary: Accept-Encoding",
-            "X-Cache-Status: MISS"
+            "X-Cache-Status: HIT"
           ]
         },
         "presentation.preflight": {
@@ -7600,7 +7614,7 @@
       "id": "api-bl-uk",
       "name": "The British Library (Digirati)",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:09.834669Z",
+      "checkedAt": "2026-08-27T09:21:32.227751Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -7631,14 +7645,14 @@
           "contentType": "application/ld+json;profile=\"http://iiif.io/api/image/3/context.json\"",
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
-            "Age: 70147",
+            "Age: 74490",
             "Cache-Control: public, max-age=60",
             "Content-Type: application/ld+json;profile=\"http://iiif.io/api/image/3/context.json\"",
             "Date: Wed, 26 Aug 2026 12:40:02 GMT",
             "Server: Kestrel",
             "Vary: Accept-Encoding",
-            "Via: 1.1 68be7d639387281fd6895c1a10c7154c.cloudfront.net (CloudFront)",
-            "X-Amz-Cf-Id: oBVlhOGvk9zJ-lExhD0lPOwEgF0Hm1MdmFS1E1VukiHGWNsKmfmc1w==",
+            "Via: 1.1 15a25f000172c4183886f5e8d467c1d8.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id: CFQp8QPU-YfORzfkUqpKukcDChpKM19XofmdvRqgaSd6k0xqCo7gSw==",
             "X-Amz-Cf-Pop: ZRH55-P2",
             "X-Asset-Id: 2/3/81055___vdc_100109683290.0x000002",
             "X-Cache: Hit from cloudfront"
@@ -7707,15 +7721,15 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Access-Control-Expose-Headers: *",
-            "Age: 65366",
+            "Age: 69708",
             "Content-Type: application/json",
             "Date: Wed, 26 Aug 2026 13:59:44 GMT",
             "Etag: W/\"cf7d2b1f29f68be89fc072a8a25eb273\"",
             "Last-Modified: Mon, 13 Apr 2026 11:25:11 GMT",
             "Server: AmazonS3",
             "Vary: Accept-Encoding",
-            "Via: 1.1 68be7d639387281fd6895c1a10c7154c.cloudfront.net (CloudFront)",
-            "X-Amz-Cf-Id: RvtFGC9qm739K-MyZwnLm5WXBTKPdQ76HkHkcKsU1lInWMlUuSqqlQ==",
+            "Via: 1.1 15a25f000172c4183886f5e8d467c1d8.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id: ZIuQhLXwQJU2Tz7O3m0coZXEuqKOAfneLQ_9xXctwpw25-zdTcHh-A==",
             "X-Amz-Cf-Pop: ZRH55-P2",
             "X-Amz-Server-Side-Encryption: AES256",
             "X-Cache: Hit from cloudfront"
@@ -7758,7 +7772,7 @@
       "id": "ushmm",
       "name": "United States Holocaust Memorial Museum",
       "checked": true,
-      "checkedAt": "2026-08-27T08:10:52.263673Z",
+      "checkedAt": "2026-08-27T09:23:15.365635Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -7790,7 +7804,7 @@
             "Cache-Control: max-age=2592000, public, no-transform",
             "Content-Length: 852",
             "Content-Type: application/json;charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:10:49 GMT",
+            "Date: Thu, 27 Aug 2026 09:23:11 GMT",
             "Server: nginx",
             "Vary: Accept,Accept-Charset,Accept-Encoding,Accept-Language,Origin",
             "X-Powered-By: Cantaloupe/4.1.3"
@@ -7868,7 +7882,7 @@
       "id": "collections-thulb-uni-jena-de",
       "name": "Universitaet Jena",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:10.648017Z",
+      "checkedAt": "2026-08-27T09:21:32.572865Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -7902,7 +7916,7 @@
             "Cache-Control: max-age=86400, s-maxage=86400",
             "Content-Length: 1449",
             "Content-Type: application/ld+json",
-            "Date: Thu, 27 Aug 2026 08:09:10 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:32 GMT",
             "Last-Modified: Wed, 05 Apr 2023 12:17:03 GMT",
             "Link: \u003chttps://collections.thulb.uni-jena.de/api/iiif/image/v2/HisBest_derivate_00030599%2FMS_Conc_Acad_2_0001.tif/full/full/0/color.jpg\u003e;rel=\"canonical\"",
             "Profile: \u003chttp://iiif.io/api/image/2/level2.json\u003e;rel=\"profile\"",
@@ -7975,7 +7989,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: max-age=86400, s-maxage=86400",
             "Content-Type: application/ld+json",
-            "Date: Thu, 27 Aug 2026 08:09:10 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:32 GMT",
             "Link: \u003chttp://iiif.io/api/presentation/2/context.json\u003e ;rel=\"http://www.w3.org/ns/json-ld#context\";type=\"application/ld+json\"",
             "Server: Apache/2.4.68 (codeit) OpenSSL/4.0.1",
             "X-Reputation: OK (-0.21)"
@@ -8021,7 +8035,7 @@
       "id": "unibe-ch",
       "name": "University of Bern",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:14.321595Z",
+      "checkedAt": "2026-08-27T09:21:36.224093Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -8059,7 +8073,7 @@
             "Access-Control-Expose-Headers: link",
             "Cache-Control: max-age=3600, must-revalidate, public",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:13 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:35 GMT",
             "Server: Apache/2.4.58 (Ubuntu)",
             "Strict-Transport-Security: max-age=63072000; includeSubDomains; preload",
             "Vary: Origin",
@@ -8138,7 +8152,7 @@
             "Access-Control-Expose-Headers: link",
             "Cache-Control: max-age=3600, must-revalidate, public",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:11 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:33 GMT",
             "Server: Apache/2.4.58 (Ubuntu)",
             "Strict-Transport-Security: max-age=63072000; includeSubDomains; preload",
             "Vary: Origin",
@@ -8188,7 +8202,7 @@
       "id": "umich-quod",
       "name": "University of Michigan",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:15.214979Z",
+      "checkedAt": "2026-08-27T09:21:38.323571Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -8220,22 +8234,21 @@
           "detected": "v2 · Level 2",
           "contentType": "application/json",
           "responseHeaders": [
-            "Accept-Ranges: bytes",
             "Access-Control-Allow-Credentials: true",
             "Access-Control-Allow-Origin: https://rism-digital.github.io",
             "Access-Control-Max-Age: 600",
             "Alt-Svc: h3=\":443\"; ma=86400",
             "Cache-Control: no-cache, private",
             "Cf-Cache-Status: BYPASS",
-            "Cf-Ray: a31997bee8c503b1-ZRH",
+            "Cf-Ray: a31a01c5be5db86b-ZRH",
             "Content-Type: application/json",
             "Cross-Origin-Resource-Policy: cross-origin",
-            "Date: Thu, 27 Aug 2026 08:09:13 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:35 GMT",
             "Expect-Ct: max-age=86400, enforce",
             "Referrer-Policy: same-origin",
             "Server: cloudflare",
-            "Set-Cookie: STICKY=s140; path=/",
-            "Set-Cookie: __cf_bm=.in94lqtaD01srkv7PakOh1KZMI8Th2SVfjQAfYknRU-1787818152.7857287-1.0.1.1-JwRSmWAp9N9a36h.dS_1yZmC9uSs7owoOgiURJ4EkGjflkOkwpiB5OVUgxWHg1IOgzRR3bNebnokOyhE1_E8bebvNYgI8kDTZByuGPWL41xrzP_DczFu8uhdhHt6GgvI; HttpOnly; SameSite=None; Secure; Path=/; Domain=lib.umich.edu; Expires=Thu, 27 Aug 2026 08:39:13 GMT",
+            "Set-Cookie: STICKY=s145; path=/",
+            "Set-Cookie: __cf_bm=K8QFxvupCXor6YT_g12n3_IEduD2Y0XXx6UC._3YZRc-1787822495.6316566-1.0.1.1-Ok2lquMfWWlL1lsW2.Eb_k3UvHMDjDXdYswL7pfHuYVcFwHpNo_homWgai7RpGZ6wg2ayZ378YieGUjyGTW.3XJSELoXeAAN9i0a2x9tI2RXAsyHgOwtGSZ9lqk.fTpA; HttpOnly; SameSite=None; Secure; Path=/; Domain=lib.umich.edu; Expires=Thu, 27 Aug 2026 09:51:35 GMT",
             "Strict-Transport-Security: max-age=31536000",
             "Vary: Accept-Encoding",
             "X-Content-Type-Options: nosniff",
@@ -8317,16 +8330,16 @@
             "Cache-Control: public",
             "Cache-Control: private",
             "Cf-Cache-Status: BYPASS",
-            "Cf-Ray: a31997b2895b03b1-ZRH",
+            "Cf-Ray: a31a01ade91cb86b-ZRH",
             "Content-Type: application/json",
             "Cross-Origin-Resource-Policy: cross-origin",
-            "Date: Thu, 27 Aug 2026 08:09:11 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:32 GMT",
             "Expect-Ct: max-age=86400, enforce",
             "Last-Modified: Wed, 26 Aug 2026 12:40:03 GMT",
             "Referrer-Policy: same-origin",
             "Server: cloudflare",
             "Set-Cookie: STICKY=s140; path=/",
-            "Set-Cookie: __cf_bm=TVhhjuzmgTULaqBkLqt7.wkN4L5V_A2b44vharwzCOs-1787818150.807386-1.0.1.1-_W.q4PP6xGdCmonIhycLVuK6ojPOLwNof0our.E8cmR9uxAOpVcySt0e.jY1q.nIzugEBC92NMXm2NlkPLL33IkAvyS0lgNjCGTHbpGlk8BbTqSr8N0AxVnaMSj6KsXP; HttpOnly; SameSite=None; Secure; Path=/; Domain=lib.umich.edu; Expires=Thu, 27 Aug 2026 08:39:11 GMT",
+            "Set-Cookie: __cf_bm=RBQjKaBYltt6EqDHW13_wWN3gkIx8ro8WmmebZUUVG8-1787822491.8273733-1.0.1.1-JoFyRVU66hyMBbuM_rXP6Ou3KbvSkK5UDvbWQsgJv1TdfKxyGfra9Qj3Ee_8jzqLHOsNGmBPE0XyfmGWmFfLw.0vqwmsk1l.I4z73XpzlijPAUyKpQ5cQaDMzrr9nSL7; HttpOnly; SameSite=None; Secure; Path=/; Domain=lib.umich.edu; Expires=Thu, 27 Aug 2026 09:51:32 GMT",
             "Strict-Transport-Security: max-age=31536000",
             "Vary: Accept-Encoding",
             "X-Content-Type-Options: nosniff",
@@ -8378,7 +8391,7 @@
       "id": "university-toronto",
       "name": "University of Toronto",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:12.805157Z",
+      "checkedAt": "2026-08-27T09:21:42.09812Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -8424,8 +8437,8 @@
             "Content-Length: 771",
             "Content-Security-Policy: frame-ancestors 'self' https://*.library.utoronto.ca",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:11 GMT",
-            "Expires: Thu, 27 Aug 2026 14:09:11 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:41 GMT",
+            "Expires: Thu, 27 Aug 2026 15:21:41 GMT",
             "Last-Modified: Fri, 29 May 2026 08:50:55 GMT",
             "Referrer-Policy: strict-origin-when-cross-origin",
             "Server: nginx",
@@ -8502,7 +8515,7 @@
             "Access-Control-Allow-Origin: *",
             "Age: 0",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:11 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:40 GMT",
             "Server: nginx",
             "Strict-Transport-Security: max-age=63072000",
             "Vary: Accept-Encoding"
@@ -8546,7 +8559,7 @@
       "id": "university-of-virginia",
       "name": "University of Virginia",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:13.861067Z",
+      "checkedAt": "2026-08-27T09:21:46.454228Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -8578,8 +8591,8 @@
             "Cache-Control: max-age=1, s-maxage=1, public, no-cache, no-store, no-transform",
             "Content-Length: 895",
             "Content-Type: application/json;charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:12 GMT",
-            "Last-Modified: Wed, 26 Aug 2026 12:40:07 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:45 GMT",
+            "Last-Modified: Tue, 03 Jun 2025 19:47:03 GMT",
             "Server: Jetty(11.0.24)",
             "Vary: Accept,Accept-Charset,Accept-Encoding,Accept-Language,Origin",
             "X-Powered-By: Cantaloupe/5.0.7"
@@ -8647,7 +8660,7 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: no-store",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:11 GMT"
+            "Date: Thu, 27 Aug 2026 09:21:43 GMT"
           ]
         },
         "presentation.preflight": {
@@ -8689,7 +8702,7 @@
       "id": "iiif-wellcomecollection-org",
       "name": "Wellcome Library",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:13.717912Z",
+      "checkedAt": "2026-08-27T09:21:41.933615Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -8722,11 +8735,11 @@
             "Access-Control-Allow-Origin: *",
             "Cache-Control: public, max-age=60",
             "Content-Type: application/json",
-            "Date: Thu, 27 Aug 2026 08:09:13 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:41 GMT",
             "Server: Kestrel",
             "Vary: Accept-Encoding",
-            "Via: 1.1 bc2f3ba3eac4faccaa0eab0847770130.cloudfront.net (CloudFront)",
-            "X-Amz-Cf-Id: OJtkKGLpZtPrQ0vhGxuwZWcVoj10BeelN0YlxBUIrJVN3r0HuqDIlw==",
+            "Via: 1.1 01d3cc5703fb0b9d265874e47d770b2e.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id: eUrLuoaXmMY6sR6Uv-QB2N0MFv2Vo7YabBreokBOOi2BQd8hmsoJEQ==",
             "X-Amz-Cf-Pop: ZRH52-P1",
             "X-Asset-Id: 2/5/b20631479_galton_2_9_6_3_2_0105.JP2",
             "X-Cache: Miss from cloudfront"
@@ -8793,11 +8806,11 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/ld+json; profile=\"http://iiif.io/api/presentation/2/context.json\"",
-            "Date: Thu, 27 Aug 2026 08:09:13 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:41 GMT",
             "Server: Kestrel",
             "Vary: Accept-Encoding",
-            "Via: 1.1 bc2f3ba3eac4faccaa0eab0847770130.cloudfront.net (CloudFront)",
-            "X-Amz-Cf-Id: WSq75xkiWf1a-G27tBtP9cKBpyj_7kVFZPXt8L78dk8waQWFmY1ZgQ==",
+            "Via: 1.1 01d3cc5703fb0b9d265874e47d770b2e.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id: nsvkvB94KA3R7QQZtENQmllUmq9gG4IA7_Ig7IBA13rEKpdau_6_MQ==",
             "X-Amz-Cf-Pop: ZRH52-P1",
             "X-Cache: Miss from cloudfront"
           ]
@@ -8840,7 +8853,7 @@
       "id": "www-e-manuscripta-ch",
       "name": "www.e-manuscripta.ch",
       "checked": true,
-      "checkedAt": "2026-08-27T08:09:14.302828Z",
+      "checkedAt": "2026-08-27T09:21:43.001065Z",
       "checks": {
         "image.base-redirect": {
           "status": "pass",
@@ -8871,7 +8884,7 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:14 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:42 GMT",
             "Referer: ",
             "Server: VLS/2603",
             "Set-Cookie: session_id=5a0d8b5373cb4d8fe2986b7083a6eb2f65453607; Path=/; SameSite=Lax; secure",
@@ -8943,7 +8956,7 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:09:13 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:42 GMT",
             "Referer: ",
             "Server: VLS/2603",
             "Set-Cookie: session_id=5a0d8b5373cb4d8fe2986b7083a6eb2f65453607; Path=/; SameSite=Lax; secure",
@@ -8990,7 +9003,7 @@
       "id": "yale-collections",
       "name": "Yale Digital Collections",
       "checked": true,
-      "checkedAt": "2026-08-27T08:08:51.574966Z",
+      "checkedAt": "2026-08-27T09:21:22.777924Z",
       "checks": {
         "image.base-redirect": {
           "status": "warning",
@@ -9022,7 +9035,7 @@
             "Cache-Control: max-age=900, private, no-transform",
             "Content-Length: 885",
             "Content-Type: application/json;charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:50 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:21 GMT",
             "Server: nginx/1.24.0 (Ubuntu)",
             "Vary: Accept, Accept-Charset, Accept-Encoding, Accept-Language, Origin",
             "X-Powered-By: Cantaloupe/5.0.6"
@@ -9088,20 +9101,20 @@
           "responseHeaders": [
             "Access-Control-Allow-Origin: *",
             "Cache-Control: no-cache",
-            "Content-Security-Policy: default-src 'self' https:; font-src 'self' static.library.yale.edu; img-src 'self' https: data: https://collections.library.yale.edu/iiif/; object-src 'none'; script-src 'self' siteimproveanalytics.com www.googletagmanager.com ga.jspm.io 'nonce-+f7vFFWNNPihwi6HLS4sdg=='; script-src-elem 'self' siteimproveanalytics.com www.googletagmanager.com ga.jspm.io 'nonce-+f7vFFWNNPihwi6HLS4sdg=='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; style-src-attr 'self' 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline' https://collections.library.yale.edu/iiif/; connect-src 'self' banner.library.yale.edu www.google-analytics.com region1.google-analytics.com https://collections.library.yale.edu/iiif/; report-uri https://api.honeybadger.io/v1/browser/csp?api_key=ce8b96f0\u0026report_only=true\u0026env=yul-dc-prod",
+            "Content-Security-Policy: default-src 'self' https:; font-src 'self' static.library.yale.edu; img-src 'self' https: data: https://collections.library.yale.edu/iiif/; object-src 'none'; script-src 'self' siteimproveanalytics.com www.googletagmanager.com ga.jspm.io 'nonce-LljPJByRiQ9X19QadCq2Cg=='; script-src-elem 'self' siteimproveanalytics.com www.googletagmanager.com ga.jspm.io 'nonce-LljPJByRiQ9X19QadCq2Cg=='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; style-src-attr 'self' 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline' https://collections.library.yale.edu/iiif/; connect-src 'self' banner.library.yale.edu www.google-analytics.com region1.google-analytics.com https://collections.library.yale.edu/iiif/; report-uri https://api.honeybadger.io/v1/browser/csp?api_key=ce8b96f0\u0026report_only=true\u0026env=yul-dc-prod",
             "Content-Type: application/json; charset=utf-8",
-            "Date: Thu, 27 Aug 2026 08:08:49 GMT",
+            "Date: Thu, 27 Aug 2026 09:21:20 GMT",
             "Referrer-Policy: strict-origin-when-cross-origin",
             "Server: nginx/1.24.0 + Phusion Passenger(R) 6.1.2",
-            "Set-Cookie: _blacklight_yul_session=1tqnh%2B37wzUu8BldcqprsiA%2BKtjUbkXIYAGVXpXTeo2CKBrSgmMIUilhunuTAy7l63GlcNd13NzMwxXUm0EJQ4YTcOGCLWidpZDDzFpmFtpOmD%2BK7pf7kh3MnYD0l7TBD2RJiBeuF5uBs3twDKi14t%2Bt9tBrzDMfQtV7xwemZl5wSy6bZhdCnSsGs%2BFIGkWPm6z3Or%2F%2F45sewIdC8c63xXhUetDvWRlc5VAIkxd3lO2ixQfodfmtIypLiEUg%2B4jLDFoA4dwfupeyfVS9NLyewopcK9dh97h%2BC1iWqFmTUwbD7%2BUWaSAh--Ln4U5ULNPLJu3oW%2F--Ovf6sNQE1SdDaOiryqxk5g%3D%3D; path=/; httponly; samesite=lax",
+            "Set-Cookie: _blacklight_yul_session=VDyZvZn8Xf2Vdg22bCA8C7ALFodYH0t6s76dUixi71G%2BDhL476dMAxO7bCasQ61luGYQjr%2BJDePnAFUAMDu3ifDf%2FQ9wtiire7acOrSNYHSuzu9ct3hU9sx8dEbwfpZW2bIgFMU6qDX%2Fc2Taf3a6iJXpe8o4EliEA5TaqHGaekA1a5AuRzwrMRl%2Fq8fRtaq5%2FQwnOA9yZosbXm%2BYJEWpa%2FL5itfZDWyZFeZUQfxCkWj2nryp8vllb2ulbZ26EccOx34aGgHPncB9b9eZSOpTeyZSoU7NsIL12obTaDz6uxhCGtqRkXns--ea05fw4aQwGKgKOA--yEaKkT7Iis26MGTuh3nFGA%3D%3D; path=/; httponly; samesite=lax",
             "Status: 200 OK",
             "Vary: Accept-Encoding",
             "X-Content-Type-Options: nosniff",
             "X-Frame-Options: SAMEORIGIN",
             "X-Permitted-Cross-Domain-Policies: none",
             "X-Powered-By: Phusion Passenger(R) 6.1.2",
-            "X-Request-Id: 795d85cc-cee5-40e8-9630-26373d91e2bf",
-            "X-Runtime: 0.113079",
+            "X-Request-Id: 5f043273-f11d-438f-8566-6533959a073f",
+            "X-Runtime: 0.111107",
             "X-Xss-Protection: 0"
           ]
         },

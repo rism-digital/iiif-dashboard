@@ -60,7 +60,7 @@ The application has no runtime server or database. A production build consists o
 
 ## Requirements
 
-- Go 1.22 or newer
+- Go 1.27 or newer
 - Node.js 24 and Yarn 1
 - GNU Make or a compatible `make`
 - Python 3 for the local static development server
@@ -137,7 +137,7 @@ Image-API-only projects are supported:
 
 Likewise, `imageInfoUrl` may be omitted for a Presentation-API-only project. All sample URLs must be public HTTPS URLs, and an image sample must point to `info.json`.
 
-Projects may also provide a public `notes` string for endpoint-specific context. The note is shown in the expanded dashboard details. In exceptional cases, `checkerUserAgent` may set a project-specific HTTP User-Agent when a service works in ordinary browsers but blocks the checker's identifying default. Overrides must be narrowly scoped and explained in `notes`; they are applied only to that project's requests and remain visible in the registry.
+Projects may also provide a public `notes` string for endpoint-specific context. The note is shown in the expanded dashboard details. In exceptional cases, `checkerUserAgent` may set a project-specific HTTP User-Agent when a service works in ordinary browsers but blocks the checker's identifying default. `checkerTLSProfile: "chrome"` may select a Chrome-compatible TLS and HTTP transport fingerprint when the standard Go TLS handshake is rejected before HTTP headers can be sent; it does not replace the checker’s identifying User-Agent. Overrides must be narrowly scoped and explained in `notes`; they are applied only to that project's requests and remain visible in the registry.
 
 The checker recognizes legacy Image API 1.x contexts so that older, still-operational services receive accurate default-response diagnostics. Content-negotiation comparisons remain focused on Image API v2 and v3.
 

@@ -62,7 +62,9 @@
       "name": "Digital Library @ Villanova University",
       "homepage": "https://digital.library.villanova.edu/",
       "manifestUrl": "https://digital.library.villanova.edu/Item/vudl:807694/Manifest",
-      "imageInfoUrl": "https://iiif.library.villanova.edu/iiif/2/vudl%3A807702/info.json"
+      "imageInfoUrl": "https://iiif.library.villanova.edu/iiif/2/vudl%3A807702/info.json",
+      "notes": "The Villanova image host resets the standard Go TLS handshake before receiving any HTTP headers, although it serves the same endpoint to browsers and curl. This project therefore uses the publicly declared Chrome-compatible TLS transport profile while retaining the checker's identifying User-Agent.",
+      "checkerTLSProfile": "chrome"
     },
     {
       "id": "digital-obvsg-at",

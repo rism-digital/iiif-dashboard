@@ -18,7 +18,8 @@
           { "required": ["imageInfoUrl"] }
         ],
         "dependentRequired": {
-          "checkerUserAgent": ["notes"]
+          "checkerUserAgent": ["notes"],
+          "checkerTLSProfile": ["notes"]
         },
         "properties": {
           "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
@@ -27,7 +28,8 @@
           "manifestUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
           "imageInfoUrl": { "type": "string", "format": "uri", "pattern": "^https://.+/info\\.json(?:[?#].*)?$" },
           "notes": { "type": "string", "minLength": 1, "maxLength": 1000 },
-          "checkerUserAgent": { "type": "string", "minLength": 1, "maxLength": 300 }
+          "checkerUserAgent": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "checkerTLSProfile": { "enum": ["chrome"] }
         }
       }
     }

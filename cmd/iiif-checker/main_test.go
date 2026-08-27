@@ -214,6 +214,12 @@ func TestEvaluateNegotiatedPairDeterminesWhetherVaryIsNeeded(t *testing.T) {
 				w.WriteHeader(http.StatusNotAcceptable)
 				return
 			}
+		case "/v2-not-acceptable":
+			if !requestedV3 {
+				w.WriteHeader(http.StatusNotAcceptable)
+				return
+			}
+			version = "v3"
 		case "/malformed":
 			if requestedV3 {
 				_, _ = w.Write([]byte(`{"not":"a manifest"}`))
@@ -272,6 +278,14 @@ func TestEvaluateNegotiatedPairDeterminesWhetherVaryIsNeeded(t *testing.T) {
 			wantV3Status:  "pass",
 			wantV2Summary: "Vary: Accept is missing",
 			wantV3Summary: "correctly declined",
+		},
+		{
+			name:          "reverse success and 406 require vary on successful response",
+			path:          "/v2-not-acceptable",
+			wantV2Status:  "pass",
+			wantV3Status:  "warning",
+			wantV2Summary: "correctly declined",
+			wantV3Summary: "Vary: Accept is missing",
 		},
 		{
 			name:          "malformed probe does not imply variance",
@@ -702,10 +716,11 @@ func TestCheckProjectSupportsImageOnlyProjects(t *testing.T) {
 	defer server.Close()
 
 	result := newChecker("https://dashboard.example").checkProject(context.Background(), Project{
-		ID:               "image-only",
-		Name:             "Image only",
-		ImageInfoURL:     server.URL + "/iiif/image/info.json",
-		CheckerUserAgent: projectUserAgent,
+		ID:                "image-only",
+		Name:              "Image only",
+		ImageInfoURL:      server.URL + "/iiif/image/info.json",
+		CheckerUserAgent:  projectUserAgent,
+		CheckerTLSProfile: "chrome",
 	})
 
 	for key := range result.Checks {
