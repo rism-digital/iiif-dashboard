@@ -164,7 +164,9 @@
       "name": "iiif.archive.org",
       "homepage": "https://iiif.archive.org/",
       "manifestUrl": "https://iiif.archive.org/iiif/3-caja-g-9-622/manifest.json",
-      "imageInfoUrl": "https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/info.json"
+      "imageInfoUrl": "https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/info.json",
+      "skip": true,
+      "notes": "Checks are disabled because the Internet Archive IIIF service has been chronically unreachable. The sample endpoints remain listed so they can be tested manually and re-enabled if service returns."
     },
     {
       "id": "iiif-diamm-net",

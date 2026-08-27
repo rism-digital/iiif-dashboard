@@ -225,25 +225,37 @@ projectRows : Model -> Project -> List (Html Msg)
 projectRows model project =
     let
         displayed =
-            displayedResults model project.id
+            if project.skip then
+                Dict.empty
+
+            else
+                displayedResults model project.id
 
         snapshotResult =
             snapshotProjectResults model project.id
 
         checkedState =
-            Maybe.map .checked snapshotResult
+            if project.skip then
+                Just False
+
+            else
+                Maybe.map .checked snapshotResult
 
         sourceText =
-            case snapshotResult of
-                Just result ->
-                    if result.checked then
-                        "Scheduled snapshot"
+            if project.skip then
+                "Checks disabled"
 
-                    else
-                        "Not checked"
+            else
+                case snapshotResult of
+                    Just result ->
+                        if result.checked then
+                            "Scheduled snapshot"
 
-                Nothing ->
-                    "No snapshot"
+                        else
+                            "Not checked"
+
+                    Nothing ->
+                        "No snapshot"
 
         isExpanded =
             Set.member project.id model.expanded
@@ -273,20 +285,28 @@ projectRows model project =
                         ]
                     ]
                 , td []
-                    [ case project.manifestUrl of
-                        Just _ ->
-                            apiSummary "presentation" displayed
+                    [ if project.skip then
+                        unavailableApiSummary "Checks disabled"
 
-                        Nothing ->
-                            unavailableApiSummary "No sample manifest"
+                      else
+                        case project.manifestUrl of
+                            Just _ ->
+                                apiSummary "presentation" displayed
+
+                            Nothing ->
+                                unavailableApiSummary "No sample manifest"
                     ]
                 , td []
-                    [ case project.imageInfoUrl of
-                        Just _ ->
-                            apiSummary "image" displayed
+                    [ if project.skip then
+                        unavailableApiSummary "Checks disabled"
 
-                        Nothing ->
-                            unavailableApiSummary "No image sample"
+                      else
+                        case project.imageInfoUrl of
+                            Just _ ->
+                                apiSummary "image" displayed
+
+                            Nothing ->
+                                unavailableApiSummary "No image sample"
                     ]
                 , td [ class "actions-cell" ]
                     [ div [ class "actions-content" ]
@@ -418,7 +438,10 @@ healthIndicator checkedState project checks =
                 pluralForm
 
         summary =
-            if checkedState == Just False then
+            if project.skip then
+                "Health: checks disabled"
+
+            else if checkedState == Just False then
                 "Health: not checked"
 
             else
@@ -514,7 +537,10 @@ healthIndicator checkedState project checks =
     in
     div [ class "project-health", attribute "role" "group", attribute "aria-label" summary ]
         [ span [ class "health-label", attribute "aria-hidden" "true" ] [ text "Health" ]
-        , if checkedState == Just False then
+        , if project.skip then
+            span [ class "health-empty" ] [ text "Disabled" ]
+
+          else if checkedState == Just False then
             span [ class "health-empty" ] [ text "Not checked" ]
 
           else
@@ -690,27 +716,31 @@ detailsPanel project checks =
 
             Nothing ->
                 text ""
-        , div [ class "diagnostic-grid" ]
-            [ case project.manifestUrl of
-                Just _ ->
-                    diagnosticGroup "Presentation API" (checkRows "presentation")
+        , if project.skip then
+            p [ class "empty-checks" ] [ text "Automated checks are disabled for this service. Use the sample links above for manual testing." ]
 
-                Nothing ->
-                    div [ class "diagnostic-group" ]
-                        [ h2 [] [ text "Presentation API" ]
-                        , p [ class "empty-checks" ] [ text "Not tested because this project does not have a sample manifest." ]
-                        ]
-            , case project.imageInfoUrl of
-                Just _ ->
-                    diagnosticGroup "Image API" (checkRows "image")
+          else
+            div [ class "diagnostic-grid" ]
+                [ case project.manifestUrl of
+                    Just _ ->
+                        diagnosticGroup "Presentation API" (checkRows "presentation")
 
-                Nothing ->
-                    div [ class "diagnostic-group" ]
-                        [ h2 [] [ text "Image API" ]
-                        , p [ class "empty-checks" ] [ text "Not tested because this project does not yet have a sample image service." ]
-                        ]
-            , div [ class "cors-group" ] [ diagnosticGroup "CORS and content-negotiation preflight" corsRows ]
-            ]
+                    Nothing ->
+                        div [ class "diagnostic-group" ]
+                            [ h2 [] [ text "Presentation API" ]
+                            , p [ class "empty-checks" ] [ text "Not tested because this project does not have a sample manifest." ]
+                            ]
+                , case project.imageInfoUrl of
+                    Just _ ->
+                        diagnosticGroup "Image API" (checkRows "image")
+
+                    Nothing ->
+                        div [ class "diagnostic-group" ]
+                            [ h2 [] [ text "Image API" ]
+                            , p [ class "empty-checks" ] [ text "Not tested because this project does not yet have a sample image service." ]
+                            ]
+                , div [ class "cors-group" ] [ diagnosticGroup "CORS and content-negotiation preflight" corsRows ]
+                ]
         ]
 
 

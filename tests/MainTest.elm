@@ -100,6 +100,7 @@ bothApisProject =
     , manifestUrl = Just "https://example.org/manifest"
     , imageInfoUrl = Just "https://example.org/info.json"
     , notes = Nothing
+    , skip = False
     }
 
 

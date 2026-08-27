@@ -20,6 +20,16 @@ tests =
                 Decode.decodeString Domain.registryDecoder registryWithNoteJson
                     |> Result.map (.projects >> List.head >> Maybe.andThen .notes)
                     |> Expect.equal (Ok (Just "Uses an endpoint-specific request workaround."))
+        , test "defaults projects to enabled" <|
+            \_ ->
+                Decode.decodeString Domain.registryDecoder registryJson
+                    |> Result.map (.projects >> List.head >> Maybe.map .skip)
+                    |> Expect.equal (Ok (Just False))
+        , test "decodes a skipped project" <|
+            \_ ->
+                Decode.decodeString Domain.registryDecoder skippedRegistryJson
+                    |> Result.map (.projects >> List.head >> Maybe.map (\project -> ( project.skip, project.notes )))
+                    |> Expect.equal (Ok (Just ( True, Just "Checks are disabled while the service is unavailable." )))
         , test "decodes generated observations" <|
             \_ ->
                 Decode.decodeString Domain.resultsDecoder resultsJson
@@ -152,6 +162,11 @@ registryJson =
 registryWithNoteJson : String
 registryWithNoteJson =
     "{\"schemaVersion\":1,\"projects\":[{\"id\":\"example-library\",\"name\":\"Example Library\",\"homepage\":\"https://example.org\",\"manifestUrl\":\"https://example.org/manifest\",\"notes\":\"Uses an endpoint-specific request workaround.\"}]}"
+
+
+skippedRegistryJson : String
+skippedRegistryJson =
+    "{\"schemaVersion\":1,\"projects\":[{\"id\":\"example-library\",\"name\":\"Example Library\",\"homepage\":\"https://example.org\",\"manifestUrl\":\"https://example.org/manifest\",\"skip\":true,\"notes\":\"Checks are disabled while the service is unavailable.\"}]}"
 
 
 resultsJson : String

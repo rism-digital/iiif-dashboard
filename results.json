@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-27T09:24:53.09642Z",
+  "generatedAt": "2026-08-27T09:31:59.375432Z",
   "projects": [
     {
       "id": "am-quartex",
@@ -3871,80 +3871,8 @@
     {
       "id": "iiif-archive-org",
       "name": "iiif.archive.org",
-      "checked": true,
-      "checkedAt": "2026-08-27T09:24:53.096257Z",
-      "checks": {
-        "image.base-redirect": {
-          "status": "fail",
-          "summary": "Base URI redirect check failed: Get \"https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
-          "corsHeaders": []
-        },
-        "image.compression": {
-          "status": "fail",
-          "summary": "Gzip request failed: Get \"https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/info.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
-          "corsHeaders": []
-        },
-        "image.default": {
-          "status": "fail",
-          "summary": "Request failed: Get \"https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/info.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
-          "corsHeaders": []
-        },
-        "image.info-preflight": {
-          "status": "fail",
-          "summary": "Content-negotiation OPTIONS preflight failed: Options \"https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/info.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
-          "corsHeaders": []
-        },
-        "image.response": {
-          "status": "unknown",
-          "summary": "Representative image was not requested because default info.json could not be parsed.",
-          "corsHeaders": []
-        },
-        "image.v2": {
-          "status": "fail",
-          "summary": "Request failed: Get \"https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/info.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
-          "corsHeaders": [],
-          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/image/2/context.json\""
-        },
-        "image.v3": {
-          "status": "fail",
-          "summary": "Request failed: Get \"https://iiif.archive.org/image/iiif/3/3-caja-g-9-622%2F(12)%20Caja%20G9-622.JPG/info.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
-          "corsHeaders": [],
-          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/image/3/context.json\""
-        },
-        "presentation.compression": {
-          "status": "fail",
-          "summary": "Gzip request failed: Get \"https://iiif.archive.org/iiif/3-caja-g-9-622/manifest.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
-          "corsHeaders": []
-        },
-        "presentation.default": {
-          "status": "fail",
-          "summary": "Request failed: Get \"https://iiif.archive.org/iiif/3-caja-g-9-622/manifest.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
-          "corsHeaders": []
-        },
-        "presentation.preflight": {
-          "status": "pass",
-          "summary": "OPTIONS preflight permits GET with a profile-valued Accept request header.",
-          "corsHeaders": [
-            "access-control-allow-headers: Accept",
-            "access-control-allow-methods: DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT",
-            "access-control-allow-origin: https://rism-digital.github.io"
-          ],
-          "httpStatus": 200,
-          "contentType": "text/html; charset=utf-8"
-        },
-        "presentation.v2": {
-          "status": "fail",
-          "summary": "Request failed: Get \"https://iiif.archive.org/iiif/3-caja-g-9-622/manifest.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
-          "corsHeaders": [],
-          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/2/context.json\""
-        },
-        "presentation.v3": {
-          "status": "fail",
-          "summary": "Request failed: Get \"https://iiif.archive.org/iiif/3-caja-g-9-622/manifest.json\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)",
-          "corsHeaders": [],
-          "requestAccept": "application/ld+json; profile=\"http://iiif.io/api/presentation/3/context.json\""
-        }
-      }
+      "checked": false,
+      "checks": {}
     },
     {
       "id": "iiif-diamm-net",

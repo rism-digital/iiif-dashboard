@@ -17,6 +17,7 @@ tests =
             , manifestUrl = Just "https://api.nls.uk/iiif/manifest/123"
             , imageInfoUrl = Nothing
             , notes = Just "Uses a browser-compatible request workaround."
+            , skip = False
             }
     in
     describe "project search"

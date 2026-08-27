@@ -45,6 +45,7 @@ type Project struct {
 	Name              string `json:"name"`
 	ManifestURL       string `json:"manifestUrl,omitempty"`
 	ImageInfoURL      string `json:"imageInfoUrl,omitempty"`
+	Skip              bool   `json:"skip,omitempty"`
 	CheckerUserAgent  string `json:"checkerUserAgent,omitempty"`
 	CheckerTLSProfile string `json:"checkerTLSProfile,omitempty"`
 }
@@ -700,11 +701,37 @@ func uncheckedProject(project Project) ProjectResults {
 	return ProjectResults{ID: project.ID, Name: project.Name, Checked: false, Checks: map[string]CheckResult{}}
 }
 
-func selectProjects(projects []Project, limit int) []Project {
-	if limit == 0 || limit >= len(projects) {
-		return projects
+func resetSkippedProjects(output *ResultsFile, projects []Project) {
+	for _, project := range projects {
+		if !project.Skip {
+			continue
+		}
+		replaced := false
+		for index := range output.Projects {
+			if output.Projects[index].ID == project.ID {
+				output.Projects[index] = uncheckedProject(project)
+				replaced = true
+				break
+			}
+		}
+		if !replaced {
+			output.Projects = append(output.Projects, uncheckedProject(project))
+		}
 	}
-	return projects[:limit]
+}
+
+func selectProjects(projects []Project, limit int, includeSkipped bool) []Project {
+	eligible := make([]Project, 0, len(projects))
+	for _, project := range projects {
+		if project.Skip && !includeSkipped {
+			continue
+		}
+		eligible = append(eligible, project)
+	}
+	if limit == 0 || limit >= len(eligible) {
+		return eligible
+	}
+	return eligible[:limit]
 }
 
 func validateOptions(limit int, projectID string, concurrency int) error {
@@ -727,6 +754,7 @@ func run() error {
 	projectID := flag.String("project", "", "check only this project ID and preserve other stored results")
 	limit := flag.Int("n", 0, "maximum number of projects to check; 0 checks all projects")
 	concurrency := flag.Int("concurrency", 6, "maximum number of projects checked concurrently")
+	includeSkipped := flag.Bool("include-skipped", false, "check projects marked skip in the registry")
 	flag.Parse()
 	if err := validateOptions(*limit, *projectID, *concurrency); err != nil {
 		return err
@@ -750,18 +778,28 @@ func run() error {
 			output.Projects = append(output.Projects, uncheckedProject(project))
 		}
 	}
+	if !*includeSkipped {
+		resetSkippedProjects(&output, registry.Projects)
+	}
 	selected := []Project{}
+	projectFound := false
 	if *projectID != "" {
 		for _, project := range registry.Projects {
 			if project.ID == *projectID {
-				selected = append(selected, project)
+				projectFound = true
+				if !project.Skip || *includeSkipped {
+					selected = append(selected, project)
+				}
 			}
 		}
 	} else {
-		selected = selectProjects(registry.Projects, *limit)
+		selected = selectProjects(registry.Projects, *limit, *includeSkipped)
+	}
+	if *projectID != "" && !projectFound {
+		return fmt.Errorf("project ID %q was not found", *projectID)
 	}
 	if *projectID != "" && len(selected) == 0 {
-		return fmt.Errorf("project ID %q was not found", *projectID)
+		fmt.Printf("Skipping %s because it is disabled; use --include-skipped to check it.\n", *projectID)
 	}
 	if *limit > 0 {
 		fmt.Printf("Checking %d of %d projects; %d will be marked not checked.\n", len(selected), len(registry.Projects), len(registry.Projects)-len(selected))

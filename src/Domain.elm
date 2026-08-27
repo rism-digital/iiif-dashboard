@@ -17,6 +17,7 @@ type alias Project =
     , manifestUrl : Maybe String
     , imageInfoUrl : Maybe String
     , notes : Maybe String
+    , skip : Bool
     }
 
 
@@ -74,13 +75,16 @@ registryDecoder =
 
 projectDecoder : Decoder Project
 projectDecoder =
-    Decode.map6 Project
-        (Decode.field "id" Decode.string)
-        (Decode.field "name" Decode.string)
-        (Decode.field "homepage" Decode.string)
-        (Decode.maybe (Decode.field "manifestUrl" Decode.string))
-        (Decode.maybe (Decode.field "imageInfoUrl" Decode.string))
-        (Decode.maybe (Decode.field "notes" Decode.string))
+    Decode.map2 (\build skip -> build skip)
+        (Decode.map6 Project
+            (Decode.field "id" Decode.string)
+            (Decode.field "name" Decode.string)
+            (Decode.field "homepage" Decode.string)
+            (Decode.maybe (Decode.field "manifestUrl" Decode.string))
+            (Decode.maybe (Decode.field "imageInfoUrl" Decode.string))
+            (Decode.maybe (Decode.field "notes" Decode.string))
+        )
+        (Decode.oneOf [ Decode.field "skip" Decode.bool, Decode.succeed False ])
 
 
 resultsDecoder : Decoder ResultsFile

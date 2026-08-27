@@ -602,18 +602,20 @@ func TestAllResponseHeadersStoresSortedNamesAndDuplicateValues(t *testing.T) {
 }
 
 func TestSelectProjects(t *testing.T) {
-	projects := []Project{{ID: "one"}, {ID: "two"}, {ID: "three"}}
+	projects := []Project{{ID: "one"}, {ID: "skipped", Skip: true}, {ID: "two"}, {ID: "three"}}
 	for _, test := range []struct {
-		name  string
-		limit int
-		want  []string
+		name           string
+		limit          int
+		includeSkipped bool
+		want           []string
 	}{
-		{name: "zero selects all", limit: 0, want: []string{"one", "two", "three"}},
-		{name: "limited selection preserves order", limit: 2, want: []string{"one", "two"}},
-		{name: "oversized selection selects all", limit: 10, want: []string{"one", "two", "three"}},
+		{name: "zero selects all eligible", limit: 0, want: []string{"one", "two", "three"}},
+		{name: "limited selection counts eligible projects", limit: 2, want: []string{"one", "two"}},
+		{name: "oversized selection selects all eligible", limit: 10, want: []string{"one", "two", "three"}},
+		{name: "include skipped overrides registry", limit: 0, includeSkipped: true, want: []string{"one", "skipped", "two", "three"}},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			selected := selectProjects(projects, test.limit)
+			selected := selectProjects(projects, test.limit, test.includeSkipped)
 			if len(selected) != len(test.want) {
 				t.Fatalf("selected %d projects, want %d", len(selected), len(test.want))
 			}
@@ -653,6 +655,22 @@ func TestUncheckedProjectSerialization(t *testing.T) {
 	}
 	if strings.Contains(text, `"checkedAt"`) {
 		t.Fatalf("unchecked result must omit checkedAt: %s", text)
+	}
+}
+
+func TestResetSkippedProjectsClearsStoredChecks(t *testing.T) {
+	output := ResultsFile{Projects: []ProjectResults{
+		{ID: "enabled", Name: "Enabled", Checked: true, Checks: map[string]CheckResult{"presentation.default": {Status: "pass"}}},
+		{ID: "skipped", Name: "Skipped", Checked: true, CheckedAt: "2026-01-01T00:00:00Z", Checks: map[string]CheckResult{"presentation.default": {Status: "fail"}}},
+	}}
+	resetSkippedProjects(&output, []Project{{ID: "enabled", Name: "Enabled"}, {ID: "skipped", Name: "Skipped", Skip: true}})
+
+	if !output.Projects[0].Checked || len(output.Projects[0].Checks) != 1 {
+		t.Fatal("enabled project should be preserved")
+	}
+	skipped := output.Projects[1]
+	if skipped.Checked || skipped.CheckedAt != "" || len(skipped.Checks) != 0 {
+		t.Fatalf("skipped project was not reset: %#v", skipped)
 	}
 }
 

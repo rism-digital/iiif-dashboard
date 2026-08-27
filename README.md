@@ -39,6 +39,7 @@ The complete response-header set from each plain Presentation and Image API GET 
 - **Warning:** the representation was usable but exposed an interoperability, content-negotiation, CORS, or HTTP issue.
 - **Fail:** the request failed, returned an unusable representation, or did not have the expected IIIF structure. No response is a failure.
 - **Not checked:** the project was intentionally omitted from a limited checker run.
+- **Checks disabled:** the project is marked `skip: true` because its sample service is chronically unreachable. Its public project note explains why.
 - **Not tested:** the project has no sample for that API, no observation exists, or a prerequisite request failed.
 
 The main API badges and health meter summarize passes, warnings, and failures. Advisories do not downgrade those summaries; they appear as purple diagnostic blocks in the expanded details. The expanded CORS section presents another view of the stored observations and does not add duplicate blocks to the meter.
@@ -137,7 +138,7 @@ Image-API-only projects are supported:
 
 Likewise, `imageInfoUrl` may be omitted for a Presentation-API-only project. All sample URLs must be public HTTPS URLs, and an image sample must point to `info.json`.
 
-Projects may also provide a public `notes` string for endpoint-specific context. The note is shown in the expanded dashboard details. In exceptional cases, `checkerUserAgent` may set a project-specific HTTP User-Agent when a service works in ordinary browsers but blocks the checker's identifying default. `checkerTLSProfile: "chrome"` may select a Chrome-compatible TLS and HTTP transport fingerprint when the standard Go TLS handshake is rejected before HTTP headers can be sent; it does not replace the checker’s identifying User-Agent. Overrides must be narrowly scoped and explained in `notes`; they are applied only to that project's requests and remain visible in the registry.
+Projects may also provide a public `notes` string for endpoint-specific context. The note is shown in the expanded dashboard details. A chronically unreachable service may set `skip: true`; normal checker runs omit it, the dashboard labels its checks as disabled, and its required public note explains why. In exceptional cases, `checkerUserAgent` may set a project-specific HTTP User-Agent when a service works in ordinary browsers but blocks the checker's identifying default. `checkerTLSProfile: "chrome"` may select a Chrome-compatible TLS and HTTP transport fingerprint when the standard Go TLS handshake is rejected before HTTP headers can be sent; it does not replace the checker’s identifying User-Agent. Overrides must be narrowly scoped and explained in `notes`; they are applied only to that project's requests and remain visible in the registry.
 
 The checker recognizes legacy Image API 1.x contexts so that older, still-operational services receive accurate default-response diagnostics. Content-negotiation comparisons remain focused on Image API v2 and v3.
 
@@ -170,11 +171,12 @@ Useful options include:
 | `-n 5` | Check the first five projects and mark the remainder “Not checked.” |
 | `-project PROJECT-ID` | Refresh one project while preserving all other stored results. |
 | `-concurrency 3` | Limit the number of projects checked concurrently. The default is six. |
+| `--include-skipped` | Include projects marked `skip: true`; useful for periodically retesting disabled services. |
 | `-origin https://dashboard.example.org` | Set the origin used for CORS requests. |
 | `-projects PATH` | Read a different project registry. |
 | `-results PATH` | Write a different result snapshot. |
 
-`-n 0` checks every project. `-n` and `-project` cannot be combined.
+`-n 0` checks every project not marked `skip: true`. `-n` and `-project` cannot be combined. To check a skipped service, including with `-project`, add `--include-skipped`.
 
 Interactive terminal runs display pending, active, and finished projects in a bounded in-place progress view. Redirected output and CI use stable log lines. A slow service occupies only its own worker and does not block unrelated projects.
 
