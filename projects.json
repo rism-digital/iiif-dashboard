@@ -193,6 +193,13 @@
       "imageInfoUrl": "https://palimpsest.stmarytx.edu/iiif/KB_10-323-S-30_backcover_Ac_55.jp2/info.json"
     },
     {
+      "id": "iiif-kbr-be",
+      "name": "KBR (Royal Library of Belgium)",
+      "homepage": "https://iiif.kbr.be",
+      "manifestUrl": "https://iiif.kbr.be/manifest/v3/28980",
+      "imageInfoUrl": "https://iiif-image-server.kbr.be/iiif/3/0000%2F0000%2F0031%2F0000_0000_0031_5804.tiff/info.json"
+    },
+    {
       "id": "iiif-ub-uni-leipzig-de",
       "name": "Leipzig University Library",
       "homepage": "https://iiif.ub.uni-leipzig.de/",
