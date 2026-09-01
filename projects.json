@@ -37,6 +37,13 @@
       "imageInfoUrl": "https://content.staatsbibliothek-berlin.de/dc/1912185334-0009/info.json"
     },
     {
+      "id": "bibliotheca-palatina-heidelberg",
+      "name": "Bibliotheca Palatina Heidelberg",
+      "homepage": "https://digi.ub.uni-heidelberg.de/bpd/index.html",
+      "manifestUrl": "https://digi.ub.uni-heidelberg.de/diglit/iiif3/cpg389/manifest",
+      "imageInfoUrl": "https://digi.ub.uni-heidelberg.de/iiif/3/cpg389%3A0000c_1av.jpg/info.json"
+    },
+    {
       "id": "library-bc-edu",
       "name": "Boston College Libraries",
       "homepage": "https://library.bc.edu/",
@@ -383,6 +390,13 @@
       "homepage": "https://iiif.wellcomecollection.org/",
       "manifestUrl": "https://iiif.wellcomecollection.org/presentation/v2/b20631479",
       "imageInfoUrl": "https://iiif.wellcomecollection.org/thumbs/b20631479_galton_2_9_6_3_2_0105.JP2/info.json"
+    },
+    {
+      "id": "willamette-university-libraries",
+      "name": "Willamette University Libraries",
+      "homepage": "https://digitalcollections.willamette.edu/home",
+      "manifestUrl": "https://digitalcollections.willamette.edu/server/iiif/06b812d8-fb10-492e-8ff6-8e5d6a378441/manifest",
+      "imageInfoUrl": "https://digitalcollections.willamette.edu/image-server/iiif/2/4e1f9921-610b-4d31-91ea-0b0bd140921e/info.json"
     },
     {
       "id": "www-e-manuscripta-ch",

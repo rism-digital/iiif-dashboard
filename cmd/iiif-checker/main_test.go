@@ -11,6 +11,28 @@ import (
 	"testing"
 )
 
+func TestCheckerReportsEachCompletedRequest(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+	}))
+	defer server.Close()
+
+	completed := 0
+	checker := newChecker("https://dashboard.example").withRequestFinished(func() {
+		completed++
+	})
+	for range 2 {
+		resp, err := checker.request(context.Background(), http.MethodGet, server.URL, "", false, true)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_ = resp.Body.Close()
+	}
+	if completed != 2 {
+		t.Fatalf("completed requests = %d, want 2", completed)
+	}
+}
+
 func TestDetectVersionAndLevel(t *testing.T) {
 	doc := map[string]any{
 		"@context": "http://iiif.io/api/image/3/context.json",
@@ -482,6 +504,89 @@ func TestBaseRedirectDirectResponseIsWarning(t *testing.T) {
 	}
 }
 
+func TestBaseRedirectRequestsSlashlessImageBaseURI(t *testing.T) {
+	requestedPath := ""
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		requestedPath = r.URL.EscapedPath()
+		w.Header().Set("Location", "/iiif/id/info.json")
+		w.WriteHeader(http.StatusSeeOther)
+	}))
+	defer server.Close()
+
+	result := newChecker("https://dashboard.example").checkBaseRedirect(context.Background(), server.URL+"/iiif/id/info.json", nil)
+	if requestedPath != "/iiif/id" {
+		t.Fatalf("requested path = %q, want slashless image base URI", requestedPath)
+	}
+	if result.Status != "pass" {
+		t.Fatalf("status = %q, want pass; summary: %s", result.Status, result.Summary)
+	}
+}
+
+func TestBaseRedirectRetainsIntermediateRedirectBefore303(t *testing.T) {
+	requests := 0
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		requests++
+		switch r.URL.Path {
+		case "/iiif/id":
+			w.Header().Set("Location", "/iiif/id/")
+			w.WriteHeader(http.StatusMovedPermanently)
+		case "/iiif/id/":
+			w.Header().Set("Location", "/iiif/id/info.json")
+			w.WriteHeader(http.StatusSeeOther)
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	defer server.Close()
+
+	result := newChecker("https://dashboard.example").checkBaseRedirect(context.Background(), server.URL+"/iiif/id/info.json", nil)
+	if requests != 2 {
+		t.Fatalf("requests = %d, want 2", requests)
+	}
+	if result.Status != "warning" {
+		t.Fatalf("status = %q, want warning; summary: %s", result.Status, result.Summary)
+	}
+	if !strings.Contains(result.Summary, "HTTP 301 → HTTP 303") {
+		t.Fatalf("summary = %q, want complete redirect sequence", result.Summary)
+	}
+	if result.HTTPStatus != http.StatusMovedPermanently {
+		t.Fatalf("HTTP status = %d, want initial 301", result.HTTPStatus)
+	}
+	if len(result.RedirectChain) != 2 || result.RedirectChain[0].HTTPStatus != http.StatusMovedPermanently || result.RedirectChain[1].HTTPStatus != http.StatusSeeOther {
+		t.Fatalf("redirect chain = %#v, want 301 then 303", result.RedirectChain)
+	}
+}
+
+func TestTrailingSlashRedirectRequestsCompatibilityURI(t *testing.T) {
+	requestedPath := ""
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		requestedPath = r.URL.EscapedPath()
+		w.Header().Set("Location", "/iiif/id/info.json")
+		w.WriteHeader(http.StatusSeeOther)
+	}))
+	defer server.Close()
+
+	result := newChecker("https://dashboard.example").checkTrailingSlashRedirect(context.Background(), server.URL+"/iiif/id/info.json", nil)
+	if requestedPath != "/iiif/id/" {
+		t.Fatalf("requested path = %q, want trailing-slash compatibility URI", requestedPath)
+	}
+	if result.Status != "pass" {
+		t.Fatalf("status = %q, want pass; summary: %s", result.Status, result.Summary)
+	}
+}
+
+func TestTrailingSlashRedirectUnsupportedIsAdvisory(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.NotFound(w, r)
+	}))
+	defer server.Close()
+
+	result := newChecker("https://dashboard.example").checkTrailingSlashRedirect(context.Background(), server.URL+"/iiif/id/info.json", nil)
+	if result.Status != "advisory" {
+		t.Fatalf("status = %q, want advisory; summary: %s", result.Status, result.Summary)
+	}
+}
+
 func TestBaseRedirectNonRedirectResponseIsWarning(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "not found", http.StatusNotFound)
@@ -692,8 +797,11 @@ func TestProjectResultsDefaultsOldSnapshotsToChecked(t *testing.T) {
 }
 
 func TestImageBaseURL(t *testing.T) {
-	if got := imageBaseURL("https://example.org/iiif/id/info.json"); got != "https://example.org/iiif/id/" {
+	if got := imageBaseURL("https://example.org/iiif/id/info.json"); got != "https://example.org/iiif/id" {
 		t.Fatalf("imageBaseURL() = %q", got)
+	}
+	if got := imageBaseURL("https://example.org/iiif/a%2Fb/info.json?token=one#fragment"); got != "https://example.org/iiif/a%2Fb" {
+		t.Fatalf("imageBaseURL() with encoded identifier and URL suffix = %q", got)
 	}
 }
 
@@ -721,7 +829,7 @@ func TestCheckProjectSupportsImageOnlyProjects(t *testing.T) {
 			w.Header().Set("Content-Type", `application/ld+json; profile="http://iiif.io/api/image/3/context.json"`)
 			w.Header().Set("Vary", "Accept")
 			_, _ = w.Write([]byte(`{"@context":"http://iiif.io/api/image/3/context.json","id":"` + server.URL + `/iiif/image","type":"ImageService3","profile":"level2","width":640,"height":480,"sizes":[{"width":64,"height":64}]}`))
-		case "/iiif/image/":
+		case "/iiif/image":
 			w.Header().Set("Location", server.URL+"/iiif/image/info.json")
 			w.WriteHeader(http.StatusSeeOther)
 		case "/iiif/image/full/64,64/0/default.jpg":

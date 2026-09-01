@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 	"sync"
 	"time"
 	"unicode/utf8"
@@ -26,6 +27,7 @@ type projectProgress struct {
 	interactive  bool
 	names        []string
 	states       []progressState
+	requests     []int
 	frame        int
 	rendered     bool
 	renderedRows int
@@ -42,6 +44,7 @@ func newProjectProgress(out io.Writer, names []string, interactive bool) *projec
 		interactive: interactive,
 		names:       names,
 		states:      make([]progressState, len(names)),
+		requests:    make([]int, len(names)),
 		stop:        make(chan struct{}),
 		done:        make(chan struct{}),
 	}
@@ -90,7 +93,16 @@ func (p *projectProgress) MarkFinished(index int) {
 	if p.interactive {
 		p.renderLocked()
 	} else {
-		fmt.Fprintf(p.out, "Finished %s.\n", p.names[index])
+		fmt.Fprintf(p.out, "Finished %s%s\n", p.names[index], requestDots(p.requests[index]))
+	}
+}
+
+func (p *projectProgress) MarkRequestFinished(index int) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.requests[index]++
+	if p.interactive {
+		p.renderLocked()
 	}
 }
 
@@ -119,7 +131,7 @@ func (p *projectProgress) progressLinesLocked() []string {
 	if rowLimit <= 0 || rowLimit >= len(p.names) {
 		lines := make([]string, len(p.names))
 		for index, name := range p.names {
-			lines[index] = progressLine(p.states[index], p.frame, name)
+			lines[index] = progressLine(p.states[index], p.frame, name, p.requests[index])
 		}
 		return lines
 	}
@@ -128,7 +140,7 @@ func (p *projectProgress) progressLinesLocked() []string {
 		for index+1 < len(p.states) && p.states[index] == progressFinished {
 			index++
 		}
-		return []string{progressLine(p.states[index], p.frame, p.names[index])}
+		return []string{progressLine(p.states[index], p.frame, p.names[index], p.requests[index])}
 	}
 
 	projectRows := rowLimit - 1
@@ -142,7 +154,7 @@ func (p *projectProgress) progressLinesLocked() []string {
 	end := start + projectRows
 	lines := make([]string, 0, rowLimit)
 	for index := start; index < end; index++ {
-		lines = append(lines, progressLine(p.states[index], p.frame, p.names[index]))
+		lines = append(lines, progressLine(p.states[index], p.frame, p.names[index], p.requests[index]))
 	}
 	lines = append(lines, fmt.Sprintf("  Showing projects %d–%d of %d", start+1, end, len(p.names)))
 	return lines
@@ -157,15 +169,20 @@ func truncateProgressLine(line string, terminalWidth int) string {
 	return string(runes[:maximum-1]) + "…"
 }
 
-func progressLine(state progressState, frame int, name string) string {
+func progressLine(state progressState, frame int, name string, requests int) string {
+	dots := requestDots(requests)
 	switch state {
 	case progressRunning:
-		return fmt.Sprintf("%s %s — checking", spinnerFrames[frame%len(spinnerFrames)], name)
+		return fmt.Sprintf("%s %s — checking%s", spinnerFrames[frame%len(spinnerFrames)], name, dots)
 	case progressFinished:
-		return fmt.Sprintf("✓ %s — finished", name)
+		return fmt.Sprintf("✓ %s — finished%s", name, dots)
 	default:
-		return fmt.Sprintf("· %s — pending", name)
+		return fmt.Sprintf("· %s — pending%s", name, dots)
 	}
+}
+
+func requestDots(count int) string {
+	return strings.Repeat(".", count)
 }
 
 func supportsInteractiveProgress(output *os.File) bool {

@@ -56,6 +56,7 @@ type alias ProjectResults =
     , name : String
     , checked : Bool
     , checkedAt : Maybe String
+    , durationMs : Maybe Int
     , checks : Dict String CheckResult
     }
 
@@ -96,11 +97,12 @@ resultsDecoder =
 
 projectResultsDecoder : Decoder ProjectResults
 projectResultsDecoder =
-    Decode.map5 ProjectResults
+    Decode.map6 ProjectResults
         (Decode.field "id" Decode.string)
         (Decode.field "name" Decode.string)
         (Decode.oneOf [ Decode.field "checked" Decode.bool, Decode.succeed True ])
         (Decode.maybe (Decode.field "checkedAt" Decode.string))
+        (Decode.maybe (Decode.field "durationMs" Decode.int))
         (Decode.field "checks" (Decode.dict checkResultDecoder))
 
 

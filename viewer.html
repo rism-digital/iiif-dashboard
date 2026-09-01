@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="View a IIIF Manifest with Diva.js" />
+    <title>IIIF Viewer · IIIF Service Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="site-header">
+        <div class="header-inner">
+          <div>
+            <h1>IIIF Viewer</h1>
+            <p class="subtitle">Open a Presentation API Manifest in Diva.js</p>
+          </div>
+          <nav class="header-links" aria-label="Site navigation">
+            <a class="header-link" href="./">Dashboard</a>
+            <a class="header-link" href="./checks.html">Checks explained</a>
+            <a class="header-link" href="https://github.com/rism-digital/iiif-dashboard" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="page-shell viewer-page">
+        <p class="error-banner viewer-message" id="viewer-message" role="alert" hidden></p>
+        <div id="diva-wrapper" class="diva-wrapper" style="display: flex; width: 100%; height: 80vh; overflow: hidden" aria-label="Diva.js IIIF viewer"></div>
+        <noscript><p class="error-banner">JavaScript is required to use the viewer.</p></noscript>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-inner">
+          <p>Created by the <a href="https://rism.digital/" target="_blank" rel="noopener noreferrer">RISM Digital Center</a>.</p>
+          <a class="rism-online-link" href="https://diva.simssa.ca/" target="_blank" rel="noopener noreferrer">About Diva.js ↗</a>
+        </div>
+      </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/openseadragon@6.1.0/build/openseadragon/openseadragon.min.js"></script>
+    <script src="https://unpkg.com/diva.js@latest/build/diva.js"></script>
+    <script>
+      (async () => {
+        const wrapper = document.getElementById("diva-wrapper");
+        const message = document.getElementById("viewer-message");
+
+        const showError = (text) => {
+          wrapper.style.display = "none";
+          message.textContent = text;
+          message.hidden = false;
+        };
+
+        // Diva leaves its primary OpenSeadragon drawer unspecified. Canvas avoids
+        // WebGL texture-size failures on full-width, high-DPI displays.
+        if (window.OpenSeadragon && window.OpenSeadragon.DEFAULT_SETTINGS) {
+          window.OpenSeadragon.DEFAULT_SETTINGS.drawer = "canvas";
+        }
+
+        if (typeof window.Diva !== "function") {
+          showError("The Diva.js library could not be loaded.");
+          return;
+        }
+
+        const manifest = new URLSearchParams(window.location.search).get("manifest");
+        if (!manifest) {
+          showError("No Manifest was specified. Open this page with ?manifest= followed by a Manifest URL.");
+          return;
+        }
+
+        let parsed;
+        try {
+          parsed = new URL(manifest);
+          if (parsed.protocol !== "https:" && parsed.protocol !== "http:") throw new Error("Unsupported protocol");
+        } catch (_) {
+          showError("The manifest query parameter must contain a valid HTTP or HTTPS URL.");
+          return;
+        }
+
+        try {
+          const viewer = new Diva("diva-wrapper", {
+            objectData: parsed.href,
+            initialPage: 0
+          });
+          await viewer.ready;
+        } catch (error) {
+          console.error(error);
+          showError("Diva.js could not load this Manifest. Check its CORS headers and IIIF structure.");
+        }
+      })();
+    </script>
+  </body>
+</html>

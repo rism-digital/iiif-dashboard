@@ -130,13 +130,13 @@ tests =
         , test "defaults older project results to checked" <|
             \_ ->
                 Decode.decodeString Domain.resultsDecoder resultsJson
-                    |> Result.map (.projects >> List.head >> Maybe.map (\project -> ( project.checked, project.checkedAt )))
-                    |> Expect.equal (Ok (Just ( True, Just "2026-01-01T00:00:00Z" )))
+                    |> Result.map (.projects >> List.head >> Maybe.map (\project -> ( project.checked, project.checkedAt, project.durationMs )))
+                    |> Expect.equal (Ok (Just ( True, Just "2026-01-01T00:00:00Z", Just 1234 )))
         , test "decodes an explicit unchecked project result" <|
             \_ ->
                 Decode.decodeString Domain.resultsDecoder uncheckedResultsJson
-                    |> Result.map (.projects >> List.head >> Maybe.map (\project -> ( project.checked, project.checkedAt, Dict.isEmpty project.checks )))
-                    |> Expect.equal (Ok (Just ( False, Nothing, True )))
+                    |> Result.map (.projects >> List.head >> Maybe.map (\project -> ( project.checked, project.checkedAt, ( project.durationMs, Dict.isEmpty project.checks ) )))
+                    |> Expect.equal (Ok (Just ( False, Nothing, ( Nothing, True ) )))
         , test "decodes a project without an image sample" <|
             \_ ->
                 Decode.decodeString Domain.registryDecoder manifestOnlyRegistryJson
@@ -171,7 +171,7 @@ skippedRegistryJson =
 
 resultsJson : String
 resultsJson =
-    "{\"schemaVersion\":1,\"generatedAt\":\"2026-01-01T00:00:00Z\",\"projects\":[{\"id\":\"example-library\",\"name\":\"Example Library\",\"checkedAt\":\"2026-01-01T00:00:00Z\",\"checks\":{\"presentation.default\":{\"status\":\"pass\",\"summary\":\"Valid\",\"httpStatus\":200,\"detected\":\"v3\",\"contentType\":\"application/ld+json\",\"corsHeaders\":[\"access-control-allow-origin: *\",\"access-control-allow-origin: *\"],\"responseHeaders\":[\"Content-Type: application/ld+json\",\"Vary: Accept\"],\"redirectChain\":[{\"url\":\"https://example.org/start\",\"httpStatus\":302,\"location\":\"/manifest\",\"responseHeaders\":[\"Location: /manifest\",\"Set-Cookie: redirect=1\"]}]}}}]}"
+    "{\"schemaVersion\":1,\"generatedAt\":\"2026-01-01T00:00:00Z\",\"projects\":[{\"id\":\"example-library\",\"name\":\"Example Library\",\"checkedAt\":\"2026-01-01T00:00:00Z\",\"durationMs\":1234,\"checks\":{\"presentation.default\":{\"status\":\"pass\",\"summary\":\"Valid\",\"httpStatus\":200,\"detected\":\"v3\",\"contentType\":\"application/ld+json\",\"corsHeaders\":[\"access-control-allow-origin: *\",\"access-control-allow-origin: *\"],\"responseHeaders\":[\"Content-Type: application/ld+json\",\"Vary: Accept\"],\"redirectChain\":[{\"url\":\"https://example.org/start\",\"httpStatus\":302,\"location\":\"/manifest\",\"responseHeaders\":[\"Location: /manifest\",\"Set-Cookie: redirect=1\"]}]}}}]}"
 
 
 oldResultsJson : String

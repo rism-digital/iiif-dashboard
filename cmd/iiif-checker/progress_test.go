@@ -7,13 +7,13 @@ import (
 )
 
 func TestProgressLines(t *testing.T) {
-	if got := progressLine(progressPending, 0, "Example"); got != "· Example — pending" {
+	if got := progressLine(progressPending, 0, "Example", 0); got != "· Example — pending" {
 		t.Fatalf("pending line = %q", got)
 	}
-	if got := progressLine(progressRunning, 0, "Example"); got != "⠋ Example — checking" {
+	if got := progressLine(progressRunning, 0, "Example", 2); got != "⠋ Example — checking.." {
 		t.Fatalf("running line = %q", got)
 	}
-	if got := progressLine(progressFinished, 0, "Example"); got != "✓ Example — finished" {
+	if got := progressLine(progressFinished, 0, "Example", 3); got != "✓ Example — finished..." {
 		t.Fatalf("finished line = %q", got)
 	}
 }
@@ -23,12 +23,14 @@ func TestNonInteractiveProgressUsesStableLogLines(t *testing.T) {
 	progress := newProjectProgress(&output, []string{"First", "Second"}, false)
 	progress.Start()
 	progress.MarkRunning(0)
+	progress.MarkRequestFinished(0)
+	progress.MarkRequestFinished(0)
 	progress.MarkFinished(0)
 	progress.MarkRunning(1)
 	progress.MarkFinished(1)
 	progress.Close()
 
-	want := "Checking First…\nFinished First.\nChecking Second…\nFinished Second.\n"
+	want := "Checking First…\nFinished First..\nChecking Second…\nFinished Second\n"
 	if output.String() != want {
 		t.Fatalf("progress output = %q, want %q", output.String(), want)
 	}

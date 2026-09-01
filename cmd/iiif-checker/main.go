@@ -71,11 +71,12 @@ type RedirectHop struct {
 }
 
 type ProjectResults struct {
-	ID        string                 `json:"id"`
-	Name      string                 `json:"name"`
-	Checked   bool                   `json:"checked"`
-	CheckedAt string                 `json:"checkedAt,omitempty"`
-	Checks    map[string]CheckResult `json:"checks"`
+	ID         string                 `json:"id"`
+	Name       string                 `json:"name"`
+	Checked    bool                   `json:"checked"`
+	CheckedAt  string                 `json:"checkedAt,omitempty"`
+	DurationMS int64                  `json:"durationMs,omitempty"`
+	Checks     map[string]CheckResult `json:"checks"`
 }
 
 func (p *ProjectResults) UnmarshalJSON(data []byte) error {
@@ -110,9 +111,10 @@ type jsonCheck struct {
 }
 
 type Checker struct {
-	origin    string
-	userAgent string
-	client    *http.Client
+	origin          string
+	userAgent       string
+	client          *http.Client
+	requestFinished func()
 }
 
 func newChecker(origin string) *Checker {
@@ -125,6 +127,12 @@ func (c *Checker) withUserAgent(userAgent string) *Checker {
 	}
 	configured := *c
 	configured.userAgent = userAgent
+	return &configured
+}
+
+func (c *Checker) withRequestFinished(requestFinished func()) *Checker {
+	configured := *c
+	configured.requestFinished = requestFinished
 	return &configured
 }
 
@@ -149,6 +157,22 @@ func (c *Checker) request(ctx context.Context, method, address, accept string, p
 	return c.requestWithHeaders(ctx, method, address, accept, preflight, follow, nil)
 }
 
+func (c *Checker) requestUntilSeeOther(ctx context.Context, address, accept string) (*http.Response, error) {
+	configured := *c
+	client := *c.client
+	client.CheckRedirect = func(next *http.Request, via []*http.Request) error {
+		if next.Response != nil && next.Response.StatusCode == http.StatusSeeOther {
+			return http.ErrUseLastResponse
+		}
+		if len(via) >= 10 {
+			return http.ErrUseLastResponse
+		}
+		return nil
+	}
+	configured.client = &client
+	return configured.request(ctx, http.MethodGet, address, accept, false, true)
+}
+
 func (c *Checker) requestWithHeaders(ctx context.Context, method, address, accept string, preflight bool, follow bool, headers http.Header) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(ctx, method, address, nil)
 	if err != nil {
@@ -167,6 +191,9 @@ func (c *Checker) requestWithHeaders(ctx context.Context, method, address, accep
 		for _, value := range values {
 			req.Header.Add(name, value)
 		}
+	}
+	if c.requestFinished != nil {
+		defer c.requestFinished()
 	}
 	if follow {
 		return c.client.Do(req)
@@ -622,7 +649,11 @@ func (c *Checker) checkImage(ctx context.Context, address string) CheckResult {
 }
 
 func imageBaseURL(infoAddress string) string {
-	return strings.TrimSuffix(infoAddress, "/info.json") + "/"
+	end := len(infoAddress)
+	if index := strings.IndexAny(infoAddress, "?#"); index >= 0 {
+		end = index
+	}
+	return strings.TrimSuffix(infoAddress[:end], "/info.json")
 }
 
 func declaredImageInfoURL(doc map[string]any) string {
@@ -634,40 +665,135 @@ func declaredImageInfoURL(doc map[string]any) string {
 	return strings.TrimSuffix(identifier, "/") + "/info.json"
 }
 
+func redirectHopForResponse(resp *http.Response) RedirectHop {
+	address := ""
+	if resp != nil && resp.Request != nil && resp.Request.URL != nil {
+		address = resp.Request.URL.String()
+	}
+	return RedirectHop{
+		URL:             address,
+		HTTPStatus:      resp.StatusCode,
+		Location:        resp.Header.Get("Location"),
+		ResponseHeaders: allResponseHeaders(resp),
+	}
+}
+
+func resolveRedirectHop(hop RedirectHop) string {
+	parsedBase, err := url.Parse(hop.URL)
+	if err != nil {
+		return ""
+	}
+	parsedLocation, err := url.Parse(hop.Location)
+	if err != nil {
+		return ""
+	}
+	return parsedBase.ResolveReference(parsedLocation).String()
+}
+
+func redirectCheckResult(status, summary string, resp *http.Response) CheckResult {
+	result := responseResult(status, summary, resp, "")
+	if resp != nil && resp.StatusCode >= 300 && resp.StatusCode < 400 {
+		result.RedirectChain = append(result.RedirectChain, redirectHopForResponse(resp))
+	}
+	if len(result.RedirectChain) > 0 {
+		first := result.RedirectChain[0]
+		result.HTTPStatus = first.HTTPStatus
+		result.Location = first.Location
+	}
+	return result
+}
+
+func redirectStatusSequence(chain []RedirectHop) string {
+	statuses := make([]string, len(chain))
+	for index, hop := range chain {
+		statuses[index] = fmt.Sprintf("HTTP %d", hop.HTTPStatus)
+	}
+	return strings.Join(statuses, " → ")
+}
+
 func (c *Checker) checkBaseRedirect(ctx context.Context, infoAddress string, doc map[string]any) CheckResult {
 	base := imageBaseURL(infoAddress)
-	resp, err := c.request(ctx, http.MethodGet, base, "application/ld+json", false, false)
+	return c.checkBaseRedirectAt(ctx, base, infoAddress, doc, false)
+}
+
+func (c *Checker) checkTrailingSlashRedirect(ctx context.Context, infoAddress string, doc map[string]any) CheckResult {
+	base := imageBaseURL(infoAddress) + "/"
+	return c.checkBaseRedirectAt(ctx, base, infoAddress, doc, true)
+}
+
+func (c *Checker) checkBaseRedirectAt(ctx context.Context, base string, infoAddress string, doc map[string]any, trailingSlash bool) CheckResult {
+	label := "Base URI"
+	unsupportedStatus := "warning"
+	if trailingSlash {
+		label = "Trailing-slash URI"
+		unsupportedStatus = "advisory"
+	}
+	resp, err := c.requestUntilSeeOther(ctx, base, "application/ld+json")
 	if err != nil {
-		return responseResult("fail", "Base URI redirect check failed: "+err.Error(), nil, "")
+		status := "fail"
+		if trailingSlash {
+			status = "advisory"
+		}
+		return responseResult(status, label+" redirect check failed: "+err.Error(), nil, "")
 	}
 	defer resp.Body.Close()
-	location := resp.Header.Get("Location")
-	resolved := ""
-	if parsedBase, err := url.Parse(base); err == nil {
-		if parsed, err := url.Parse(location); err == nil {
-			resolved = parsedBase.ResolveReference(parsed).String()
-		}
-	}
+	priorRedirects := redirectChain(resp)
+	currentHop := redirectHopForResponse(resp)
+	resolved := resolveRedirectHop(currentHop)
 	if resp.StatusCode == 303 {
 		if resolved == "" {
-			return responseResult("fail", "Base URI returned HTTP 303 without a usable Location header.", resp, "")
+			status := "fail"
+			if trailingSlash {
+				status = "warning"
+			}
+			return redirectCheckResult(status, label+" returned HTTP 303 without a usable Location header.", resp)
 		}
 		declaredInfoAddress := declaredImageInfoURL(doc)
-		if resolved == infoAddress || (declaredInfoAddress != "" && resolved == declaredInfoAddress) {
-			return responseResult("pass", "Base URI returned HTTP 303 to "+resolved+".", resp, "")
+		matchesInformationURI := resolved == infoAddress || (declaredInfoAddress != "" && resolved == declaredInfoAddress)
+		if len(priorRedirects) > 0 {
+			chain := append(priorRedirects, currentHop)
+			if matchesInformationURI {
+				status := "warning"
+				summary := fmt.Sprintf("%s used redirect chain %s to %s; IIIF recommends HTTP 303 directly from the image service base URI.", label, redirectStatusSequence(chain), resolved)
+				if trailingSlash {
+					status = "advisory"
+					summary = fmt.Sprintf("%s used redirect chain %s to %s; a direct HTTP 303 would provide simpler compatibility.", label, redirectStatusSequence(chain), resolved)
+				}
+				return redirectCheckResult(status, summary, resp)
+			}
+			return redirectCheckResult("warning", fmt.Sprintf("%s used redirect chain %s to %s, which differs from both the checked and declared image information URIs.", label, redirectStatusSequence(chain), resolved), resp)
 		}
-		return responseResult("warning", fmt.Sprintf("Base URI returned HTTP 303 to %s, which differs from both the checked and declared image information URIs.", resolved), resp, "")
+		if matchesInformationURI {
+			return redirectCheckResult("pass", label+" returned HTTP 303 to "+resolved+".", resp)
+		}
+		return redirectCheckResult("warning", fmt.Sprintf("%s returned HTTP 303 to %s, which differs from both the checked and declared image information URIs.", label, resolved), resp)
+	}
+	redirects := priorRedirects
+	if resp.StatusCode >= 300 && resp.StatusCode < 400 {
+		redirects = append(redirects, currentHop)
+	}
+	if len(redirects) > 0 {
+		first := redirects[0]
+		resolved = resolveRedirectHop(first)
+		if trailingSlash {
+			return redirectCheckResult("advisory", fmt.Sprintf("Trailing-slash URI used redirect chain %s toward %s without the preferred HTTP 303.", redirectStatusSequence(redirects), resolved), resp)
+		}
+		return redirectCheckResult("warning", fmt.Sprintf("Base URI used redirect chain %s toward %s without the recommended HTTP 303.", redirectStatusSequence(redirects), resolved), resp)
 	}
 	if resp.StatusCode == 200 {
-		return responseResult("warning", "Base URI returned HTTP 200 directly; IIIF recommends a 303 redirect to info.json.", resp, "")
+		if trailingSlash {
+			return redirectCheckResult("advisory", "Trailing-slash URI returned HTTP 200 directly.", resp)
+		}
+		return redirectCheckResult("warning", "Base URI returned HTTP 200 directly; IIIF recommends a 303 redirect to info.json.", resp)
 	}
-	if resp.StatusCode >= 300 && resp.StatusCode < 400 {
-		return responseResult("warning", fmt.Sprintf("Base URI redirected with HTTP %d to %s; IIIF recommends 303.", resp.StatusCode, resolved), resp, "")
+	if trailingSlash {
+		return redirectCheckResult(unsupportedStatus, fmt.Sprintf("Trailing-slash URI returned HTTP %d.", resp.StatusCode), resp)
 	}
-	return responseResult("warning", fmt.Sprintf("Base URI returned HTTP %d instead of the recommended 303 redirect to info.json.", resp.StatusCode), resp, "")
+	return redirectCheckResult(unsupportedStatus, fmt.Sprintf("Base URI returned HTTP %d instead of the recommended 303 redirect to info.json.", resp.StatusCode), resp)
 }
 
 func (c *Checker) checkProject(ctx context.Context, project Project) ProjectResults {
+	startedAt := time.Now()
 	checker := c.withUserAgent(project.CheckerUserAgent).withTLSProfile(project.CheckerTLSProfile)
 	checks := map[string]CheckResult{}
 	if project.ManifestURL != "" {
@@ -687,6 +813,7 @@ func (c *Checker) checkProject(ctx context.Context, project Project) ProjectResu
 		checks["image.v2"], checks["image.v3"] = evaluateNegotiatedPair("image", v2, v3)
 		checks["image.info-preflight"] = checker.checkNegotiationPreflight(ctx, project.ImageInfoURL)
 		checks["image.base-redirect"] = checker.checkBaseRedirect(ctx, project.ImageInfoURL, info.Document)
+		checks["image.base-slash-redirect"] = checker.checkTrailingSlashRedirect(ctx, project.ImageInfoURL, info.Document)
 		if info.Document != nil {
 			imageURL := representativeImageURL(project.ImageInfoURL, info.Document)
 			checks["image.response"] = checker.checkImage(ctx, imageURL)
@@ -694,7 +821,14 @@ func (c *Checker) checkProject(ctx context.Context, project Project) ProjectResu
 			checks["image.response"] = responseResult("unknown", "Representative image was not requested because default info.json could not be parsed.", nil, "")
 		}
 	}
-	return ProjectResults{ID: project.ID, Name: project.Name, Checked: true, CheckedAt: time.Now().UTC().Format(time.RFC3339Nano), Checks: checks}
+	return ProjectResults{
+		ID:         project.ID,
+		Name:       project.Name,
+		Checked:    true,
+		CheckedAt:  time.Now().UTC().Format(time.RFC3339Nano),
+		DurationMS: time.Since(startedAt).Milliseconds(),
+		Checks:     checks,
+	}
 }
 
 func uncheckedProject(project Project) ProjectResults {
@@ -822,7 +956,10 @@ func run() error {
 			semaphore <- struct{}{}
 			defer func() { <-semaphore }()
 			progress.MarkRunning(index)
-			result := checker.checkProject(context.Background(), project)
+			projectChecker := checker.withRequestFinished(func() {
+				progress.MarkRequestFinished(index)
+			})
+			result := projectChecker.checkProject(context.Background(), project)
 			progress.MarkFinished(index)
 			completed <- completedProject{index: index, result: result}
 		}(index, project)

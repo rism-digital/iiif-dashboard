@@ -1,4 +1,4 @@
-module Main exposing (VersionState(..), coreStatus, healthStatuses, main, negotiatedVersionState, ruleReferences)
+module Main exposing (VersionState(..), coreStatus, formatDuration, healthStatuses, main, negotiatedVersionState, ruleReferences, viewerUrl)
 
 import Browser
 import Dict exposing (Dict)
@@ -10,6 +10,7 @@ import Http
 import ProjectSearch
 import RismLogo
 import Set exposing (Set)
+import Url
 
 
 type alias Model =
@@ -100,6 +101,11 @@ view model =
                     ]
                 , div [ class "header-links" ]
                     [ a
+                        [ class "header-link"
+                        , href "./viewer.html"
+                        ]
+                        [ text "Viewer" ]
+                    , a
                         [ class "header-link"
                         , href "./checks.html"
                         ]
@@ -249,7 +255,12 @@ projectRows model project =
                 case snapshotResult of
                     Just result ->
                         if result.checked then
-                            "Scheduled snapshot"
+                            case result.durationMs of
+                                Just durationMs ->
+                                    "Tests took " ++ formatDuration durationMs
+
+                                Nothing ->
+                                    "Test results"
 
                         else
                             "Not checked"
@@ -334,6 +345,26 @@ projectRows model project =
         [ mainRow ]
 
 
+formatDuration : Int -> String
+formatDuration milliseconds =
+    if milliseconds < 1000 then
+        String.fromInt milliseconds ++ " ms"
+
+    else if milliseconds < 60000 then
+        let
+            tenths =
+                (milliseconds + 50) // 100
+        in
+        String.fromInt (tenths // 10) ++ "." ++ String.fromInt (modBy 10 tenths) ++ " s"
+
+    else
+        let
+            seconds =
+                (milliseconds + 500) // 1000
+        in
+        String.fromInt (seconds // 60) ++ "m " ++ String.fromInt (modBy 60 seconds) ++ "s"
+
+
 displayedResults : Model -> String -> Dict String CheckResult
 displayedResults model projectId =
     snapshotProjectResults model projectId
@@ -376,6 +407,7 @@ primaryHealthGroups project =
                   , "image.v2"
                   , "image.v3"
                   , "image.base-redirect"
+                  , "image.base-slash-redirect"
                   , "image.response"
                   ]
                 )
@@ -562,7 +594,7 @@ apiSummary prefix checks =
             case defaultResult of
                 Just plainResult ->
                     if plainResult.detected |> Maybe.map (String.startsWith version) |> Maybe.withDefault False then
-                        VersionResult plainResult.status
+                        resultVersionState version plainResult
 
                     else
                         negotiatedVersionState prefix version checks
@@ -637,21 +669,37 @@ negotiatedVersionState : String -> String -> Dict String CheckResult -> VersionS
 negotiatedVersionState prefix version checks =
     case Dict.get (prefix ++ "." ++ version) checks of
         Just result ->
-            if result.httpStatus == Just 406 then
-                VersionUnavailable "HTTP 406"
-
-            else if result.status == Advisory then
-                VersionUnavailable
-                    (result.detected
-                        |> Maybe.map (\detected -> "received " ++ detected)
-                        |> Maybe.withDefault "requested representation not returned"
-                    )
-
-            else
-                VersionResult result.status
+            resultVersionState version result
 
         Nothing ->
             VersionResult Unknown
+
+
+resultVersionState : String -> CheckResult -> VersionState
+resultVersionState version result =
+    if result.httpStatus == Just 406 then
+        VersionUnavailable "HTTP 406"
+
+    else
+        case result.detected of
+            Just detected ->
+                if String.startsWith version detected then
+                    if result.status == Fail then
+                        VersionResult Fail
+
+                    else
+                        VersionResult Pass
+
+                else
+                    VersionUnavailable ("received " ++ detected)
+
+            Nothing ->
+                if result.status == Advisory then
+                    VersionUnavailable
+                        "requested representation not returned"
+
+                else
+                    VersionResult result.status
 
 
 miniStatus : String -> VersionState -> Html msg
@@ -695,13 +743,23 @@ detailsPanel project checks =
             , div [ class "endpoint-links" ]
                 [ case project.manifestUrl of
                     Just manifestUrl ->
-                        a [ href manifestUrl, target "_blank", rel "noopener noreferrer" ] [ text "Sample manifest ↗" ]
+                        span [ class "endpoint-link-group" ]
+                            [ a [ href manifestUrl, target "_blank", rel "noopener noreferrer" ] [ text "Sample manifest ↗" ]
+                            , a
+                                [ href (viewerUrl manifestUrl)
+                                , target "_blank"
+                                , rel "noopener noreferrer"
+                                ]
+                                [ text "Open in Viewer ↗" ]
+                            ]
 
                     Nothing ->
                         span [ class "missing-sample" ] [ text "No manifest sample configured" ]
                 , case project.imageInfoUrl of
                     Just imageInfoUrl ->
-                        a [ href imageInfoUrl, target "_blank", rel "noopener noreferrer" ] [ text "Image info.json ↗" ]
+                        span [ class "endpoint-link-group" ]
+                            [ a [ href imageInfoUrl, target "_blank", rel "noopener noreferrer" ] [ text "Image info.json ↗" ]
+                            ]
 
                     Nothing ->
                         span [ class "missing-sample" ] [ text "No image sample configured" ]
@@ -742,6 +800,11 @@ detailsPanel project checks =
                 , div [ class "cors-group" ] [ diagnosticGroup "CORS and content-negotiation preflight" corsRows ]
                 ]
         ]
+
+
+viewerUrl : String -> String
+viewerUrl manifestUrl =
+    "./viewer.html?manifest=" ++ Url.percentEncode manifestUrl
 
 
 diagnosticGroup : String -> List (Html msg) -> Html msg
@@ -975,6 +1038,9 @@ checkPageReference key =
         "image.base-redirect" ->
             [ ( "How this check works", "./checks.html#image-base-redirect" ) ]
 
+        "image.base-slash-redirect" ->
+            [ ( "How this check works", "./checks.html#image-base-slash-redirect" ) ]
+
         "image.response" ->
             [ ( "How this check works", "./checks.html#image-response" ) ]
 
@@ -1059,6 +1125,9 @@ externalRuleReferences key check =
         "image.base-redirect" ->
             [ ( "Image API 3.0 §2", "https://iiif.io/api/image/3.0/#2-uri-syntax" ) ]
 
+        "image.base-slash-redirect" ->
+            [ ( "Image API 3.0 §2", "https://iiif.io/api/image/3.0/#2-uri-syntax" ) ]
+
         "image.response" ->
             [ ( "Image API 3.0 §4", "https://iiif.io/api/image/3.0/#4-image-requests" )
             , ( "Image API 3.0 §7.1", "https://iiif.io/api/image/3.0/#71-cors" )
@@ -1099,6 +1168,9 @@ checkName key =
 
         Just "base-redirect" ->
             "Base URI → info.json redirect"
+
+        Just "base-slash-redirect" ->
+            "Trailing-slash URI → info.json redirect"
 
         Just "compression" ->
             "Gzip compression"

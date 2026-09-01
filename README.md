@@ -21,12 +21,13 @@ For an Image API sample `info.json`, the checker makes:
 - plain, Image API 2, and Image API 3 `info.json` requests;
 - an `info.json` request asking for gzip compression;
 - an `OPTIONS` preflight for browser-based `info.json` content negotiation;
-- a request to the image service base URI, checking for the recommended `303` redirect to `info.json`;
+- a request to the slashless image service base URI, checking for the recommended `303` redirect to `info.json`;
+- a request to the corresponding trailing-slash URI, recording whether this common variant also redirects to `info.json`;
 - a representative image request derived from `info.json`.
 
 It reports the detected Image API version, verifies that the Image Service `id` (v3) or `@id` (v2) matches the final `info.json` response URL with `/info.json` and any trailing slash removed, tests gzip compression, reports the declared Level 0, 1, or 2 compliance profile and representative image media type, and checks CORS behavior for both JSON and image responses. Image API negotiation uses the same paired `Vary: Accept` policy as Presentation API negotiation. As with manifests, a missing, empty, or non-string required identifier fails, while a different non-empty identifier warns.
 
-Dereferencing the image service base URI passes when it returns the IIIF-recommended `303` redirect to `info.json`. Any received non-`303` HTTP response is a warning rather than a failure because the redirect is recommended, not required. A request failure or a malformed `303` without a usable `Location` remains a failure.
+Dereferencing the image service base URI—the configured `info.json` URI with `/info.json` removed, leaving no trailing slash—passes when it returns the IIIF-recommended `303` redirect directly to `info.json`. The checker follows intermediate redirects through the first `303` and retains the complete chain. A chain such as `301 → 303 → info.json` is a warning: it works, but the base URI itself did not return the recommended `303`. Any received non-`303` HTTP response is a warning rather than a failure because the redirect is recommended, not required. A request failure or a malformed `303` without a usable `Location` remains a failure. The checker also probes the similar slash-ended URI as a separate compatibility check. Because that URI is outside the Image API syntax, lack of support or an intermediate redirect is an advisory and does not lower the main Image API result; an incorrect or malformed 303 is a warning.
 
 The CORS diagnostics show every returned `Access-Control-*` header. Ordinary manifest, `info.json`, and image CORS support is evaluated from each actual GET response and does not require `Access-Control-Allow-Headers`. The separate manifest and `info.json` negotiation preflights pass when they return exactly one usable `Access-Control-Allow-Origin`, permit `GET`, and permit the `Accept` request header. Although `Accept` is normally CORS-safelisted, IIIF profile-valued forms contain quotes and a URI colon, which are CORS-unsafe characters and trigger a browser preflight when explicitly set. The configured dashboard origin or `*` is accepted.
 
@@ -50,6 +51,7 @@ The main API badges and health meter summarize passes, warnings, and failures. A
 | --- | --- | --- |
 | Elm dashboard | `src/` | Loads the registry and latest snapshot and renders summaries and diagnostics. |
 | Check documentation | `checks.html` | Publishes the requests, classification rules, possible outcomes, and references. |
+| IIIF viewer | `viewer.html` | Loads a supplied Manifest in Diva.js using CDN-hosted Diva.js and OpenSeadragon. |
 | Service checker | `cmd/iiif-checker/` | Makes concurrent HTTP requests and writes the observation snapshot. |
 | Project registry | `projects.json` | Contributor-maintained list of projects and sample endpoints; copied into the built site. |
 | Result snapshot | `results.json` | Committed checker output; copied into the built dashboard. |
@@ -178,7 +180,7 @@ Useful options include:
 
 `-n 0` checks every project not marked `skip: true`. `-n` and `-project` cannot be combined. To check a skipped service, including with `-project`, add `--include-skipped`.
 
-Interactive terminal runs display pending, active, and finished projects in a bounded in-place progress view. Redirected output and CI use stable log lines. A slow service occupies only its own worker and does not block unrelated projects.
+Interactive terminal runs display pending, active, and finished projects in a bounded in-place progress view. Each trailing dot represents one top-level checker HTTP request that has returned; redirect hops remain part of that request and are recorded in its result details. Redirected output and CI include the accumulated dots on each project's stable finished line. A slow service occupies only its own worker and does not block unrelated projects.
 
 Every checker request is unauthenticated and normally identifies itself with `IIIF-Checker-Bot/1.0 (https://rism-digital.github.io/iiif-dashboard) go-http-client/1.1`. A project-specific exception may be declared and explained publicly in `projects.json`, as described above. Remember that `results.json` is public: the default and intermediate redirect response headers may include cookies, CDN identifiers, and other metadata returned to anonymous clients.
 
@@ -222,7 +224,7 @@ This single-purpose migration tool reads Harvard manifest URLs from `iiif_server
 
 ## GitHub Pages deployment
 
-`make build` creates the static Pages assets in `dist/`, including `checks.html`, and copies the committed `projects.json` and `results.json` files into the build. It never contacts external IIIF services. `make build-with-results` is a local convenience that refreshes `results.json` first and then builds the complete deployable artifact.
+`make build` creates the static Pages assets in `dist/`, including `checks.html` and `viewer.html`, and copies the committed `projects.json` and `results.json` files into the build. It never contacts external IIIF services. `make build-with-results` is a local convenience that refreshes `results.json` first and then builds the complete deployable artifact.
 
 GitHub Actions deploys the committed snapshot with `make build`; checker execution in the deployment workflows is intentionally disabled. The former weekly refresh schedule is also disabled. To publish fresh observations:
 

@@ -17,6 +17,7 @@
           </div>
           <nav class="header-links" aria-label="Site navigation">
             <a class="header-link" href="./">Dashboard</a>
+            <a class="header-link" href="./viewer.html">Viewer</a>
             <a class="header-link" href="https://github.com/rism-digital/iiif-dashboard" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
           </nav>
         </div>
@@ -51,15 +52,15 @@
         <section class="checks-section" id="health">
           <h2>Health meter</h2>
           <p>The health meter is a compact summary of primary HTTP request results. It does not count every condition inspected within a response, and it is not an uptime measurement. One slot represents one primary request and shows the highest-priority result found for that request.</p>
-          <div class="health-example" role="group" aria-label="Example health meter: 8 scored of 10 primary requests — 6 passed, 1 warning, 1 failed; 1 advisory; 1 not tested. Preflight is shown in details.">
+          <div class="health-example" role="group" aria-label="Example health meter: 8 scored of 11 primary requests — 6 passed, 1 warning, 1 failed; 2 advisories; 1 not tested. Preflight is shown in details.">
             <span class="health-label" aria-hidden="true">Health</span>
             <span class="health-meter">
               <span class="health-api-group"><span class="health-api-label" aria-hidden="true">P</span><span class="health-led status-bg-pass" tabindex="0" aria-label="Presentation API — Default response — Pass" data-tooltip="Presentation API — Default response — Pass"></span><span class="health-led status-bg-pass" tabindex="0" aria-label="Presentation API — Gzip compression — Pass" data-tooltip="Presentation API — Gzip compression — Pass"></span><span class="health-led status-bg-warning" tabindex="0" aria-label="Presentation API — Request IIIF v2 — Warning" data-tooltip="Presentation API — Request IIIF v2 — Warning"></span><span class="health-led status-bg-advisory" tabindex="0" aria-label="Presentation API — Request IIIF v3 — Advisory" data-tooltip="Presentation API — Request IIIF v3 — Advisory"></span></span>
-              <span class="health-api-group"><span class="health-api-label" aria-hidden="true">I</span><span class="health-led status-bg-pass" tabindex="0" aria-label="Image API — Default response — Pass" data-tooltip="Image API — Default response — Pass"></span><span class="health-led status-bg-pass" tabindex="0" aria-label="Image API — Gzip compression — Pass" data-tooltip="Image API — Gzip compression — Pass"></span><span class="health-led status-bg-pass" tabindex="0" aria-label="Image API — Request IIIF v2 — Pass" data-tooltip="Image API — Request IIIF v2 — Pass"></span><span class="health-led status-bg-pass" tabindex="0" aria-label="Image API — Request IIIF v3 — Pass" data-tooltip="Image API — Request IIIF v3 — Pass"></span><span class="health-led status-bg-fail" tabindex="0" aria-label="Image API — Base URI to info.json redirect — Fail" data-tooltip="Image API — Base URI to info.json redirect — Fail"></span><span class="health-led status-bg-unknown" tabindex="0" aria-label="Image API — Representative image — Not tested" data-tooltip="Image API — Representative image — Not tested"></span></span>
+              <span class="health-api-group"><span class="health-api-label" aria-hidden="true">I</span><span class="health-led status-bg-pass" tabindex="0" aria-label="Image API — Default response — Pass" data-tooltip="Image API — Default response — Pass"></span><span class="health-led status-bg-pass" tabindex="0" aria-label="Image API — Gzip compression — Pass" data-tooltip="Image API — Gzip compression — Pass"></span><span class="health-led status-bg-pass" tabindex="0" aria-label="Image API — Request IIIF v2 — Pass" data-tooltip="Image API — Request IIIF v2 — Pass"></span><span class="health-led status-bg-pass" tabindex="0" aria-label="Image API — Request IIIF v3 — Pass" data-tooltip="Image API — Request IIIF v3 — Pass"></span><span class="health-led status-bg-fail" tabindex="0" aria-label="Image API — Base URI to info.json redirect — Fail" data-tooltip="Image API — Base URI to info.json redirect — Fail"></span><span class="health-led status-bg-advisory" tabindex="0" aria-label="Image API — Trailing-slash URI to info.json redirect — Advisory" data-tooltip="Image API — Trailing-slash URI to info.json redirect — Advisory"></span><span class="health-led status-bg-unknown" tabindex="0" aria-label="Image API — Representative image — Not tested" data-tooltip="Image API — Representative image — Not tested"></span></span>
             </span>
           </div>
-          <p class="health-example-summary">Example: 8 scored of 10 primary requests — 6 passed, 1 warning, 1 failed; 1 advisory; 1 not tested.</p>
-          <p><strong>P</strong> groups four Presentation API requests: the default Manifest, gzip, v2 negotiation, and v3 negotiation. <strong>I</strong> groups six Image API requests: default <code>info.json</code>, gzip, v2 negotiation, v3 negotiation, the base URI redirect, and the representative image. Projects configured for only one API show only that API’s group.</p>
+          <p class="health-example-summary">Example: 8 scored of 11 primary requests — 6 passed, 1 warning, 1 failed; 2 advisories; 1 not tested.</p>
+          <p><strong>P</strong> groups four Presentation API requests: the default Manifest, gzip, v2 negotiation, and v3 negotiation. <strong>I</strong> groups seven Image API requests: default <code>info.json</code>, gzip, v2 negotiation, v3 negotiation, the slashless base URI redirect, the trailing-slash compatibility redirect, and the representative image. Projects configured for only one API show only that API’s group.</p>
           <p>Green, yellow, red, purple, and grey slots mean Pass, Warning, Fail, Advisory, and Not tested. Hover over a slot, or focus it with the keyboard, to see the request and result. Advisory and Not tested retain their positions in the meter, while their full explanations remain available in the details.</p>
           <p class="checks-note">The two content-negotiation <code>OPTIONS</code> preflights are details-only and are not included in the meter. CORS, media type, identifiers, response structure, and other conditions evaluated during a primary request do not add more slots: they contribute to that request’s single result.</p>
         </section>
@@ -151,11 +152,22 @@
 
             <article class="check-doc" id="image-base-redirect">
               <h3>Base URI to info.json</h3><code class="check-key">image.base-redirect</code>
-              <p class="check-purpose">Dereferences the service base URI without following redirects. IIIF recommends HTTP 303 to the checked or declared <code>info.json</code> URI.</p>
+              <p class="check-purpose">Dereferences the slashless service base URI (<code>…/{identifier}</code>), following intermediate redirects until the first HTTP 303. IIIF recommends HTTP 303 directly to the checked or declared <code>info.json</code> URI. Every observed redirect and its headers are retained.</p>
               <ul class="outcome-list">
                 <li><span class="outcome-label pass">Pass</span><span>HTTP 303 has a usable Location matching the checked or declared image information URI.</span></li>
-                <li><span class="outcome-label warning">Warning</span><span>303 points elsewhere, 200 returns directly, another redirect code is used, or any other HTTP response is received.</span></li>
+                <li><span class="outcome-label warning">Warning</span><span>303 points elsewhere, 200 returns directly, another redirect code is used before the 303, or any other HTTP response is received.</span></li>
                 <li><span class="outcome-label fail">Fail</span><span>The request fails, or a 303 has no usable Location.</span></li>
+              </ul>
+              <p class="check-references"><strong>References</strong><a href="https://iiif.io/api/image/3.0/#2-uri-syntax">Image API 3.0 §2 URI syntax</a></p>
+            </article>
+
+            <article class="check-doc" id="image-base-slash-redirect">
+              <h3>Trailing-slash URI to info.json</h3><code class="check-key">image.base-slash-redirect</code>
+              <p class="check-purpose">Dereferences <code>…/{identifier}/</code>, following intermediate redirects until the first HTTP 303. This is not the Image API base URI, but redirecting this common variant to <code>info.json</code> improves real-world compatibility. Every observed redirect and its headers are retained.</p>
+              <ul class="outcome-list">
+                <li><span class="outcome-label pass">Pass</span><span>HTTP 303 has a usable Location matching the checked or declared image information URI.</span></li>
+                <li><span class="outcome-label advisory">Advisory</span><span>The URI is unsupported, returns directly, or uses a redirect other than 303.</span></li>
+                <li><span class="outcome-label warning">Warning</span><span>HTTP 303 has no usable Location or points to an unexpected URI.</span></li>
               </ul>
               <p class="check-references"><strong>References</strong><a href="https://iiif.io/api/image/3.0/#2-uri-syntax">Image API 3.0 §2 URI syntax</a></p>
             </article>
@@ -186,6 +198,12 @@
           <h2>Recorded response metadata</h2>
           <p>The report stores HTTP status, detected IIIF version and level, content type, request Accept value, Location, and returned CORS headers. For each default Manifest and <code>info.json</code> GET it also stores the complete response headers. Every followed redirect retains its URL, status, Location, and complete headers in order.</p>
           <p class="checks-note">Results are point-in-time observations from anonymous requests. A later browser request may differ because of conditional headers, caches, firewall policy, rate limiting, or a changed service configuration.</p>
+        </section>
+        <section class="checks-section" id="content-negotiation">
+          <h2>IIIF Versions: Content Negotiation vs. Separate URLs</h2>
+          <p>The dashboard checks for the use of content negotiation for returning different IIIF version responses, e.g., v2 or v3. Content negotiation is <a href="https://iiif.io/api/presentation/3.0/#63-responses">recommended by the IIIF API specifications</a>, but not required.</p>
+          <p>The primary advantage of content negotiation, in a IIIF context, is stability of the URI. Since HTTP headers are used to request version 2 or version 3 variants, the URL to the manifest or image can stay the same. It also means we can check for varying IIIF version responses in the dashboard since the interaction patterns are defined by the specification.</p>
+          <p>Some services, however, choose to implement different versions at different URLs. Unfortunately, there is no standard way of signaling this, so it is not easy to apply rules to check these variant versions. Since we only store a single URL for manifest and image samples, we cannot check all version variants that an organization might publish, if they choose to publish their IIIF services in this way.</p>
         </section>
       </main>
 
