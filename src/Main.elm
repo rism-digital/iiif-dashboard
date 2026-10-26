@@ -1,6 +1,8 @@
-module Main exposing (VersionState(..), coreStatus, formatDuration, healthStatuses, main, negotiatedVersionState, ruleReferences, viewerUrl)
+module Main exposing (VersionState(..), coreStatus, formatDuration, healthStatuses, main, negotiatedVersionState, ruleReferences, sameDocument, searchQueryForUrl, viewerUrl)
 
 import Browser
+import Browser.Dom as Dom
+import Browser.Navigation as Nav
 import Dict exposing (Dict)
 import Domain exposing (CheckResult, Project, ProjectResults, RedirectHop, Registry, ResultsFile, Status(..), statusLabel, statusRank)
 import Html exposing (Html, a, button, details, div, footer, h1, h2, header, input, label, main_, p, pre, span, summary, table, tbody, td, text, th, thead, tr)
@@ -10,7 +12,8 @@ import Http
 import ProjectSearch
 import RismLogo
 import Set exposing (Set)
-import Url
+import Task
+import Url exposing (Url)
 
 
 type alias Model =
@@ -19,6 +22,8 @@ type alias Model =
     , loadErrors : List String
     , expanded : Set String
     , searchQuery : String
+    , navigationKey : Nav.Key
+    , currentUrl : Url
     }
 
 
@@ -27,6 +32,9 @@ type Msg
     | GotSnapshots (Result Http.Error ResultsFile)
     | ToggleDetails String
     | SetSearchQuery String
+    | LinkClicked Browser.UrlRequest
+    | UrlChanged Url
+    | FragmentScrollFinished (Result Dom.Error ())
 
 
 type VersionState
@@ -36,17 +44,26 @@ type VersionState
 
 main : Program () Model Msg
 main =
-    Browser.element
+    Browser.application
         { init = init
         , update = update
         , subscriptions = always Sub.none
         , view = view
+        , onUrlRequest = LinkClicked
+        , onUrlChange = UrlChanged
         }
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( { registry = Nothing, snapshots = Nothing, loadErrors = [], expanded = Set.empty, searchQuery = "" }
+init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init _ url navigationKey =
+    ( { registry = Nothing
+      , snapshots = Nothing
+      , loadErrors = []
+      , expanded = Set.empty
+      , searchQuery = ""
+      , navigationKey = navigationKey
+      , currentUrl = url
+      }
     , Cmd.batch
         [ Http.get { url = "./projects.json", expect = Http.expectJson GotRegistry Domain.registryDecoder }
         , Http.get { url = "./results.json", expect = Http.expectJson GotSnapshots Domain.resultsDecoder }
@@ -60,18 +77,34 @@ update msg model =
         GotRegistry result ->
             case result of
                 Ok registry ->
-                    ( { model | registry = Just registry }, Cmd.none )
+                    let
+                        updated =
+                            { model | registry = Just registry }
+                    in
+                    ( updated, scrollToCurrentFragment updated )
 
                 Err error ->
-                    ( { model | loadErrors = httpError "project registry" error :: model.loadErrors }, Cmd.none )
+                    let
+                        updated =
+                            { model | loadErrors = httpError "project registry" error :: model.loadErrors }
+                    in
+                    ( updated, scrollToCurrentFragment updated )
 
         GotSnapshots result ->
             case result of
                 Ok snapshots ->
-                    ( { model | snapshots = Just snapshots }, Cmd.none )
+                    let
+                        updated =
+                            { model | snapshots = Just snapshots }
+                    in
+                    ( updated, scrollToCurrentFragment updated )
 
                 Err error ->
-                    ( { model | loadErrors = httpError "snapshot results" error :: model.loadErrors }, Cmd.none )
+                    let
+                        updated =
+                            { model | loadErrors = httpError "snapshot results" error :: model.loadErrors }
+                    in
+                    ( updated, scrollToCurrentFragment updated )
 
         ToggleDetails projectId ->
             ( { model
@@ -88,9 +121,93 @@ update msg model =
         SetSearchQuery query ->
             ( { model | searchQuery = query }, Cmd.none )
 
+        LinkClicked urlRequest ->
+            case urlRequest of
+                Browser.External address ->
+                    ( model, Nav.load address )
 
-view : Model -> Html Msg
+                Browser.Internal url ->
+                    if sameDocument model.currentUrl url then
+                        if Url.toString url == Url.toString model.currentUrl then
+                            let
+                                updated =
+                                    applyUrl url model
+                            in
+                            ( updated, scrollToCurrentFragment updated )
+
+                        else
+                            ( model, Nav.pushUrl model.navigationKey (Url.toString url) )
+
+                    else
+                        ( model, Nav.load (Url.toString url) )
+
+        UrlChanged url ->
+            let
+                updated =
+                    applyUrl url model
+            in
+            ( updated, scrollToCurrentFragment updated )
+
+        FragmentScrollFinished _ ->
+            ( model, Cmd.none )
+
+
+applyUrl : Url -> Model -> Model
+applyUrl url model =
+    { model
+        | currentUrl = url
+        , searchQuery = searchQueryForUrl url model.searchQuery
+    }
+
+
+searchQueryForUrl : Url -> String -> String
+searchQueryForUrl url currentQuery =
+    case url.fragment of
+        Just _ ->
+            ""
+
+        Nothing ->
+            currentQuery
+
+
+sameDocument : Url -> Url -> Bool
+sameDocument first second =
+    first.protocol
+        == second.protocol
+        && first.host
+        == second.host
+        && first.port_
+        == second.port_
+        && first.path
+        == second.path
+        && first.query
+        == second.query
+
+
+scrollToCurrentFragment : Model -> Cmd Msg
+scrollToCurrentFragment model =
+    case model.currentUrl.fragment of
+        Just fragment ->
+            Dom.getElement fragment
+                |> Task.andThen
+                    (\element ->
+                        Dom.setViewport 0 (max 0 (element.element.y - 16))
+                    )
+                |> Task.attempt FragmentScrollFinished
+
+        Nothing ->
+            Cmd.none
+
+
+view : Model -> Browser.Document Msg
 view model =
+    { title = "IIIF Service Dashboard"
+    , body = [ viewBody model ]
+    }
+
+
+viewBody : Model -> Html Msg
+viewBody model =
     div [ class "app-shell" ]
         [ header [ class "site-header" ]
             [ div [ class "header-inner" ]

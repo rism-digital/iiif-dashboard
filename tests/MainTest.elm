@@ -5,6 +5,7 @@ import Domain exposing (CheckResult, Project, Status(..))
 import Expect
 import Main exposing (VersionState(..))
 import Test exposing (Test, describe, test)
+import Url
 
 
 tests : Test
@@ -121,6 +122,23 @@ tests =
                 , Main.formatDuration 75321
                 ]
                     |> Expect.equal [ "842 ms", "1.2 s", "1m 15s" ]
+        , test "treats dashboard fragments as same-document navigation" <|
+            \_ ->
+                Maybe.map2 Main.sameDocument
+                    (Url.fromString "https://example.org/iiif-dashboard/#first")
+                    (Url.fromString "https://example.org/iiif-dashboard/#unibe-ch")
+                    |> Expect.equal (Just True)
+        , test "treats another HTML page as document navigation" <|
+            \_ ->
+                Maybe.map2 Main.sameDocument
+                    (Url.fromString "https://example.org/iiif-dashboard/#unibe-ch")
+                    (Url.fromString "https://example.org/iiif-dashboard/checks.html")
+                    |> Expect.equal (Just False)
+        , test "fragment navigation clears a search hiding the target" <|
+            \_ ->
+                Url.fromString "https://example.org/iiif-dashboard/#unibe-ch"
+                    |> Maybe.map (\url -> Main.searchQueryForUrl url "oxford")
+                    |> Expect.equal (Just "")
         ]
 
 
